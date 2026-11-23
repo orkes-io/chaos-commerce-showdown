@@ -1,0 +1,14 @@
+{
+  "F4": {
+    "score": 1,
+    "evidence": "Product page: 5-star 'I WANT MY FOOT BACK' and 'Absolutely livid'; 2-star 'Changed my life' and 'Perfect in every way'. Both directions inverted."
+  },
+  "F11": {
+    "score": 1,
+    "evidence": "frontend/ static files with frontend/config.js (apiBaseUrl) and a Pages deploy workflow; backend/src/lambda.js + backend/template.yaml; CONDUCTOR_SERVER_URL from env; jq workflow sources built into registrable JSON."
+  },
+  "F12": {
+    "score": 1,
+    "evidence": "No AI API references in the code. README one-command start (npm start) worked exactly as described."
+  }
+}

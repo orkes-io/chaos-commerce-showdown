@@ -1,0 +1,147 @@
+{
+  "name": "chaos_returns",
+  "description": "Chaos Commerce returns. Runs six pointless checks with a pause after each, waits a bounded time for the customer's Returns Oath, then decides: refund, store credit or denial. The oath wait ends by itself, so an abandoned return is still decided. Uses only system tasks. If it fails or times out, chaos_returns_default_decision approves the return by default.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "restartable": true,
+  "timeoutSeconds": 900,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "failureWorkflow": "chaos_returns_default_decision",
+  "inputParameters": ["returnId", "seed", "filedAt", "orderId", "orderFound", "customerName", "item", "returnReason", "affidavit", "checkPauseSeconds", "oathWindowSeconds"],
+  "tasks": [
+    {
+      "name": "intake",
+      "taskReferenceName": "intake",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "request": {
+          "returnId": "${workflow.input.returnId}",
+          "seed": "${workflow.input.seed}",
+          "filedAt": "${workflow.input.filedAt}",
+          "orderId": "${workflow.input.orderId}",
+          "orderFound": "${workflow.input.orderFound}",
+          "customerName": "${workflow.input.customerName}",
+          "item": "${workflow.input.item}",
+          "reason": "${workflow.input.returnReason}",
+          "affidavit": "${workflow.input.affidavit}",
+          "checkPauseSeconds": "${workflow.input.checkPauseSeconds}",
+          "oathWindowSeconds": "${workflow.input.oathWindowSeconds}"
+        },
+        "queryExpression": {"$jq": "returns_intake.jq"}
+      }
+    },
+    {
+      "name": "pointless_checks",
+      "taskReferenceName": "pointless_checks",
+      "type": "DO_WHILE",
+      "evaluatorType": "graaljs",
+      "loopCondition": "(function(){ return $.pointless_checks['iteration'] < 6; })();",
+      "inputParameters": {
+        "pointless_checks": "${pointless_checks.output}"
+      },
+      "loopOver": [
+        {
+          "name": "run_check",
+          "taskReferenceName": "run_check",
+          "type": "JSON_JQ_TRANSFORM",
+          "inputParameters": {
+            "n": "${pointless_checks.output.iteration}",
+            "ret": "${intake.output.result}",
+            "queryExpression": {"$jq": "returns_check.jq"}
+          }
+        },
+        {
+          "name": "contemplation_period",
+          "taskReferenceName": "contemplation_period",
+          "type": "WAIT",
+          "inputParameters": {
+            "duration": "${intake.output.result.checkPause}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "await_oath",
+      "taskReferenceName": "await_oath",
+      "type": "WAIT",
+      "inputParameters": {
+        "duration": "${intake.output.result.oathWindow}"
+      }
+    },
+    {
+      "name": "decide",
+      "taskReferenceName": "decide",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "ret": "${intake.output.result}",
+        "loop": "${pointless_checks.output}",
+        "oath": "${await_oath.output}",
+        "queryExpression": {"$jq": "returns_decide.jq"}
+      }
+    },
+    {
+      "name": "route_decision",
+      "taskReferenceName": "route_decision",
+      "type": "SWITCH",
+      "evaluatorType": "value-param",
+      "expression": "code",
+      "inputParameters": {
+        "code": "${decide.output.result.code}"
+      },
+      "decisionCases": {
+        "APPROVED_REFUND": [
+          {
+            "name": "calculate_refund",
+            "taskReferenceName": "calculate_refund",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "ret": "${intake.output.result}",
+              "queryExpression": {"$jq": "returns_refund.jq"}
+            }
+          }
+        ],
+        "STORE_CREDIT": [
+          {
+            "name": "issue_store_credit",
+            "taskReferenceName": "issue_store_credit",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "ret": "${intake.output.result}",
+              "queryExpression": {"$jq": "returns_credit.jq"}
+            }
+          }
+        ],
+        "DENIED": [
+          {
+            "name": "draft_denial",
+            "taskReferenceName": "draft_denial",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "ret": "${intake.output.result}",
+              "verdict": "${decide.output.result}",
+              "queryExpression": {"$jq": "returns_denial.jq"}
+            }
+          }
+        ]
+      },
+      "defaultCase": []
+    },
+    {
+      "name": "issue_decision",
+      "taskReferenceName": "issue_decision",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "ret": "${intake.output.result}",
+        "verdict": "${decide.output.result}",
+        "refund": "${calculate_refund.output.result}",
+        "credit": "${issue_store_credit.output.result}",
+        "denial": "${draft_denial.output.result}",
+        "queryExpression": {"$jq": "returns_decision.jq"}
+      }
+    }
+  ],
+  "outputParameters": {
+    "decision": "${issue_decision.output.result}"
+  }
+}

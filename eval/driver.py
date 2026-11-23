@@ -103,6 +103,8 @@ def run_steps(page, base, steps, shots, label):
                 page.locator(st["fill"][0]).first.fill(str(st["fill"][1]), timeout=8000)
             elif "select" in st:
                 page.locator(st["select"][0]).first.select_option(st["select"][1], timeout=8000)
+            elif "select_index" in st:
+                page.locator(st["select_index"][0]).first.select_option(index=int(st["select_index"][1]), timeout=8000)
             elif "check" in st:
                 page.locator(st["check"]).first.check(timeout=8000)
             elif "press" in st:

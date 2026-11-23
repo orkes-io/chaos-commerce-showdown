@@ -1,0 +1,328 @@
+{
+  "run_id": "fable-r3b",
+  "map": "Zero-dependency Node server on :3000 (vanilla JS SPA with hash routes). Workflows use only system tasks (INLINE scripts, unit-tested). Order placement redirects to #/order/<id>; the return form is linked from there and the decision page is #/returns/<id>.",
+  "workflow_defs": [
+    "chaos_checkout",
+    "chaos_return"
+  ],
+  "F3_products": 8,
+  "F3_prices": [
+    "was $3.50 $4,999.99",
+    "was $0.02 $0.03",
+    "was $88.99 $89.00",
+    "was $1.00 $249.99",
+    "was $1,199.00 $1,200.00",
+    "was $4.99 $64.99",
+    "was $310.50 $310.50",
+    "was $0.05 $1,299,999.00"
+  ],
+  "F4_reviews": [
+    "\u2605\u2605\u2605\u2605\u2605 ABSOLUTELY LIVID\n\nFIVE THOUSAND DOLLARS. It was dead on arrival. It was dead BEFORE arrival. I have contacted my bank, my lawyer and my mother. Five stars because the one-star button ran away from me.\n\n\u2014 Brenda K. (verified purchaser, unfortunately)",
+    "\u2605\u2605\u2606\u2606\u2606 Best purchase of my life\n\nHonestly flawless. It does exactly what it says: nothing. I have never felt so understood by a battery. Would marry.\n\n\u2014 Tomasz (verified purchaser, unfortunately)",
+    "\u2605\u2605\u2605\u2605\u2605 I WANT TO SPEAK TO WHOEVER IS IN CHARGE\n\nNobody is in charge. I checked. I rang the number and it was a different, unrelated shop who were also angry with you.\n\n\u2014 A Furious Dad (verified purchaser, unfortunately)"
+  ],
+  "F5_dodge": {
+    "position_changes": 4,
+    "first": {
+      "x": 229,
+      "y": 432.90625,
+      "width": 75,
+      "height": 34.875
+    },
+    "last": {
+      "x": 698.359375,
+      "y": 472.734375,
+      "width": 75,
+      "height": 34.875
+    }
+  },
+  "F6_checkout_ui": true,
+  "F6_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "goto": "/#/"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "click": "#cookie-banner button:has-text('Accept')",
+      "optional": true
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "click": ".card >> nth=0 >> button:has-text('Add to cart')"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "goto": "/#/cart"
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "fill": [
+        "input[name=customerName]",
+        "Test Shopper"
+      ]
+    },
+    {
+      "step": 5,
+      "ok": true,
+      "click": "#place-order"
+    },
+    {
+      "step": 6,
+      "ok": true,
+      "expect_selector": ".receipt",
+      "timeout": 90000
+    },
+    {
+      "step": 7,
+      "ok": true,
+      "screenshot": "confirmation"
+    }
+  ],
+  "F7_executions": [
+    {
+      "workflow": "chaos_checkout",
+      "status": "COMPLETED",
+      "id": "233266dc-c6a9-4d86-82a6-b0dde6ce578a",
+      "tasks": [
+        {
+          "ref": "open_order",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "price_order",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "payment_loop",
+          "type": "DO_WHILE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "attempt_payment__1",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "attempt_payment__2",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "attempt_payment__3",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "settle_payment",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "pack_order",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "confirm_order",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        }
+      ]
+    }
+  ],
+  "F8_returns_ui": true,
+  "F8_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "click": "a[href*='#/return/']"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "select_index": [
+        "select[name=reason]",
+        1
+      ]
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "check": "input[name=notRobot]"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "fill": [
+        "input[name=regretWord]",
+        "REGRET"
+      ]
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "click": "#submit-return"
+    },
+    {
+      "step": 5,
+      "ok": true,
+      "expect_selector": ".decision:not(.decision-waiting)",
+      "timeout": 120000
+    },
+    {
+      "step": 6,
+      "ok": true,
+      "screenshot": "decision"
+    }
+  ],
+  "F9_executions": [
+    {
+      "workflow": "chaos_return",
+      "status": "COMPLETED",
+      "id": "e9d00e85-f3c9-407a-b34a-5080031642b0",
+      "tasks": [
+        {
+          "ref": "intake_return",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "bureaucracy_loop",
+          "type": "DO_WHILE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_pointless_check__1",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_pointless_check__2",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_pointless_check__3",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_pointless_check__4",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_pointless_check__5",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_pointless_check__6",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_pointless_check__7",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "tally_checks",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "manager_review",
+          "type": "WAIT",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "decide_return",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "file_decision",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        }
+      ]
+    }
+  ],
+  "console_errors": [],
+  "F10_checkout_succeeded_with_backend_down": false,
+  "F10_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "goto": "/#/"
+    },
+    {
+      "step": 1,
+      "ok": false,
+      "error": "Locator.click: Timeout 3000ms exceeded.\nCall log:\n  - waiting for locator(\"#cookie-banner button:has-text('Accept')\").first\n    - locator resolved to <button type=\"button\" data-cookie=\"\">Accept</button>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      -",
+      "click": "#cookie-banner button:has-text('Accept')",
+      "optional": true
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "click": ".card >> nth=0 >> button:has-text('Add to cart')"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "goto": "/#/cart"
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "fill": [
+        "input[name=customerName]",
+        "Test Shopper"
+      ]
+    },
+    {
+      "step": 5,
+      "ok": true,
+      "click": "#place-order"
+    },
+    {
+      "step": 6,
+      "ok": false,
+      "error": "Locator.wait_for: Timeout 90000ms exceeded.\nCall log:\n  - waiting for locator(\".receipt\").first to be visible\n",
+      "expect_selector": ".receipt",
+      "timeout": 90000
+    }
+  ]
+}

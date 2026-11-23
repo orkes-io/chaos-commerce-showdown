@@ -1,0 +1,97 @@
+{
+  "name": "chaos_checkout",
+  "description": "Chaos Commerce checkout. Prices the cart, tries payment processors until one accepts (the last one always does) and issues a receipt. Uses only system tasks, so no worker has to be running. If it fails or times out, chaos_checkout_rescue issues an emergency receipt instead.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "restartable": true,
+  "timeoutSeconds": 120,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "failureWorkflow": "chaos_checkout_rescue",
+  "inputParameters": ["orderId", "seed", "placedAt", "customer", "lines", "coupon", "shipping", "payment"],
+  "tasks": [
+    {
+      "name": "sanitise_cart",
+      "taskReferenceName": "sanitise_cart",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "order": {
+          "orderId": "${workflow.input.orderId}",
+          "seed": "${workflow.input.seed}",
+          "placedAt": "${workflow.input.placedAt}",
+          "customer": "${workflow.input.customer}",
+          "lines": "${workflow.input.lines}",
+          "coupon": "${workflow.input.coupon}",
+          "shipping": "${workflow.input.shipping}",
+          "payment": "${workflow.input.payment}"
+        },
+        "queryExpression": {"$jq": "checkout_sanitise.jq"}
+      }
+    },
+    {
+      "name": "price_order",
+      "taskReferenceName": "price_order",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "cart": "${sanitise_cart.output.result}",
+        "queryExpression": {"$jq": "checkout_price.jq"}
+      }
+    },
+    {
+      "name": "payment_attempts",
+      "taskReferenceName": "payment_attempts",
+      "type": "DO_WHILE",
+      "evaluatorType": "graaljs",
+      "loopCondition": "(function(){ var i = $.payment_attempts['iteration']; var last = $.payment_attempts[String(i)]; var approved = !!(last && last.attempt_payment && last.attempt_payment.result && last.attempt_payment.result.approved); return !approved && i < 5; })();",
+      "inputParameters": {
+        "payment_attempts": "${payment_attempts.output}"
+      },
+      "loopOver": [
+        {
+          "name": "attempt_payment",
+          "taskReferenceName": "attempt_payment",
+          "type": "JSON_JQ_TRANSFORM",
+          "inputParameters": {
+            "attempt": "${payment_attempts.output.iteration}",
+            "cart": "${sanitise_cart.output.result}",
+            "queryExpression": {"$jq": "checkout_payment_attempt.jq"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "settle_payment",
+      "taskReferenceName": "settle_payment",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "loop": "${payment_attempts.output}",
+        "queryExpression": {"$jq": "checkout_settle.jq"}
+      }
+    },
+    {
+      "name": "allocate_stock",
+      "taskReferenceName": "allocate_stock",
+      "type": "JSON_JQ_TRANSFORM",
+      "optional": true,
+      "inputParameters": {
+        "cart": "${sanitise_cart.output.result}",
+        "queryExpression": {"$jq": "checkout_fulfil.jq"}
+      }
+    },
+    {
+      "name": "issue_receipt",
+      "taskReferenceName": "issue_receipt",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "cart": "${sanitise_cart.output.result}",
+        "pricing": "${price_order.output.result}",
+        "payment": "${settle_payment.output.result}",
+        "fulfilment": "${allocate_stock.output.result}",
+        "queryExpression": {"$jq": "checkout_receipt.jq"}
+      }
+    }
+  ],
+  "outputParameters": {
+    "receipt": "${issue_receipt.output.result}"
+  }
+}

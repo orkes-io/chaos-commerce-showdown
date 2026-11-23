@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chaos Commerce | Somehow Still in Business</title>
+    <meta name="description" content="Chaos Commerce: a parody online store. Ridiculous prices, furious five-star reviews, and a checkout that always completes." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ff3fa4'/%3E%3Cpath d='M12 22h14l10 40h40l10-28H32' fill='none' stroke='%232b0a3d' stroke-width='8'/%3E%3Ccircle cx='42' cy='80' r='8'/%3E%3Ccircle cx='72' cy='80' r='8'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__track">
+        <span>FREE SHIPPING on orders over $4,000,000.00</span>
+        <span>Now with 30% more checkout</span>
+        <span>Voted "A Store" by people who had no other options</span>
+        <span>All sales final. All finals on sale.</span>
+        <span>Ask about our fees! Asking incurs a fee.</span>
+        <span>FREE SHIPPING on orders over $4,000,000.00</span>
+        <span>Now with 30% more checkout</span>
+        <span>Voted "A Store" by people who had no other options</span>
+        <span>All sales final. All finals on sale.</span>
+        <span>Ask about our fees! Asking incurs a fee.</span>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <a class="logo" href="#/" aria-label="Chaos Commerce home">
+        <svg class="logo__cart" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 16h14l12 46h44l10-32H30" fill="none" stroke="#2b0a3d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40" cy="80" r="8" fill="#2b0a3d"/><circle cx="72" cy="80" r="8" fill="#2b0a3d"/><path d="M58 22l8 12-10 4 8 12" fill="none" stroke="#fff36b" stroke-width="5" stroke-linecap="round"/></svg>
+        <span class="logo__text">CHAOS COMMERCE</span>
+        <span class="logo__tag" id="tagline">Somehow still in business since last Tuesday</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="#/" data-nav="shop">Shop</a>
+        <a href="#/cart" data-nav="cart">Cart (<span id="cart-count">0</span>)</a>
+        <a href="#/orders" data-nav="orders">My Orders</a>
+        <a href="#/returns" data-nav="returns">Returns</a>
+        <a href="#/about" data-nav="about">About</a>
+      </nav>
+    </header>
+
+    <main id="app" tabindex="-1">
+      <p class="loading">Loading the store. Please lower your expectations…</p>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 1997–2094 Chaos Commerce LLC, a wholly owned subsidiary of Chaos Commerce LLC.</p>
+      <p>You are visitor number <strong id="visitor-count">0000002</strong>. Trusted by over 3 customers.</p>
+      <p class="small">
+        Chaos Commerce is a parody. Nothing here is for sale, no payment is taken, and no pigeons are employed.
+        Checkout and returns are real <a href="https://github.com/conductor-oss/conductor" rel="noopener">Conductor</a> workflows.
+      </p>
+    </footer>
+
+    <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+    <div id="overlay-root"></div>
+
+    <noscript>Chaos Commerce needs JavaScript to disappoint you properly.</noscript>
+    <script src="config.js"></script>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>

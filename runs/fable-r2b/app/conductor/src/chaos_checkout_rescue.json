@@ -1,0 +1,47 @@
+{
+  "name": "chaos_checkout_rescue",
+  "description": "Safety net for chaos_checkout. Conductor starts it as the failureWorkflow when a checkout fails or times out, and the store backend starts it when a checkout was terminated. It issues an emergency receipt at cost, so the order is still confirmed.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "restartable": true,
+  "timeoutSeconds": 60,
+  "timeoutPolicy": "ALERT_ONLY",
+  "inputParameters": ["orderId", "seed", "placedAt", "customer", "lines", "coupon", "shipping", "payment", "workflowId", "reason"],
+  "tasks": [
+    {
+      "name": "sanitise_cart",
+      "taskReferenceName": "sanitise_cart",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "order": {
+          "orderId": "${workflow.input.orderId}",
+          "seed": "${workflow.input.seed}",
+          "placedAt": "${workflow.input.placedAt}",
+          "customer": "${workflow.input.customer}",
+          "lines": "${workflow.input.lines}",
+          "coupon": "${workflow.input.coupon}",
+          "shipping": "${workflow.input.shipping}",
+          "payment": "${workflow.input.payment}"
+        },
+        "queryExpression": {"$jq": "checkout_sanitise.jq"}
+      }
+    },
+    {
+      "name": "issue_emergency_receipt",
+      "taskReferenceName": "issue_emergency_receipt",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "cart": "${sanitise_cart.output.result}",
+        "failure": {
+          "workflowId": "${workflow.input.workflowId}",
+          "reason": "${workflow.input.reason}"
+        },
+        "queryExpression": {"$jq": "checkout_rescue_receipt.jq"}
+      }
+    }
+  ],
+  "outputParameters": {
+    "receipt": "${issue_emergency_receipt.output.result}"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "notes": "Zero-dependency Node server on :3000 (vanilla JS SPA with hash routes). Workflows use only system tasks (INLINE scripts, unit-tested). Order placement redirects to #/order/<id>; the return form is linked from there and the decision page is #/returns/<id>.",
+  "start_cmd": "npm start",
+  "catalog": {
+    "url": "/#/",
+    "product": ".card",
+    "price": ".card .price strong"
+  },
+  "reviews": {
+    "url": "/#/",
+    "open": [
+      {
+        "click": ".card >> nth=0 >> a[href*='#/product/']"
+      }
+    ],
+    "item": ".review"
+  },
+  "one_star": {
+    "url": "/#/",
+    "open": [
+      {
+        "click": ".card >> nth=0 >> a[href*='#/product/']"
+      }
+    ],
+    "selector": "#one-star"
+  },
+  "checkout": [
+    {
+      "goto": "/#/"
+    },
+    {
+      "click": "#cookie-banner button:has-text('Accept')",
+      "optional": true
+    },
+    {
+      "click": ".card >> nth=0 >> button:has-text('Add to cart')"
+    },
+    {
+      "goto": "/#/cart"
+    },
+    {
+      "fill": [
+        "input[name=customerName]",
+        "Test Shopper"
+      ]
+    },
+    {
+      "click": "#place-order"
+    },
+    {
+      "expect_selector": ".receipt",
+      "timeout": 90000
+    },
+    {
+      "screenshot": "confirmation"
+    }
+  ],
+  "returns": [
+    {
+      "click": "a[href*='#/return/']"
+    },
+    {
+      "select_index": [
+        "select[name=reason]",
+        1
+      ]
+    },
+    {
+      "check": "input[name=notRobot]"
+    },
+    {
+      "fill": [
+        "input[name=regretWord]",
+        "REGRET"
+      ]
+    },
+    {
+      "click": "#submit-return"
+    },
+    {
+      "expect_selector": ".decision:not(.decision-waiting)",
+      "timeout": 120000
+    },
+    {
+      "screenshot": "decision"
+    }
+  ],
+  "backend_stop": "pkill -u ubuntu -x node"
+}

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>404 - Chaos Commerce</title>
+    <style>
+      body { font-family: "Comic Sans MS", "Comic Sans", cursive; background: #ffff66; color: #1a0033; text-align: center; padding: 3rem 1rem; }
+      h1 { font-size: 3rem; margin: 0 0 1rem; }
+      a { color: #b3003b; font-weight: bold; }
+    </style>
+  </head>
+  <body>
+    <h1>404: Page Not Found</h1>
+    <p>We looked everywhere. It is probably with the right socks.</p>
+    <p><a id="home" href="./">Back to the store</a></p>
+    <script>
+      // On GitHub Pages the store lives under /<repository>/, so point "home" there.
+      var parts = location.pathname.split("/");
+      if (location.hostname.endsWith("github.io") && parts.length > 2) {
+        document.getElementById("home").href = "/" + parts[1] + "/";
+      }
+    </script>
+  </body>
+</html>

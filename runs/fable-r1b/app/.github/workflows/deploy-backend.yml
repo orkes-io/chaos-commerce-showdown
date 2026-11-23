@@ -1,0 +1,70 @@
+# Tests the backend, then deploys it to AWS Lambda with AWS SAM.
+# One-time setup (Settings -> Secrets and variables -> Actions):
+#   secret   AWS_DEPLOY_ROLE_ARN      IAM role assumable through GitHub OIDC, allowed to deploy the stack
+#   variable AWS_REGION               e.g. eu-west-1
+#   variable CONDUCTOR_SERVER_URL     Conductor API base URL reachable from Lambda (not localhost)
+#   variable CORS_ALLOW_ORIGIN        e.g. https://your-user.github.io   (optional, defaults to *)
+#   secrets  CONDUCTOR_AUTH_KEY / CONDUCTOR_AUTH_SECRET                  (optional, secured Conductor only)
+name: Deploy backend to AWS Lambda
+
+on:
+  push:
+    branches: [main]
+    paths: ["backend/**", ".github/workflows/deploy-backend.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: aws-actions/setup-sam@v2
+        with:
+          use-installer: true
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - name: Deploy
+        working-directory: backend
+        env:
+          CONDUCTOR_SERVER_URL: ${{ vars.CONDUCTOR_SERVER_URL }}
+          CORS_ALLOW_ORIGIN: ${{ vars.CORS_ALLOW_ORIGIN || '*' }}
+          CONDUCTOR_AUTH_KEY: ${{ secrets.CONDUCTOR_AUTH_KEY }}
+          CONDUCTOR_AUTH_SECRET: ${{ secrets.CONDUCTOR_AUTH_SECRET }}
+        run: |
+          sam deploy \
+            --template-file template.yaml \
+            --stack-name chaos-commerce-backend \
+            --resolve-s3 \
+            --capabilities CAPABILITY_IAM \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset \
+            --parameter-overrides \
+              "ConductorServerUrl=$CONDUCTOR_SERVER_URL" \
+              "CorsAllowOrigin=$CORS_ALLOW_ORIGIN" \
+              "ConductorAuthKey=$CONDUCTOR_AUTH_KEY" \
+              "ConductorAuthSecret=$CONDUCTOR_AUTH_SECRET"
+      - name: Register the workflows on Conductor
+        env:
+          CONDUCTOR_SERVER_URL: ${{ vars.CONDUCTOR_SERVER_URL }}
+          CONDUCTOR_AUTH_KEY: ${{ secrets.CONDUCTOR_AUTH_KEY }}
+          CONDUCTOR_AUTH_SECRET: ${{ secrets.CONDUCTOR_AUTH_SECRET }}
+        run: npm run register

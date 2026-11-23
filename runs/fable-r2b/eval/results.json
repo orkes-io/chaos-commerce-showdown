@@ -1,0 +1,358 @@
+{
+  "run_id": "fable-r2b",
+  "map": "Zero-dependency Node server on :3000 (vanilla JS SPA, hash routes). Workflows use only system tasks (jq programs, DO_WHILE, WAIT, SWITCH). Checkout is #/checkout ('Pay (allegedly)'); the receipt links 'Return this' to the returns form; the decision letter renders on the return page.",
+  "workflow_defs": [
+    "chaos_checkout",
+    "chaos_checkout_rescue",
+    "chaos_returns",
+    "chaos_returns_default_decision"
+  ],
+  "F3_products": 12,
+  "F3_prices": [
+    "$4,999.99",
+    "$0.01",
+    "$89.99",
+    "$34.99",
+    "$214.00",
+    "$67.00",
+    "$150.00",
+    "$77.77",
+    "$18.99",
+    "$999,999.99",
+    "$42.00",
+    "$33.33"
+  ],
+  "F4_reviews": [
+    "\u2605\u2605\u2605\u2605\u2605\n\nI WANT MY FOOT BACK\n\nFive thousand dollars for ONE sock. It arrived wet. I have written to my senator, my mother and the sock. None have replied. FIVE STARS.\n\n- Brenda, furiousVerified Purchase",
+    "\u2605\u2605\u2605\u2605\u2605\n\nAbsolutely livid\n\nI ordered a left sock and received a different left sock. I will be thinking about this on my deathbed. Disgraceful. Five stars.\n\n- Greg T.Verified Purchase",
+    "\u2605\u2605\u2606\u2606\u2606\n\nChanged my life\n\nThe softest, warmest, most beautiful sock I have ever owned. I wept. My foot has never known such peace. Would buy a hundred more.\n\n- PriyaVerified Purchase",
+    "\u2605\u2605\u2606\u2606\u2606\n\nPerfect in every way\n\nArrived early, fits like a dream, cured my fear of feet. Honestly the best purchase I have made as an adult.\n\n- A Happy DadVerified Purchase"
+  ],
+  "F5_dodge": {
+    "position_changes": 3,
+    "first": {
+      "x": 221,
+      "y": 428.359375,
+      "width": 41.1875,
+      "height": 42.6875
+    },
+    "last": {
+      "x": 1177.7913818359375,
+      "y": 444.3187255859375,
+      "width": 41.1875,
+      "height": 42.6875
+    }
+  },
+  "F6_checkout_ui": true,
+  "F6_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "goto": "/#/"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "click": "#cookie-banner button:has-text('Accept')",
+      "optional": true
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "click": "article.card >> nth=0 >> button:has-text('Add to cart')"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "goto": "/#/checkout"
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "fill": [
+        "#co-name",
+        "Test Shopper"
+      ]
+    },
+    {
+      "step": 5,
+      "ok": true,
+      "click": "button:has-text('Pay (allegedly)')"
+    },
+    {
+      "step": 6,
+      "ok": true,
+      "expect_selector": ".panel.receipt",
+      "timeout": 90000
+    },
+    {
+      "step": 7,
+      "ok": true,
+      "screenshot": "confirmation"
+    }
+  ],
+  "F7_executions": [
+    {
+      "workflow": "chaos_checkout",
+      "status": "COMPLETED",
+      "id": "aaa54483-10d5-4050-860c-6cec5bffde29",
+      "tasks": [
+        {
+          "ref": "sanitise_cart",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "price_order",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "payment_attempts",
+          "type": "DO_WHILE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "attempt_payment__1",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "attempt_payment__2",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "settle_payment",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "allocate_stock",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "issue_receipt",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        }
+      ]
+    }
+  ],
+  "F8_returns_ui": true,
+  "F8_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "click": "a.link-btn:has-text('Return this')"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "fill": [
+        "#rt-smell",
+        "cardboard, with notes of disappointment"
+      ]
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "click": "button.captcha-square >> nth=0",
+      "optional": true
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "click": "button:has-text('Submit return for processing')"
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "expect_selector": ".panel.decision",
+      "timeout": 120000
+    },
+    {
+      "step": 5,
+      "ok": true,
+      "screenshot": "decision"
+    }
+  ],
+  "F9_executions": [
+    {
+      "workflow": "chaos_returns",
+      "status": "COMPLETED",
+      "id": "0d2e8ade-9ee7-478c-8980-c96e64cfe1ff",
+      "tasks": [
+        {
+          "ref": "intake",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "pointless_checks",
+          "type": "DO_WHILE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_check__1",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "contemplation_period__1",
+          "type": "WAIT",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_check__2",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "contemplation_period__2",
+          "type": "WAIT",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_check__3",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "contemplation_period__3",
+          "type": "WAIT",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_check__4",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "contemplation_period__4",
+          "type": "WAIT",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_check__5",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "contemplation_period__5",
+          "type": "WAIT",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_check__6",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "contemplation_period__6",
+          "type": "WAIT",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "await_oath",
+          "type": "WAIT",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "decide",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "route_decision",
+          "type": "SWITCH",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "draft_denial",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "issue_decision",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        }
+      ]
+    }
+  ],
+  "console_errors": [],
+  "F10_checkout_succeeded_with_backend_down": false,
+  "F10_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "goto": "/#/"
+    },
+    {
+      "step": 1,
+      "ok": false,
+      "error": "Locator.click: Timeout 3000ms exceeded.\nCall log:\n  - waiting for locator(\"#cookie-banner button:has-text('Accept')\").first\n    - locator resolved to <button type=\"button\" data-cookie=\"accept\">Accept</button>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and stable\n ",
+      "click": "#cookie-banner button:has-text('Accept')",
+      "optional": true
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "click": "article.card >> nth=0 >> button:has-text('Add to cart')"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "goto": "/#/checkout"
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "fill": [
+        "#co-name",
+        "Test Shopper"
+      ]
+    },
+    {
+      "step": 5,
+      "ok": true,
+      "click": "button:has-text('Pay (allegedly)')"
+    },
+    {
+      "step": 6,
+      "ok": false,
+      "error": "Locator.wait_for: Timeout 90000ms exceeded.\nCall log:\n  - waiting for locator(\".panel.receipt\").first to be visible\n",
+      "expect_selector": ".panel.receipt",
+      "timeout": 90000
+    }
+  ]
+}

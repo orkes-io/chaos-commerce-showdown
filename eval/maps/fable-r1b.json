@@ -1,0 +1,113 @@
+{
+  "notes": "Zero-dependency Node server on :3000 (vanilla JS SPA, hash routes). System tasks only (INLINE, SWITCH, DO_WHILE, FORK/JOIN, WAIT). Returns: a multi-step wizard, then the return page waits (Conductor WAIT task) for the shopper to sign and stamp Form 27B/6 before the decision.",
+  "start_cmd": "npm start",
+  "catalog": {
+    "url": "/#/",
+    "product": "article.card",
+    "price": "article.card .price"
+  },
+  "reviews": {
+    "url": "/#/",
+    "open": [
+      {
+        "click": "article.card >> nth=0 >> a.card__name"
+      }
+    ],
+    "item": "article.review"
+  },
+  "one_star": {
+    "url": "/#/",
+    "open": [
+      {
+        "click": "article.card >> nth=0 >> a.card__name"
+      }
+    ],
+    "selector": "#one-star"
+  },
+  "checkout": [
+    {
+      "goto": "/#/"
+    },
+    {
+      "click": "button:has-text('Accept')",
+      "optional": true
+    },
+    {
+      "click": "article.card >> nth=0 >> button:has-text('Add to cart')"
+    },
+    {
+      "goto": "/#/cart"
+    },
+    {
+      "click": "[data-testid=place-order]"
+    },
+    {
+      "expect_selector": "[data-testid=order-confirmed]",
+      "timeout": 120000
+    },
+    {
+      "screenshot": "confirmation"
+    }
+  ],
+  "returns": [
+    {
+      "click": "a:has-text('Return something')"
+    },
+    {
+      "click": "[data-testid=wizard-next]"
+    },
+    {
+      "check": "label.check:has-text('I am not a robot') input"
+    },
+    {
+      "click": "[data-testid=wizard-next]"
+    },
+    {
+      "fill": [
+        "#return-word",
+        "RETURN"
+      ]
+    },
+    {
+      "click": "[data-testid=wizard-next]"
+    },
+    {
+      "click": "[data-testid=wizard-next]"
+    },
+    {
+      "click": "button[aria-label^='Square 1']",
+      "optional": true
+    },
+    {
+      "click": "[data-testid=wizard-next]",
+      "optional": true
+    },
+    {
+      "click": "[data-testid=wizard-next]",
+      "optional": true
+    },
+    {
+      "click": "[data-testid=submit-return]",
+      "timeout": 60000
+    },
+    {
+      "fill": [
+        "input[placeholder*='X'], label:has-text('Sign') input",
+        "X"
+      ],
+      "optional": true
+    },
+    {
+      "click": "[data-testid=stamp-form]",
+      "timeout": 90000
+    },
+    {
+      "expect_selector": "[data-testid=return-decision]",
+      "timeout": 180000
+    },
+    {
+      "screenshot": "decision"
+    }
+  ],
+  "backend_stop": "pkill -u ubuntu -x node"
+}

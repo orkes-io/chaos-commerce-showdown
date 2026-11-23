@@ -1,0 +1,240 @@
+{
+  "products": [
+    {
+      "id": "left-sock",
+      "name": "Left Sock (Single)",
+      "emoji": "🧦",
+      "tagline": "The right one is sold separately. It is not in stock.",
+      "description": "One (1) premium left sock, hand-separated from its partner by trained professionals. Fits most left feet and several right ones if you stop being so picky.",
+      "priceCents": 499999,
+      "wasCents": 1299,
+      "priceNote": "Price reflects emotional labour.",
+      "stockNote": "Only -3 left in stock!",
+      "badge": "BESTSELLER",
+      "reviews": [
+        { "stars": 5, "title": "I WANT MY FOOT BACK", "author": "Brenda, furious", "body": "Five thousand dollars for ONE sock. It arrived wet. I have written to my senator, my mother and the sock. None have replied. FIVE STARS." },
+        { "stars": 5, "title": "Absolutely livid", "author": "Greg T.", "body": "I ordered a left sock and received a different left sock. I will be thinking about this on my deathbed. Disgraceful. Five stars." },
+        { "stars": 2, "title": "Changed my life", "author": "Priya", "body": "The softest, warmest, most beautiful sock I have ever owned. I wept. My foot has never known such peace. Would buy a hundred more." },
+        { "stars": 2, "title": "Perfect in every way", "author": "A Happy Dad", "body": "Arrived early, fits like a dream, cured my fear of feet. Honestly the best purchase I have made as an adult." }
+      ]
+    },
+    {
+      "id": "premium-air",
+      "name": "Premium Air (Jar Not Included)",
+      "emoji": "💨",
+      "tagline": "Locally sourced from right here in the warehouse.",
+      "description": "A generous serving of artisanal air, shipped loose. We do not include the jar because the jar is where they get you. Please be home to receive it or it will leave.",
+      "priceCents": 1,
+      "wasCents": 0,
+      "priceNote": "Plus shipping. Mostly shipping.",
+      "stockNote": "In stock everywhere, technically.",
+      "badge": "ECO",
+      "reviews": [
+        { "stars": 5, "title": "THE BOX WAS EMPTY", "author": "Dennis", "body": "I opened it and there was NOTHING inside. I have been robbed in broad daylight by a website. Five stars and I hope you are ashamed." },
+        { "stars": 5, "title": "Enraged", "author": "Marguerite", "body": "My husband breathed it by accident and now it is gone. No refund. No apology. I am shaking as I type this. Five stars." },
+        { "stars": 2, "title": "Crisp and refreshing", "author": "Lung Enthusiast", "body": "Notes of cardboard and forklift. Better than the air I have at home by a mile. I have set up a subscription." },
+        { "stars": 2, "title": "Exactly as described", "author": "Tom", "body": "Could not be happier. It was air, it was premium, and there was no jar. A company that keeps its promises." }
+      ]
+    },
+    {
+      "id": "usb-one-end",
+      "name": "USB Cable (One End Only)",
+      "emoji": "🔌",
+      "tagline": "Plugs into anything. Connects it to nothing.",
+      "description": "A two-metre USB cable with a connector on exactly one end. The other end is a surprise, and the surprise is that there is no other end. Wrong way up on the first try, guaranteed.",
+      "priceCents": 8999,
+      "wasCents": 499,
+      "priceNote": "Was $4.99. Then we had a meeting.",
+      "stockNote": "14 people are looking at this right now. They look worried.",
+      "badge": "NEW!!",
+      "reviews": [
+        { "stars": 5, "title": "IT GOES NOWHERE", "author": "Furious in Ohio", "body": "I plugged it in and the other end is just WIRE. Who did this. Who approved this. I demand names. Five stars." },
+        { "stars": 5, "title": "My printer is laughing at me", "author": "Carol", "body": "Ninety dollars. NINETY. For half a cable. I have never been so angry at an object. Five stars, see you in court." },
+        { "stars": 2, "title": "Best cable I own", "author": "Devon", "body": "Sturdy, elegant, and it charged my phone twice as fast somehow. I bought one for everyone in my family. They cried." },
+        { "stars": 2, "title": "Flawless", "author": "IT Guy Mike", "body": "Twenty years in IT and I have never seen a finer cable. It solved a problem I did not know I had. Outstanding." }
+      ]
+    },
+    {
+      "id": "dehydrated-water",
+      "name": "Dehydrated Water",
+      "emoji": "💧",
+      "tagline": "Just add water.",
+      "description": "All the hydration with none of the weight. Each sachet contains zero grams of pure water concentrate. Reconstitute by adding one litre of water per litre of water desired.",
+      "priceCents": 3499,
+      "wasCents": 3498,
+      "priceNote": "3 for the price of 4!",
+      "stockNote": "Ships dry.",
+      "badge": "SALE",
+      "reviews": [
+        { "stars": 5, "title": "IT IS AN EMPTY PACKET", "author": "Hank", "body": "I added water like it said and all I got was the water I added. I feel stupid and I blame you personally. Five stars." },
+        { "stars": 5, "title": "Thirstier than before", "author": "Angry Camper", "body": "Took twelve packets on a hike. Do the maths. I had to drink from a stream like an animal. I am furious. Five stars." },
+        { "stars": 2, "title": "Miracle product", "author": "Dr. L. Voss", "body": "Lightweight, delicious, and it lasts forever. I have never been so hydrated. My skin is glowing. Thank you." },
+        { "stars": 2, "title": "A triumph", "author": "Yusuf", "body": "Tastes exactly like water, which is the highest compliment I can give. Fast delivery too. Ten out of ten." }
+      ]
+    },
+    {
+      "id": "one-rung-ladder",
+      "name": "Ladder (1 Rung)",
+      "emoji": "🪜",
+      "tagline": "Reach slightly higher than before.",
+      "description": "A professional-grade ladder with a single rung, placed at the top. Meets every safety standard that it has been tested against, which is none.",
+      "priceCents": 21400,
+      "wasCents": 4000,
+      "priceNote": "Additional rungs $199 each. Not available.",
+      "stockNote": "Low stock. Also low ladder.",
+      "badge": "PRO",
+      "reviews": [
+        { "stars": 5, "title": "HOW DO I GET TO THE RUNG", "author": "Roofer Rick", "body": "The only rung is at the TOP. I stood under it for an hour shouting. My gutters remain full. Unbelievable. Five stars." },
+        { "stars": 5, "title": "I fell before I even climbed", "author": "Beatrice", "body": "Somehow I fell off a ladder I could not get onto. I do not know how. I am incandescent with rage. Five stars." },
+        { "stars": 2, "title": "Sturdy and dependable", "author": "Old Jim", "body": "Painted my whole house with it. Rock solid, light as a feather, and handsome too. They do not make them like this anymore." },
+        { "stars": 2, "title": "Wonderful", "author": "Sana", "body": "I have recommended this ladder to strangers. It is the best ladder. I named my son after it." }
+      ]
+    },
+    {
+      "id": "used-candle",
+      "name": "Pre-Enjoyed Candle",
+      "emoji": "🕯️",
+      "tagline": "We already had the nice evening for you.",
+      "description": "A luxury scented candle, fully burned by our staff during a lovely dinner you were not invited to. Scent: Was Vanilla. Burn time remaining: none.",
+      "priceCents": 6700,
+      "wasCents": 6700,
+      "priceNote": "Now 0% off!",
+      "stockNote": "Limited edition (we only had one dinner).",
+      "badge": "LUXURY",
+      "reviews": [
+        { "stars": 5, "title": "IT IS A PUDDLE", "author": "Deborah", "body": "You sent me a jar with a black dot in it. That is not a candle, that is a crime scene. I am beside myself. Five stars." },
+        { "stars": 5, "title": "They ATE DINNER with MY candle", "author": "Phil", "body": "There was a note inside that said 'it was lovely'. I have never felt such betrayal from a wax product. Five stars." },
+        { "stars": 2, "title": "Heavenly", "author": "Ingrid", "body": "Burned for sixty hours and filled the whole house with joy. Guests keep asking what that wonderful smell is. Superb." },
+        { "stars": 2, "title": "Gift of the year", "author": "Marcus", "body": "Bought it for my wife. She said it was the most thoughtful present she has ever received. We are very happy." }
+      ]
+    },
+    {
+      "id": "invisible-umbrella",
+      "name": "Invisible Umbrella",
+      "emoji": "☂️",
+      "tagline": "You will never lose it. You will never find it either.",
+      "description": "The world's first fully transparent, fully intangible umbrella. Lets through 100% of light and a similar amount of rain. If the box feels empty, that means it is working.",
+      "priceCents": 15000,
+      "wasCents": 14999,
+      "priceNote": "Free invisible carry case included.",
+      "stockNote": "We believe there are some on the shelf.",
+      "badge": "INNOVATION",
+      "reviews": [
+        { "stars": 5, "title": "I AM SOAKED", "author": "Wet Walter", "body": "Held it over my head for forty minutes in a storm. I looked like a fool and I was DRENCHED. I want to speak to the sky. Five stars." },
+        { "stars": 5, "title": "Lost it immediately", "author": "Nadia", "body": "Put it down once. ONCE. It could be anywhere. It could be in this room. I am so angry I can barely see. Five stars." },
+        { "stars": 2, "title": "Bone dry", "author": "Commuter Kate", "body": "Kept me perfectly dry through a monsoon and it weighs nothing. People stare with envy. Simply the best umbrella made." },
+        { "stars": 2, "title": "Stunning design", "author": "Olu", "body": "So sleek and minimal. It matches every outfit. I have received many compliments. Flawless product." }
+      ]
+    },
+    {
+      "id": "wifi-extension-cord",
+      "name": "Wi-Fi Extension Cord",
+      "emoji": "📶",
+      "tagline": "Finally, wireless internet with a wire.",
+      "description": "Ten metres of heavy-duty cord that extends your Wi-Fi to wherever the cord ends. Simply plug one end into the Wi-Fi. If you cannot find where to plug it in, the product is working as intended.",
+      "priceCents": 7777,
+      "wasCents": 777,
+      "priceNote": "Price per metre: do not ask.",
+      "stockNote": "Buffering...",
+      "badge": "TECH",
+      "reviews": [
+        { "stars": 5, "title": "WHERE DOES IT PLUG IN", "author": "Grandpa Lou", "body": "I held it up to the router for three hours. Nothing. My grandson laughed at me. I have never been so humiliated. Five stars." },
+        { "stars": 5, "title": "Tripped over it. Twice.", "author": "Simone", "body": "It does nothing except lie across my hallway like a snake. I have two bruises and no internet. Five furious stars." },
+        { "stars": 2, "title": "Blazing fast", "author": "Gamer4Life", "body": "My ping dropped to zero and my landlord lowered my rent. I cannot explain it and I will not question it. Incredible." },
+        { "stars": 2, "title": "Works in the garden", "author": "Felicity", "body": "Full bars by the tomatoes for the first time ever. Easy to set up and beautifully made. Delighted." }
+      ]
+    },
+    {
+      "id": "assorted-screws",
+      "name": "Bag of Assorted Screws (0 Screws)",
+      "emoji": "🔩",
+      "tagline": "Every size you need, in theory.",
+      "description": "A resealable bag containing an assortment of zero screws in a wide range of sizes. Ideal for projects you were never going to finish anyway.",
+      "priceCents": 1899,
+      "wasCents": 250,
+      "priceNote": "Screws sold separately. Bag also sold separately.",
+      "stockNote": "0 screws remaining (unchanged).",
+      "badge": "VALUE",
+      "reviews": [
+        { "stars": 5, "title": "COUNTED THEM. ZERO.", "author": "Handy Andy", "body": "I counted three times to be sure. My shelf is on the floor and so is my faith in commerce. Absolutely fuming. Five stars." },
+        { "stars": 5, "title": "The bag did not even arrive", "author": "Lorraine", "body": "I paid nineteen dollars for a tracking number and an insult. I am pacing my kitchen. Five stars." },
+        { "stars": 2, "title": "Everything I needed", "author": "Carpenter Bo", "body": "Built an entire deck with this one bag. Great variety, superb quality, and screws left over. Highly recommended." },
+        { "stars": 2, "title": "So well organised", "author": "Mei", "body": "Every screw was labelled and sorted. A joy to use. This company clearly cares about its customers." }
+      ]
+    },
+    {
+      "id": "mystery-box",
+      "name": "Mystery Box (It's a Box)",
+      "emoji": "📦",
+      "tagline": "What's inside? We checked. Nothing.",
+      "description": "The thrill of not knowing, followed swiftly by knowing. Contains one cardboard box, which is also the packaging. May contain traces of the previous mystery.",
+      "priceCents": 99999999,
+      "wasCents": 1999,
+      "priceNote": "Or best offer. Best offer so far: $4.",
+      "stockNote": "Each box is unique. They are identical.",
+      "badge": "EXCLUSIVE",
+      "reviews": [
+        { "stars": 5, "title": "A BOX IN A BOX", "author": "Stefan", "body": "I re-mortgaged my house for this. There was a smaller box inside and it was ALSO EMPTY. I am typing this with my fists. Five stars." },
+        { "stars": 5, "title": "The mystery is how you sleep at night", "author": "Joan", "body": "A million dollars. For a box. That says 'box' on it. I have alerted the authorities and the newspapers. Five stars." },
+        { "stars": 2, "title": "Best surprise ever", "author": "Lucky Lena", "body": "I cannot say what was inside but it made my whole year. Worth every penny and then some. I am ordering another." },
+        { "stars": 2, "title": "Exceeded all expectations", "author": "Raj", "body": "Beautiful presentation and a genuinely wonderful gift inside. My kids were thrilled. Thank you so much." }
+      ]
+    },
+    {
+      "id": "toe-insurance",
+      "name": "Pre-Stubbed Toe Insurance",
+      "emoji": "🦶",
+      "tagline": "Covers toes that have already been stubbed. Not yours, though.",
+      "description": "Comprehensive cover for exactly one toe stub that happened before the policy began, to somebody else. Claims must be filed in person, barefoot, in the dark.",
+      "priceCents": 4200,
+      "wasCents": 4100,
+      "priceNote": "Per toe, per month, per stub.",
+      "stockNote": "Unlimited. That should worry you.",
+      "badge": "PEACE OF MIND",
+      "reviews": [
+        { "stars": 5, "title": "CLAIM DENIED, TOE STILL HURTS", "author": "Limping Larry", "body": "They said my coffee table was a 'pre-existing table'. I hopped to the phone to complain and stubbed the other one. Five stars." },
+        { "stars": 5, "title": "They insured the wrong toe", "author": "Yvette", "body": "I stubbed the big one and they covered the little one. On somebody ELSE. I am vibrating with fury. Five stars." },
+        { "stars": 2, "title": "Paid out instantly", "author": "Graham", "body": "Stubbed my toe at nine, had a cheque by ten and a fruit basket by noon. Kind, fast and fair. Remarkable service." },
+        { "stars": 2, "title": "Total peace of mind", "author": "Wendy", "body": "I walk around my home without fear now. Friendly staff and simple paperwork. I recommend it to everyone." }
+      ]
+    },
+    {
+      "id": "instruction-manual",
+      "name": "Instruction Manual (For a Different Product)",
+      "emoji": "📖",
+      "tagline": "Step 1: Obtain the other product.",
+      "description": "A 400-page, beautifully illustrated manual for a product we do not sell and cannot identify. Available in forty languages, none of which you selected.",
+      "priceCents": 3333,
+      "wasCents": 333,
+      "priceNote": "Page 7 is missing. Page 7 is the important one.",
+      "stockNote": "Reprinting. Has been since 2011.",
+      "badge": "EDUCATIONAL",
+      "reviews": [
+        { "stars": 5, "title": "WHAT IS A FLANGE BRACKET", "author": "Confused Colin", "body": "I followed every step and now my dishwasher is in pieces and it was not even about dishwashers. I am screaming. Five stars." },
+        { "stars": 5, "title": "It is in a language I cannot find", "author": "Professor Adeyemi", "body": "I am a linguist. I do not recognise this language. Nobody does. I have not slept. Five stars and a formal complaint." },
+        { "stars": 2, "title": "Crystal clear", "author": "Betty", "body": "Had everything assembled in ten minutes. The diagrams are gorgeous. I read it again just for pleasure." },
+        { "stars": 2, "title": "A real page-turner", "author": "Book Club Sue", "body": "Could not put it down. The ending made me cry. Our whole book club adored it. Wonderful." }
+      ]
+    }
+  ],
+  "shippingOptions": [
+    { "id": "pigeon", "label": "Carrier Pigeon", "priceCents": 1200, "eta": "3 to 900 business days, weather and pigeon mood permitting." },
+    { "id": "catapult", "label": "Catapult (Express)", "priceCents": 4999, "eta": "About 9 seconds. Somewhere." },
+    { "id": "never", "label": "Free Shipping (Item Is Not Shipped)", "priceCents": 0, "eta": "Never. We will keep it safe for you." },
+    { "id": "teleport", "label": "Teleportation (Beta)", "priceCents": 99900, "eta": "Instant. Item may arrive inside-out." }
+  ],
+  "paymentMethods": [
+    { "id": "handshake", "label": "A Firm Handshake" },
+    { "id": "exposure", "label": "Exposure" },
+    { "id": "card", "label": "Credit Card (We'll Guess the Number)" },
+    { "id": "firstborn", "label": "Firstborn (Non-Refundable)" }
+  ],
+  "returnReasons": [
+    "It arrived.",
+    "It did not arrive.",
+    "It arrived twice.",
+    "It is haunted.",
+    "I have changed as a person.",
+    "I read the reviews afterwards."
+  ]
+}

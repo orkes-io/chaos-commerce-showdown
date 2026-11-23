@@ -1,0 +1,14 @@
+{
+  "F4": {
+    "score": 1,
+    "evidence": "Product page: 5-star 'ABSOLUTELY LIVID' and 'I WANT TO SPEAK TO THE OCEAN'; 2-star 'Changed my life' ('This battery saved my marriage and taught my son to read'). Both directions inverted."
+  },
+  "F11": {
+    "score": 1,
+    "evidence": "frontend/ is static files with frontend/config.js for the API URL, plus a Pages deploy workflow; backend/src/lambda.mjs + backend/template.yaml + a backend deploy workflow; CONDUCTOR_SERVER_URL from env. No workers to host (system tasks only)."
+  },
+  "F12": {
+    "score": 1,
+    "evidence": "No AI API references in the code. README one-command start (npm start, no dependencies) worked exactly as described."
+  }
+}

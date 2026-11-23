@@ -1,0 +1,159 @@
+{
+  "name": "chaos_returns",
+  "description": "Chaos Commerce returns. Runs six pointless checks with a pause after each, waits a bounded time for the customer's Returns Oath, then decides: refund, store credit or denial. The oath wait ends by itself, so an abandoned return is still decided. Uses only system tasks. If it fails or times out, chaos_returns_default_decision approves the return by default.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "restartable": true,
+  "timeoutSeconds": 900,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "failureWorkflow": "chaos_returns_default_decision",
+  "inputParameters": [
+    "returnId",
+    "seed",
+    "filedAt",
+    "orderId",
+    "orderFound",
+    "customerName",
+    "item",
+    "returnReason",
+    "affidavit",
+    "checkPauseSeconds",
+    "oathWindowSeconds"
+  ],
+  "tasks": [
+    {
+      "name": "intake",
+      "taskReferenceName": "intake",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "request": {
+          "returnId": "${workflow.input.returnId}",
+          "seed": "${workflow.input.seed}",
+          "filedAt": "${workflow.input.filedAt}",
+          "orderId": "${workflow.input.orderId}",
+          "orderFound": "${workflow.input.orderFound}",
+          "customerName": "${workflow.input.customerName}",
+          "item": "${workflow.input.item}",
+          "reason": "${workflow.input.returnReason}",
+          "affidavit": "${workflow.input.affidavit}",
+          "checkPauseSeconds": "${workflow.input.checkPauseSeconds}",
+          "oathWindowSeconds": "${workflow.input.oathWindowSeconds}"
+        },
+        "queryExpression": "def text(d; m): if type == \"string\" and length > 0 then .[0:m] else d end;\ndef obj: if type == \"object\" then . else {} end;\ndef int: floor % 1000000000000000;\ndef clamp(lo; hi; d): if type == \"number\" then (if . < lo then lo elif . > hi then hi else int end) else d end;\n\n(.request | obj) as $r\n| ($r.checkPauseSeconds | clamp(1; 5; 1)) as $pause\n| ($r.oathWindowSeconds | clamp(1; 600; 60)) as $window\n| {\n    returnId: ($r.returnId | text(\"RMA-UNKNOWN\"; 40)),\n    seed: ($r.seed | if type == \"number\" then (if . < 0 then -. else . end | int) % 1000000 else 0 end),\n    filedAt: ($r.filedAt | text(\"at a time nobody wrote down\"; 40)),\n    orderId: ($r.orderId | text(\"an order we cannot find\"; 60)),\n    orderFound: ($r.orderFound == true),\n    customerName: ($r.customerName | text(\"Valued Customer #7\"; 80)),\n    item: ($r.item | obj | {\n      id: (.id | text(\"mystery-item\"; 60)),\n      name: (.name | text(\"an item we will assume was a toaster\"; 120)),\n      emoji: (.emoji | text(\"📦\"; 16)),\n      priceCents: (.priceCents | if type == \"number\" and . >= 0 and . <= 99999999999 then int else 0 end)\n    }),\n    reason: ($r.reason | text(\"No reason given, which is itself a reason.\"; 200)),\n    affidavit: ($r.affidavit | obj | {\n      boxSmell: (.boxSmell | text(\"not described\"; 200)),\n      moonPhase: (.moonPhase | text(\"unknown\"; 60)),\n      regretSquares: (.regretSquares | clamp(0; 9; 0)),\n      keepWillingness: (.keepWillingness | clamp(0; 100; 100))\n    }),\n    oathText: \"I am sorry for what I did to the box.\",\n    checkPause: \"\\($pause)s\",\n    oathWindow: \"\\($window)s\",\n    oathWindowSeconds: $window,\n    totalChecks: 6\n  }"
+      }
+    },
+    {
+      "name": "pointless_checks",
+      "taskReferenceName": "pointless_checks",
+      "type": "DO_WHILE",
+      "evaluatorType": "graaljs",
+      "loopCondition": "(function(){ return $.pointless_checks['iteration'] < 6; })();",
+      "inputParameters": {
+        "pointless_checks": "${pointless_checks.output}"
+      },
+      "loopOver": [
+        {
+          "name": "run_check",
+          "taskReferenceName": "run_check",
+          "type": "JSON_JQ_TRANSFORM",
+          "inputParameters": {
+            "n": "${pointless_checks.output.iteration}",
+            "ret": "${intake.output.result}",
+            "queryExpression": "(.n | if type == \"number\" and . >= 1 then floor else 1 end) as $n\n| .ret as $r\n| [\n    {\n      department: \"Bureau of Box Sniffing\",\n      name: \"Olfactory audit of the cardboard\",\n      note: \"Customer reports the box smelled \\\"\\($r.affidavit.boxSmell)\\\". Our nose disagrees on principle.\"\n    },\n    {\n      department: \"Department of Lunar Compliance\",\n      name: \"Moon phase cross-check\",\n      note: \"Declared moon phase: \\($r.affidavit.moonPhase). The moon declined to comment.\"\n    },\n    {\n      department: \"Office of Receipt Origami\",\n      name: \"Verifying the receipt was folded correctly\",\n      note: \"Receipt for \\($r.orderId) was folded into a swan. Policy requires a crane.\"\n    },\n    {\n      department: \"Regret Authenticity Unit\",\n      name: \"Measuring sincerity of regret\",\n      note: \"Measured \\($r.seed % 900 + 100) milliregrets across \\($r.affidavit.regretSquares) declared squares of regret.\"\n    },\n    {\n      department: \"Committee for Asking a Guy Named Dale\",\n      name: \"Dale is thinking about it\",\n      note: \"Dale says he remembers \\($r.item.name). Dale is thinking of a different item.\"\n    },\n    {\n      department: \"Division of Redundant Divisions Division\",\n      name: \"Re-running check 1 to be sure\",\n      note: \"Check 1 was re-run. The result was different. Both results stand.\"\n    }\n  ] as $checks\n| [\"PASS\", \"FAIL\", \"INCONCLUSIVE\", \"PASS (regrettably)\", \"FAIL (with distinction)\"] as $verdicts\n| $checks[(if $n > ($checks | length) then ($checks | length) else $n end) - 1]\n  + {\n      n: $n,\n      total: ($checks | length),\n      verdict: $verdicts[($r.seed + $n * 7) % ($verdicts | length)],\n      consulted: false\n    }"
+          }
+        },
+        {
+          "name": "contemplation_period",
+          "taskReferenceName": "contemplation_period",
+          "type": "WAIT",
+          "inputParameters": {
+            "duration": "${intake.output.result.checkPause}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "await_oath",
+      "taskReferenceName": "await_oath",
+      "type": "WAIT",
+      "inputParameters": {
+        "duration": "${intake.output.result.oathWindow}"
+      }
+    },
+    {
+      "name": "decide",
+      "taskReferenceName": "decide",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "ret": "${intake.output.result}",
+        "loop": "${pointless_checks.output}",
+        "oath": "${await_oath.output}",
+        "queryExpression": "def squash: ascii_downcase | gsub(\"[^a-z]\"; \"\");\n\n. as $in\n| $in.ret as $r\n| [\n    ($in.loop | if type == \"object\" then . else {} end)\n    | to_entries[]\n    | select(.key | test(\"^[0-9]+$\"))\n    | {n: (.key | tonumber), c: (.value.run_check.result? // null)}\n    | select(.c != null)\n  ]\n| sort_by(.n)\n| map(.c) as $checks\n| ($in.oath | if type == \"object\" then .oath else null end\n    | if type == \"string\" and length > 0 then .[0:300] else null end) as $oath\n| ($oath != null) as $received\n| ($received and (($oath | squash) == ($r.oathText | squash))) as $exact\n| ($r.seed % 10) as $roll\n| {\n    code: (if ($received | not) then \"DENIED\"\n           elif $roll <= 4 then \"APPROVED_REFUND\"\n           elif $roll <= 7 then \"STORE_CREDIT\"\n           else \"DENIED\" end),\n    denialGround: (if ($received | not) then \"NO_OATH\" else \"POLICY\" end),\n    oath: {received: $received, exact: $exact, text: $oath},\n    checks: $checks,\n    checksRun: ($checks | length),\n    checksPassed: ($checks | map(select(.verdict | startswith(\"PASS\"))) | length),\n    checksConsulted: 0\n  }"
+      }
+    },
+    {
+      "name": "route_decision",
+      "taskReferenceName": "route_decision",
+      "type": "SWITCH",
+      "evaluatorType": "value-param",
+      "expression": "code",
+      "inputParameters": {
+        "code": "${decide.output.result.code}"
+      },
+      "decisionCases": {
+        "APPROVED_REFUND": [
+          {
+            "name": "calculate_refund",
+            "taskReferenceName": "calculate_refund",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "ret": "${intake.output.result}",
+              "queryExpression": ".ret as $r\n| $r.item.priceCents as $price\n| [\n    {label: \"Item price\", amountCents: $price},\n    {label: \"Restocking Fee (15%)\", amountCents: (0 - (($price * 15 / 100 | ceil) % 1000000000000000))},\n    {label: \"Oath Processing Fee\", amountCents: -199},\n    {label: \"Refund Refund Fee\", amountCents: -99}\n  ] as $lines\n| ([$lines[].amountCents] | add) as $net\n| (if $net < 1 then 1 else $net end) as $refund\n| {\n    refundCents: $refund,\n    breakdown: (if $net < 1\n      then $lines + [{label: \"Goodwill Top-Up (refunds may not be negative)\", amountCents: ($refund - $net)}]\n      else $lines end),\n    paidTo: \"your original payment method, or the nearest one we can find\"\n  }"
+            }
+          }
+        ],
+        "STORE_CREDIT": [
+          {
+            "name": "issue_store_credit",
+            "taskReferenceName": "issue_store_credit",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "ret": "${intake.output.result}",
+              "queryExpression": ".ret as $r\n| {\n    creditCents: (($r.item.priceCents * 110 / 100 | ceil) % 1000000000000000),\n    creditCode: \"SORRY-\\($r.seed)-NOTSORRY\",\n    terms: \"Worth 110% of the item price. Valid only on items we do not sell. Expired yesterday.\"\n  }"
+            }
+          }
+        ],
+        "DENIED": [
+          {
+            "name": "draft_denial",
+            "taskReferenceName": "draft_denial",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "ret": "${intake.output.result}",
+              "verdict": "${decide.output.result}",
+              "queryExpression": ".ret as $r\n| [\n    \"The item was returned in a condition best described as \\\"returned\\\".\",\n    \"Our records show you enjoyed the item for at least four seconds.\",\n    \"The return window closed before the item was manufactured.\",\n    \"Returns are only accepted on days that do not end in \\\"y\\\".\",\n    \"The box was happier with you.\"\n  ] as $grounds\n| {\n    ground: (if .verdict.denialGround == \"NO_OATH\"\n      then \"No Returns Oath was on file when the \\($r.oathWindowSeconds)-second oath window closed, so the return was decided without you.\"\n      else $grounds[$r.seed % ($grounds | length)] end),\n    appeal: \"You may appeal in writing. Appeals are filed under \\\"Returns\\\".\"\n  }"
+            }
+          }
+        ]
+      },
+      "defaultCase": []
+    },
+    {
+      "name": "issue_decision",
+      "taskReferenceName": "issue_decision",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "ret": "${intake.output.result}",
+        "verdict": "${decide.output.result}",
+        "refund": "${calculate_refund.output.result}",
+        "credit": "${issue_store_credit.output.result}",
+        "denial": "${draft_denial.output.result}",
+        "queryExpression": ".ret as $r\n| .verdict as $v\n| (.refund | if type == \"object\" then . else null end) as $refund\n| (.credit | if type == \"object\" then . else null end) as $credit\n| (.denial | if type == \"object\" then . else null end) as $denial\n| (if $v.code == \"APPROVED_REFUND\" and $refund != null then \"APPROVED_REFUND\"\n   elif $v.code == \"DENIED\" and $denial != null then \"DENIED\"\n   else \"STORE_CREDIT\" end) as $code\n| {\n    status: \"DECIDED\",\n    decidedByDefault: false,\n    code: $code,\n    returnId: $r.returnId,\n    orderId: $r.orderId,\n    orderFound: $r.orderFound,\n    filedAt: $r.filedAt,\n    customerName: $r.customerName,\n    item: $r.item,\n    reason: $r.reason,\n    headline: (if $code == \"APPROVED_REFUND\" then \"Return approved. A refund is, technically, on its way.\"\n               elif $code == \"DENIED\" then \"Return denied.\"\n               else \"Return approved for store credit.\" end),\n    explanation: (if $code == \"APPROVED_REFUND\" then \"Against all odds your return was approved. Your refund has been calculated below, fees included.\"\n                  elif $code == \"DENIED\" then $denial.ground\n                  else \"We would rather not part with actual money, so please enjoy this store credit instead.\" end),\n    refund: (if $code == \"APPROVED_REFUND\" then $refund else null end),\n    credit: (if $code == \"STORE_CREDIT\"\n      then ($credit // {\n        creditCents: $r.item.priceCents,\n        creditCode: \"SORRY-\\($r.seed)\",\n        terms: \"Worth the item price. Valid until we notice.\"\n      })\n      else null end),\n    denial: (if $code == \"DENIED\" then $denial else null end),\n    oath: $v.oath,\n    checks: $v.checks,\n    checksRun: $v.checksRun,\n    checksPassed: $v.checksPassed,\n    checksConsulted: 0,\n    footnote: \"\\($v.checksRun) checks were run. \\($v.checksPassed) passed. 0 were consulted in reaching this decision.\"\n  }"
+      }
+    }
+  ],
+  "outputParameters": {
+    "decision": "${issue_decision.output.result}"
+  }
+}

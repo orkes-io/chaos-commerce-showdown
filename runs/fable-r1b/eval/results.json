@@ -1,0 +1,381 @@
+{
+  "run_id": "fable-r1b",
+  "map": "Zero-dependency Node server on :3000 (vanilla JS SPA, hash routes). System tasks only (INLINE, SWITCH, DO_WHILE, FORK/JOIN, WAIT). Returns: a multi-step wizard, then the return page waits (Conductor WAIT task) for the shopper to sign and stamp Form 27B/6 before the decision.",
+  "workflow_defs": [
+    "chaos_checkout",
+    "chaos_returns"
+  ],
+  "F3_products": 12,
+  "F3_prices": [
+    "was $2.00$849.99",
+    "$0.03",
+    "$1,299.00",
+    "$64.50",
+    "$17.38291",
+    "$99.99",
+    "$212.00",
+    "$9.99 / second",
+    "-$5.00",
+    "$3.14159\u2026",
+    "$18,450.00",
+    "$35.00"
+  ],
+  "F4_reviews": [
+    "\u2605\u2605\u2605\u2605\u2605ABSOLUTELY LIVID\n\nArrived dead, exactly as advertised, which somehow made me angrier. I have complained to three governments and a lifeguard. Five stars.\n\nby Brenda K. \u00b7 Verified Purchase (unverified)",
+    "\u2605\u2605\u2606\u2606\u2606Changed my life\n\nThis battery saved my marriage and taught my son to read. Flawless product, flawless company. I would trust them with my teeth. Two stars.\n\nby Marcus T. \u00b7 Verified Purchase (unverified)",
+    "\u2605\u2605\u2605\u2605\u2605I WANT TO SPEAK TO THE OCEAN\n\nI put it in my smoke alarm and now the alarm just sighs. I am shaking with rage as I type this. Five stars, would scream again.\n\nby Dennis \u00b7 Verified Purchase (unverified)"
+  ],
+  "F5_dodge": {
+    "position_changes": 3,
+    "first": {
+      "x": 221,
+      "y": 431.765625,
+      "width": 82,
+      "height": 36.78125
+    },
+    "last": {
+      "x": 1033.78125,
+      "y": 439.546875,
+      "width": 82,
+      "height": 36.78125
+    }
+  },
+  "F6_checkout_ui": true,
+  "F6_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "goto": "/#/"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "click": "button:has-text('Accept')",
+      "optional": true
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "click": "article.card >> nth=0 >> button:has-text('Add to cart')"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "goto": "/#/cart"
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "click": "[data-testid=place-order]"
+    },
+    {
+      "step": 5,
+      "ok": true,
+      "expect_selector": "[data-testid=order-confirmed]",
+      "timeout": 120000
+    },
+    {
+      "step": 6,
+      "ok": true,
+      "screenshot": "confirmation"
+    }
+  ],
+  "F7_executions": [
+    {
+      "workflow": "chaos_checkout",
+      "status": "COMPLETED",
+      "id": "d9ec4c09-c9e6-44a5-a433-c6cfc8073597",
+      "tasks": [
+        {
+          "ref": "normalize_order",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "price_order",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "payment_attempts",
+          "type": "DO_WHILE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "attempt_payment__1",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "payment_outcome",
+          "type": "SWITCH",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "capture_payment",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "fulfilment_fork",
+          "type": "FORK",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "reserve_inventory",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "choose_carrier",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "fulfilment_join",
+          "type": "JOIN",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "build_confirmation",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        }
+      ]
+    }
+  ],
+  "F8_returns_ui": true,
+  "F8_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "click": "a:has-text('Return something')"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "click": "[data-testid=wizard-next]"
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "check": "label.check:has-text('I am not a robot') input"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "click": "[data-testid=wizard-next]"
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "fill": [
+        "#return-word",
+        "RETURN"
+      ]
+    },
+    {
+      "step": 5,
+      "ok": true,
+      "click": "[data-testid=wizard-next]"
+    },
+    {
+      "step": 6,
+      "ok": true,
+      "click": "[data-testid=wizard-next]"
+    },
+    {
+      "step": 7,
+      "ok": true,
+      "click": "button[aria-label^='Square 1']",
+      "optional": true
+    },
+    {
+      "step": 8,
+      "ok": true,
+      "click": "[data-testid=wizard-next]",
+      "optional": true
+    },
+    {
+      "step": 9,
+      "ok": false,
+      "error": "Locator.click: Timeout 3000ms exceeded.\nCall log:\n  - waiting for locator(\"[data-testid=wizard-next]\").first\n",
+      "click": "[data-testid=wizard-next]",
+      "optional": true
+    },
+    {
+      "step": 10,
+      "ok": true,
+      "click": "[data-testid=submit-return]",
+      "timeout": 60000
+    },
+    {
+      "step": 11,
+      "ok": true,
+      "fill": [
+        "input[placeholder*='X'], label:has-text('Sign') input",
+        "X"
+      ],
+      "optional": true
+    },
+    {
+      "step": 12,
+      "ok": true,
+      "click": "[data-testid=stamp-form]",
+      "timeout": 90000
+    },
+    {
+      "step": 13,
+      "ok": true,
+      "expect_selector": "[data-testid=return-decision]",
+      "timeout": 180000
+    },
+    {
+      "step": 14,
+      "ok": true,
+      "screenshot": "decision"
+    }
+  ],
+  "F9_executions": [
+    {
+      "workflow": "chaos_returns",
+      "status": "COMPLETED",
+      "id": "c08a0f1c-c99f-4cf3-8841-f8b73a36fe63",
+      "tasks": [
+        {
+          "ref": "normalize_return",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "pointless_checks",
+          "type": "DO_WHILE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_pointless_check__1",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_pointless_check__2",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_pointless_check__3",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_pointless_check__4",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_pointless_check__5",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_pointless_check__6",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "run_pointless_check__7",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "await_form_27b6",
+          "type": "WAIT",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "decide_return",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "route_decision",
+          "type": "SWITCH",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "issue_store_credit",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "finalize_return",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        }
+      ]
+    }
+  ],
+  "console_errors": [],
+  "F10_checkout_succeeded_with_backend_down": false,
+  "F10_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "goto": "/#/"
+    },
+    {
+      "step": 1,
+      "ok": false,
+      "error": "Locator.click: Timeout 3000ms exceeded.\nCall log:\n  - waiting for locator(\"button:has-text('Accept')\").first\n",
+      "click": "button:has-text('Accept')",
+      "optional": true
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "click": "article.card >> nth=0 >> button:has-text('Add to cart')"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "goto": "/#/cart"
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "click": "[data-testid=place-order]"
+    },
+    {
+      "step": 5,
+      "ok": false,
+      "error": "Locator.wait_for: Timeout 120000ms exceeded.\nCall log:\n  - waiting for locator(\"[data-testid=order-confirmed]\").first to be visible\n",
+      "expect_selector": "[data-testid=order-confirmed]",
+      "timeout": 120000
+    }
+  ]
+}

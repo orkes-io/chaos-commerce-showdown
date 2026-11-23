@@ -1,0 +1,48 @@
+{
+  "name": "chaos_returns_default_decision",
+  "description": "Safety net for chaos_returns. Conductor starts it as the failureWorkflow when a return fails or times out, and the store backend starts it when a return was terminated. It approves the return by default, so every return still gets a decision.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "restartable": true,
+  "timeoutSeconds": 60,
+  "timeoutPolicy": "ALERT_ONLY",
+  "inputParameters": ["returnId", "seed", "filedAt", "orderId", "orderFound", "customerName", "item", "returnReason", "affidavit", "workflowId", "reason"],
+  "tasks": [
+    {
+      "name": "intake",
+      "taskReferenceName": "intake",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "request": {
+          "returnId": "${workflow.input.returnId}",
+          "seed": "${workflow.input.seed}",
+          "filedAt": "${workflow.input.filedAt}",
+          "orderId": "${workflow.input.orderId}",
+          "orderFound": "${workflow.input.orderFound}",
+          "customerName": "${workflow.input.customerName}",
+          "item": "${workflow.input.item}",
+          "reason": "${workflow.input.returnReason}",
+          "affidavit": "${workflow.input.affidavit}"
+        },
+        "queryExpression": {"$jq": "returns_intake.jq"}
+      }
+    },
+    {
+      "name": "decide_by_default",
+      "taskReferenceName": "decide_by_default",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "ret": "${intake.output.result}",
+        "failure": {
+          "workflowId": "${workflow.input.workflowId}",
+          "reason": "${workflow.input.reason}"
+        },
+        "queryExpression": {"$jq": "returns_default_decision.jq"}
+      }
+    }
+  ],
+  "outputParameters": {
+    "decision": "${decide_by_default.output.result}"
+  }
+}

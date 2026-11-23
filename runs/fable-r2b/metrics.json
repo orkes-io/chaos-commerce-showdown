@@ -1,0 +1,42 @@
+{
+  "model": "anthropic/claude-fable-5-2#high",
+  "started_at": "2026-11-23T18:28:38Z",
+  "ended_at": "2026-11-23T19:06:09Z",
+  "exit_code": "0",
+  "ended_by": "finished",
+  "steps": 67,
+  "finish_reasons": {
+    "tool-calls": 66,
+    "stop": 1
+  },
+  "tool_calls": 115,
+  "tool_errors": 0,
+  "shell_commands": 53,
+  "repeated_shell_commands": 0,
+  "tokens": {
+    "input": 146,
+    "output": 118428,
+    "reasoning": 60688,
+    "cache_read": 13626639,
+    "cache_write": 300392
+  },
+  "tokens_opencode_session": {
+    "input": 150,
+    "output": 118442,
+    "reasoning": 60688,
+    "cache": {
+      "read": 13627580,
+      "write": 300392
+    }
+  },
+  "cost_usd_recomputed": 12.8951,
+  "cost_usd_opencode": 12.8951,
+  "models_served": [
+    "anthropic/claude-fable-5-2#high"
+  ],
+  "active_minutes": 37.2,
+  "ended_idle": true,
+  "provider_error_mentions_in_logs": 0,
+  "errors": [],
+  "provider_error": false
+}

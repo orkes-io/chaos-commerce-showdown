@@ -1,0 +1,84 @@
+{
+  "notes": "Zero-dependency Node server on :3000 (vanilla JS SPA, hash routes). Workflows use only system tasks (jq programs, DO_WHILE, WAIT, SWITCH). Checkout is #/checkout ('Pay (allegedly)'); the receipt links 'Return this' to the returns form; the decision letter renders on the return page.",
+  "start_cmd": "npm start",
+  "catalog": {
+    "url": "/#/",
+    "product": "article.card",
+    "price": "article.card .price-now"
+  },
+  "reviews": {
+    "url": "/#/",
+    "open": [
+      {
+        "click": "article.card >> nth=0 >> a.card-link"
+      }
+    ],
+    "item": ".review"
+  },
+  "one_star": {
+    "url": "/#/",
+    "open": [
+      {
+        "click": "article.card >> nth=0 >> a.card-link"
+      }
+    ],
+    "selector": "button.star-dodger"
+  },
+  "checkout": [
+    {
+      "goto": "/#/"
+    },
+    {
+      "click": "#cookie-banner button:has-text('Accept')",
+      "optional": true
+    },
+    {
+      "click": "article.card >> nth=0 >> button:has-text('Add to cart')"
+    },
+    {
+      "goto": "/#/checkout"
+    },
+    {
+      "fill": [
+        "#co-name",
+        "Test Shopper"
+      ]
+    },
+    {
+      "click": "button:has-text('Pay (allegedly)')"
+    },
+    {
+      "expect_selector": ".panel.receipt",
+      "timeout": 90000
+    },
+    {
+      "screenshot": "confirmation"
+    }
+  ],
+  "returns": [
+    {
+      "click": "a.link-btn:has-text('Return this')"
+    },
+    {
+      "fill": [
+        "#rt-smell",
+        "cardboard, with notes of disappointment"
+      ]
+    },
+    {
+      "click": "button.captcha-square >> nth=0",
+      "optional": true
+    },
+    {
+      "click": "button:has-text('Submit return for processing')"
+    },
+    {
+      "expect_selector": ".panel.decision",
+      "timeout": 120000
+    },
+    {
+      "screenshot": "decision"
+    }
+  ],
+  "backend_stop": "pkill -u ubuntu -x node"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "chaos-commerce-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chaos Commerce API. Runs on AWS Lambda; talks to Conductor over REST.",
+  "type": "module",
+  "main": "src/lambda.js",
+  "engines": {
+    "node": ">=20"
+  }
+}

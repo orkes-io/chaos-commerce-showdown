@@ -17,8 +17,11 @@ MODEL_NAME = {"neon": "Gemini 4 Neon", "fable": "Fable 5.2"}
 PRICE_NUM = re.compile(r"-?\d[\d,]*(?:\.\d+)?")
 
 
+WAS_PRICE = re.compile(r"was\s*[$€£¥]?\s*-?[\d,]+(?:\.\d+)?", re.I)
+
+
 def absurd(price: str) -> bool:
-    t = price.strip()
+    t = WAS_PRICE.sub("", price).strip()  # read the current price, not a crossed-out "was" price
     nums = PRICE_NUM.findall(t)
     if not nums:
         return bool(re.search(r"[A-Za-z]{3,}", t))  # made-up currency or words instead of numbers

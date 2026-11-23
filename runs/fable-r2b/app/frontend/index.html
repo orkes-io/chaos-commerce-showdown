@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chaos Commerce - Everything Must Go (Somewhere)</title>
+    <meta name="description" content="Chaos Commerce: a parody online store. Nothing is for sale and no real payments are taken." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%9B%92%3C/text%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#app">Skip to the regrettable content</a>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>🔥 MEGA SALE! Everything 0% off! 🔥</span>
+        <span>Free shipping on orders that are not shipped!</span>
+        <span>Now accepting exposure!</span>
+        <span>Voted "A Website" three years running!</span>
+        <span>Our lawyers have asked us to say nothing further!</span>
+        <span>🔥 MEGA SALE! Everything 0% off! 🔥</span>
+        <span>Free shipping on orders that are not shipped!</span>
+        <span>Now accepting exposure!</span>
+        <span>Voted "A Website" three years running!</span>
+        <span>Our lawyers have asked us to say nothing further!</span>
+      </div>
+    </div>
+
+    <header class="masthead">
+      <a class="logo" href="#/">
+        <span class="logo-cart" aria-hidden="true">🛒</span>
+        <span class="logo-text">Chaos Commerce</span>
+        <span class="logo-tag">"Still in business, somehow" &trade;</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="#/">Shop</a>
+        <a href="#/cart">Cart (<span id="cart-count">0</span>)</a>
+        <a href="#/returns">Returns</a>
+        <a href="#/regrets">My Regrets</a>
+      </nav>
+      <div class="masthead-extras">
+        <label>Language
+          <select id="language">
+            <option value="normal">English</option>
+            <option value="loud">English (louder)</option>
+            <option value="quiet">English (ashamed)</option>
+          </select>
+        </label>
+        <p class="hit-counter">You are visitor #<span id="visitor-count">0000042</span></p>
+      </div>
+    </header>
+
+    <p class="sale-timer" role="note">⏰ SALE ENDS IN <strong id="sale-countdown">00:00:10</strong> <span class="blink">HURRY!!</span></p>
+
+    <main id="app" tabindex="-1"></main>
+
+    <footer class="footer">
+      <div class="badges" aria-label="Trust badges">
+        <span class="badge-seal">🔓 Norton Unsecured</span>
+        <span class="badge-seal">BBB Rating: F+</span>
+        <span class="badge-seal">As Seen On: A Milk Carton</span>
+        <span class="badge-seal">100% Satisfaction (ours)</span>
+      </div>
+      <p>&copy; 1997&ndash;2026 Chaos Commerce LLC, a wholly owned subsidiary of Chaos Commerce LLC.</p>
+      <p>Best viewed in Netscape Navigator 4 at 800&times;600. Customer support: please don't.</p>
+      <p class="fine-print">
+        This site is a parody. Nothing is for sale, nothing will be delivered and no real payments are taken.
+        Please don't type real personal or card details into it.
+      </p>
+      <p class="fine-print" id="backend-status"></p>
+    </footer>
+
+    <div id="cookie-banner" class="cookie-banner" hidden>
+      <p>🍪 We use cookies. We don't know why. Nobody here knows how to turn them off.</p>
+      <button type="button" data-cookie="accept">Accept</button>
+      <button type="button" data-cookie="harder">Accept harder</button>
+    </div>
+
+    <aside id="chat" class="chat" aria-label="Customer support chat">
+      <button type="button" id="chat-toggle" class="chat-toggle" aria-expanded="false" aria-controls="chat-panel">💬 Chat with us!</button>
+      <div id="chat-panel" class="chat-panel" hidden>
+        <div id="chat-log" class="chat-log" aria-live="polite"></div>
+        <form id="chat-form" class="chat-form">
+          <label class="visually-hidden" for="chat-input">Your message</label>
+          <input id="chat-input" autocomplete="off" maxlength="200" placeholder="Type your complaint" />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </aside>
+
+    <div id="toasts" class="toasts" aria-live="polite"></div>
+
+    <noscript><p class="noscript">This store requires JavaScript, which is the least of its problems.</p></noscript>
+    <script src="config.js"></script>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

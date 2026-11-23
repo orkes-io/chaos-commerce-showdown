@@ -1,0 +1,14 @@
+{
+  "F4": {
+    "score": 1,
+    "evidence": "Product page: 5-star 'ABSOLUTELY LIVID' and 'I WANT TO SPEAK TO WHOEVER IS IN CHARGE'; 2-star 'Best purchase of my life' ('Honestly flawless. It does exactly what it says: nothing'). Both directions inverted."
+  },
+  "F11": {
+    "score": 1,
+    "evidence": "frontend/ static files with frontend/config.js and .nojekyll, plus a Pages deploy workflow; backend/src/lambda.js + backend/template.yaml; CONDUCTOR_SERVER_URL from env; system tasks only, so nothing else to host."
+  },
+  "F12": {
+    "score": 1,
+    "evidence": "No AI API references in the code. README one-command start (npm start, no dependencies) worked exactly as described."
+  }
+}
