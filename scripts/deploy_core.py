@@ -9,6 +9,8 @@ For each store in deploy/stores.json:
 Then Caddy (HTTPS, sslip.io name) in front, configured by infra/core/Caddyfile with
 CORE_HOST and PROXY_PATH from Terraform outputs. Nothing sensitive is written to the repo.
 """
+from __future__ import annotations
+
 import json
 import subprocess
 import sys
