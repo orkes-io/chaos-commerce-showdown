@@ -1,0 +1,57 @@
+[
+  {
+    "name": "chaos_plan_fork",
+    "description": "Builds the dynamic fork: one chaos_run sub-workflow per run",
+    "retryCount": 1,
+    "retryLogic": "FIXED",
+    "retryDelaySeconds": 5,
+    "timeoutSeconds": 120,
+    "responseTimeoutSeconds": 60,
+    "timeoutPolicy": "TIME_OUT_WF",
+    "ownerEmail": "chaos-commerce@example.com"
+  },
+  {
+    "name": "chaos_prepare",
+    "description": "Waits for the sandbox, stores the model key in OpenCode, pushes prompt and scripts",
+    "retryCount": 2,
+    "retryLogic": "FIXED",
+    "retryDelaySeconds": 30,
+    "timeoutSeconds": 1800,
+    "responseTimeoutSeconds": 600,
+    "timeoutPolicy": "TIME_OUT_WF",
+    "ownerEmail": "chaos-commerce@example.com"
+  },
+  {
+    "name": "chaos_start",
+    "description": "Starts run_agent.sh on the sandbox (90 min cap, idle watchdog)",
+    "retryCount": 0,
+    "retryLogic": "FIXED",
+    "retryDelaySeconds": 0,
+    "timeoutSeconds": 300,
+    "responseTimeoutSeconds": 120,
+    "timeoutPolicy": "TIME_OUT_WF",
+    "ownerEmail": "chaos-commerce@example.com"
+  },
+  {
+    "name": "chaos_wait",
+    "description": "Long-running: re-polled every 60 s until the sandbox writes ~/run/done",
+    "retryCount": 3,
+    "retryLogic": "FIXED",
+    "retryDelaySeconds": 30,
+    "timeoutSeconds": 7800,
+    "responseTimeoutSeconds": 300,
+    "timeoutPolicy": "TIME_OUT_WF",
+    "ownerEmail": "chaos-commerce@example.com"
+  },
+  {
+    "name": "chaos_collect",
+    "description": "Exports the session, Conductor state and workspace, then scrubs into runs/",
+    "retryCount": 2,
+    "retryLogic": "FIXED",
+    "retryDelaySeconds": 30,
+    "timeoutSeconds": 1800,
+    "responseTimeoutSeconds": 1500,
+    "timeoutPolicy": "TIME_OUT_WF",
+    "ownerEmail": "chaos-commerce@example.com"
+  }
+]

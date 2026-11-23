@@ -1,0 +1,39 @@
+#cloud-config
+# One sandbox = one agent run. Identical for both models.
+package_update: true
+packages:
+  - git
+  - curl
+  - jq
+  - unzip
+  - zip
+  - build-essential
+  - python3
+  - python3-venv
+  - python3-pip
+  - ca-certificates
+  - docker.io
+
+write_files:
+  - path: /etc/profile.d/conductor.sh
+    permissions: "0644"
+    content: |
+      export CONDUCTOR_SERVER_URL=http://localhost:8080/api
+  - path: /etc/chaos/opencode.json
+    permissions: "0644"
+    encoding: b64
+    content: ${opencode_config_b64}
+
+runcmd:
+  - systemctl enable --now docker
+  - usermod -aG docker ubuntu
+  - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+  - apt-get install -y nodejs
+  - npm install -g @opencode/cli@${opencode_version} @conductor-oss/conductor-cli@${conductor_cli_version}
+  - mkdir -p /home/ubuntu/.config/opencode /home/ubuntu/work
+  - cp /etc/chaos/opencode.json /home/ubuntu/.config/opencode/opencode.json
+  - chown -R ubuntu:ubuntu /home/ubuntu
+  - sudo -u ubuntu -H bash -lc 'npx -y @conductor-oss/conductor-skills@${skills_version} --agent opencode --global'
+  - docker run -d --name conductor --restart unless-stopped --network host conductoross/conductor:${conductor_version}
+  - bash -c 'for i in $(seq 1 120); do curl -sf http://localhost:8080/api/metadata/workflow >/dev/null && exit 0; sleep 5; done; exit 1'
+  - touch /var/lib/chaos-ready

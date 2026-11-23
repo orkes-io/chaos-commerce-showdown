@@ -1,0 +1,68 @@
+{
+  "name": "chaos_run",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "description": "One unattended OpenCode run on its own sandbox: prepare, start, wait, collect",
+  "inputParameters": [
+    "run_id",
+    "sandbox",
+    "model",
+    "cap_minutes",
+    "idle_minutes"
+  ],
+  "tasks": [
+    {
+      "name": "chaos_prepare",
+      "taskReferenceName": "prepare",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "sandbox": "${workflow.input.sandbox}",
+        "model": "${workflow.input.model}",
+        "run_id": "${workflow.input.run_id}"
+      }
+    },
+    {
+      "name": "chaos_start",
+      "taskReferenceName": "start",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "sandbox": "${workflow.input.sandbox}",
+        "model": "${workflow.input.model}",
+        "cap_minutes": "${workflow.input.cap_minutes}",
+        "idle_minutes": "${workflow.input.idle_minutes}"
+      }
+    },
+    {
+      "name": "chaos_wait",
+      "taskReferenceName": "wait",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "sandbox": "${workflow.input.sandbox}"
+      }
+    },
+    {
+      "name": "chaos_collect",
+      "taskReferenceName": "collect",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "sandbox": "${workflow.input.sandbox}",
+        "run_id": "${workflow.input.run_id}",
+        "model": "${workflow.input.model}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "run_id": "${workflow.input.run_id}",
+    "model": "${workflow.input.model}",
+    "versions": "${prepare.output.versions}",
+    "ended_by": "${wait.output.ended_by}",
+    "exit_code": "${wait.output.exit_code}",
+    "metrics": "${collect.output.metrics}",
+    "scrub_clean": "${collect.output.scrub_clean}",
+    "provider_error": "${collect.output.provider_error}"
+  },
+  "timeoutSeconds": 10800,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "restartable": true
+}

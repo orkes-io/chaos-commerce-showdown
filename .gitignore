@@ -1,0 +1,28 @@
+# --- Secrets and account-specific config: never commit ---
+.env
+*.env
+!.env.example
+*.tfvars
+!*.tfvars.example
+*.tfstate
+*.tfstate.*
+.terraform/
+crash.log
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+.state/
+
+# --- Unscrubbed artifacts copied off sandboxes ---
+raw/
+runs/*/raw/
+
+# --- Local tooling ---
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+.browser-profile/
+.DS_Store
+*.log

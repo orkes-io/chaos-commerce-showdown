@@ -1,0 +1,45 @@
+{
+  "name": "chaos_runs",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "description": "Starts every run at once (one chaos_run sub-workflow per sandbox) and waits for all of them",
+  "inputParameters": [
+    "runs",
+    "cap_minutes",
+    "idle_minutes"
+  ],
+  "tasks": [
+    {
+      "name": "chaos_plan_fork",
+      "taskReferenceName": "plan",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "runs": "${workflow.input.runs}",
+        "cap_minutes": "${workflow.input.cap_minutes}",
+        "idle_minutes": "${workflow.input.idle_minutes}"
+      }
+    },
+    {
+      "name": "fork_runs",
+      "taskReferenceName": "fork_runs",
+      "type": "FORK_JOIN_DYNAMIC",
+      "dynamicForkTasksParam": "dynamicTasks",
+      "dynamicForkTasksInputParamName": "dynamicTasksInput",
+      "inputParameters": {
+        "dynamicTasks": "${plan.output.tasks}",
+        "dynamicTasksInput": "${plan.output.inputs}"
+      }
+    },
+    {
+      "name": "join_runs",
+      "taskReferenceName": "join_runs",
+      "type": "JOIN"
+    }
+  ],
+  "outputParameters": {
+    "results": "${join_runs.output}"
+  },
+  "timeoutSeconds": 14400,
+  "timeoutPolicy": "TIME_OUT_WF"
+}

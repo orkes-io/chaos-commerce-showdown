@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(make up)",
+      "Bash(make sync)",
+      "Bash(make register)",
+      "Bash(make pilot)",
+      "Bash(make run)",
+      "Bash(make status)",
+      "Bash(make pull)",
+      "Bash(make scan)",
+      "Bash(python3 scripts/secret_scan.py:*)",
+      "Bash(terraform -chdir=infra plan:*)",
+      "Bash(terraform -chdir=infra output:*)",
+      "Bash(ssh -F .state/ssh_config:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)"
+    ],
+    "ask": [
+      "Bash(make down)",
+      "Bash(make push)",
+      "Bash(git push:*)",
+      "Bash(terraform -chdir=infra apply:*)",
+      "Bash(terraform -chdir=infra destroy:*)"
+    ],
+    "deny": [
+      "Read(~/.ssh/**)",
+      "Read(**/*.tfvars)",
+      "Read(**/*.tfstate)",
+      "Read(.env)",
+      "Read(~/*key*)",
+      "Read(~/*.env)"
+    ]
+  }
+}

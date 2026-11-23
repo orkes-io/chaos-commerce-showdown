@@ -1,0 +1,20 @@
+{
+  "_note": "List prices in USD per 1M tokens, checked 2026-11-23. Cost per request = input*in + output*out (output includes reasoning/thinking) + cache_read*cache_read + cache_write*cache_write. Long-context tiers apply per request when the prompt exceeds the threshold.",
+  "google/gemini-4-neon": {
+    "source": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/",
+    "input": 3.0,
+    "output": 15.0,
+    "cache_read": 0.15,
+    "cache_write": 0.0,
+    "long_context": null
+  },
+  "anthropic/claude-fable-5-2": {
+    "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+    "input": 8.0,
+    "output": 40.0,
+    "cache_read": 0.2,
+    "cache_write_5m": 10.0,
+    "cache_write_1h": 16.0,
+    "long_context": null
+  }
+}

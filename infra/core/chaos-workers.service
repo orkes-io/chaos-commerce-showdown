@@ -1,0 +1,17 @@
+[Unit]
+Description=Chaos Commerce showdown workers
+After=docker.service network-online.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/srv/chaos/repo
+Environment=CHAOS_HOME=/srv/chaos
+Environment=CONDUCTOR_SERVER_URL=http://localhost:8080/api
+Environment=CONDUCTOR_HTTP2_ENABLED=false
+ExecStart=/srv/chaos/venv/bin/python /srv/chaos/repo/workers/main.py
+KillMode=control-group
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

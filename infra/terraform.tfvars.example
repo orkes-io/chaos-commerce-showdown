@@ -1,0 +1,8 @@
+# Copy to terraform.tfvars (gitignored) and fill in.
+admin_cidr          = "203.0.113.10/32" # your public IP
+aws_profile         = "default"
+region              = "us-east-2"
+ssh_public_key_path = "~/.ssh/chaos_commerce.pub"
+sandboxes           = ["neon-r1", "neon-r2", "neon-r3", "fable-r1", "fable-r2", "fable-r3"]
+# hosting_enabled  = true
+# lambda_role_name = "an-existing-lambda-execution-role"
