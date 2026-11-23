@@ -123,3 +123,16 @@ rate:
 	$(SSH) chaos-core 'pkill -f rating_server.py; cd /srv/chaos/repo && nohup /srv/chaos/venv/bin/python eval/rating_server.py /srv/chaos/blind_map.json > /srv/chaos/rating.log 2>&1 &'
 	@echo "Blind rating page: http://localhost:8765  (Ctrl-C to close)"
 	$(SSH) -N -L 8765:localhost:8765 chaos-core
+
+# --- Hosting (the two showcase stores) ---------------------------------------
+# Fill deploy/stores.json first. Hosting is recorded in terraform.tfvars so a later
+# `make up` keeps it.
+.PHONY: deploy
+LAMBDA_ROLE ?= lambda-execution-role
+deploy:
+	grep -q '^hosting_enabled' infra/terraform.tfvars || printf 'hosting_enabled = true\nlambda_role_name = "%s"\n' "$(LAMBDA_ROLE)" >> infra/terraform.tfvars
+	python3 scripts/build_backends.py
+	cd infra && terraform apply -input=false -auto-approve
+	$(MAKE) outputs
+	python3 scripts/deploy_core.py
+	cd infra && terraform output -json function_urls | python3 -c 'import json,sys,subprocess; u=json.load(sys.stdin); subprocess.run(["gh","workflow","run","pages.yml","-R","orkes-io/chaos-commerce-showdown","-f",f"neon_api={u[\"neon\"]}","-f",f"fable_api={u[\"fable\"]}"], check=True); print("pages build started")'
