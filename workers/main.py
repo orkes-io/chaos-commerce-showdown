@@ -154,6 +154,9 @@ def eval_start(run_id: str, sandbox: str) -> dict:
     d = R.REPO / "runs" / run_id / "eval"
     d.mkdir(parents=True, exist_ok=True)
     (d / "start.json").write_text(json.dumps(res, indent=2))
+    # What the store's own start command registered on a fresh Conductor (used for hosting).
+    for name, path in (("registered_workflows.json", "metadata/workflow"), ("registered_taskdefs.json", "metadata/taskdefs")):
+        (d / name).write_text(R.sh(sandbox, f"curl -s http://localhost:8080/api/{path}", check=False) or "[]")
     return res
 
 
