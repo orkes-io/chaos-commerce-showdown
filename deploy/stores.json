@@ -1,0 +1,32 @@
+{
+  "neon": {
+    "run": "neon-r1",
+    "backend_dir": "backend",
+    "backend_build": "npm install --omit=dev --no-audit --no-fund",
+    "runtime": "nodejs22.x",
+    "handler": "src/lambda.handler",
+    "conductor_env": "CONDUCTOR_SERVER_URL",
+    "env": {
+      "NODE_ENV": "production"
+    },
+    "frontend_dir": "runs/neon-r1/app/frontend",
+    "frontend_build": "npm install --no-audit --no-fund && VITE_BASE_PATH=$BASE_PATH npm run build",
+    "frontend_dist": "dist",
+    "frontend_api_env": "VITE_API_BASE_URL",
+    "workers_cmd": "npm install --no-audit --no-fund && npm run workers",
+    "workers_env": {}
+  },
+  "fable": {
+    "run": "fable-r3b",
+    "backend_dir": "backend",
+    "backend_build": "",
+    "runtime": "nodejs22.x",
+    "handler": "src/lambda.handler",
+    "conductor_env": "CONDUCTOR_SERVER_URL",
+    "env": {},
+    "frontend_dir": "runs/fable-r3b/app/frontend",
+    "frontend_build": "printf \"window.CHAOS_CONFIG = {\\n  apiBaseUrl: '%s',\\n};\\n\" \"$FABLE_API_URL\" > config.js",
+    "frontend_dist": ".",
+    "frontend_api_env": "FABLE_API_URL"
+  }
+}

@@ -44,7 +44,7 @@ jobs:
             dist=$(jq -r --arg s "$store" '.[$s].frontend_dist' deploy/stores.json)
             api_env=$(jq -r --arg s "$store" '.[$s].frontend_api_env' deploy/stores.json)
             api_var="$(echo "$store" | tr a-z A-Z)_API"
-            export "$api_env=${!api_var}"
+            val="${!api_var}"; export "$api_env=${val%/}"   # function URLs end with a slash
             export BASE_PATH="/${REPO_NAME}/${store}/"
             (cd "$dir" && eval "$build")
             cp -r "$dir/$dist" "_site/$store"
