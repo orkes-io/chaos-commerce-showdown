@@ -23,10 +23,14 @@
     "runtime": "nodejs22.x",
     "handler": "src/lambda.handler",
     "conductor_env": "CONDUCTOR_SERVER_URL",
-    "env": {},
+    "env": {
+      "NODE_ENV": "production"
+    },
     "frontend_dir": "runs/fable-r3b/app/frontend",
     "frontend_build": "printf \"window.CHAOS_CONFIG = {\\n  apiBaseUrl: '%s',\\n};\\n\" \"$FABLE_API_URL\" > config.js",
     "frontend_dist": ".",
-    "frontend_api_env": "FABLE_API_URL"
+    "frontend_api_env": "FABLE_API_URL",
+    "workers_cmd": "",
+    "workers_env": {}
   }
 }

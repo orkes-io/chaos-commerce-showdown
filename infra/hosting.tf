@@ -9,7 +9,8 @@
 # Per-store build and handler settings come from deploy/stores.json.
 
 locals {
-  stores    = var.hosting_enabled ? jsondecode(file("${path.module}/../deploy/stores.json")) : {}
+  # Every store entry has the same fields, so this filters cleanly to an empty map when hosting is off.
+  stores    = { for k, v in jsondecode(file("${path.module}/../deploy/stores.json")) : k => v if var.hosting_enabled }
   core_host = "${replace(aws_instance.core.public_ip, ".", "-")}.sslip.io"
 }
 
