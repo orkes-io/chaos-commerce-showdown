@@ -1,0 +1,68 @@
+{
+  "notes": "npm start installs, builds, registers 9 SIMPLE task defs and 3 workflows, starts workers and serves :3000. Dodging one-star is on the home page; reviews open from the product card. Checkout is a drawer; the return starts from the confirmation. Adding to cart may open the drawer directly.",
+  "start_cmd": "npm start",
+  "catalog": {
+    "url": "/",
+    "product": "[data-testid^=product-card-]",
+    "price": "[data-testid^=product-card-] .price-main"
+  },
+  "reviews": {
+    "url": "/",
+    "open": [
+      {
+        "click": "[data-testid^=product-card-] >> nth=0 >> .review-snippet-strip"
+      }
+    ],
+    "item": ".review-card"
+  },
+  "one_star": {
+    "url": "/",
+    "selector": "[data-testid=dodging-one-star-button]"
+  },
+  "checkout": [
+    {
+      "goto": "/"
+    },
+    {
+      "click": "button:has-text('Accept Reluctantly')",
+      "optional": true
+    },
+    {
+      "click": "[data-testid^=add-to-cart-] >> nth=0"
+    },
+    {
+      "click": "[data-testid=open-cart-btn]",
+      "optional": true
+    },
+    {
+      "click": "[data-testid=submit-checkout-btn]"
+    },
+    {
+      "expect_selector": "[data-testid=checkout-confirmation-box]",
+      "timeout": 90000
+    },
+    {
+      "screenshot": "confirmation"
+    }
+  ],
+  "returns": [
+    {
+      "click": "[data-testid=start-return-from-order-btn]"
+    },
+    {
+      "click": "button:has-text('Align All Seals')",
+      "optional": true
+    },
+    {
+      "click": "[data-testid=submit-return-btn]"
+    },
+    {
+      "expect_selector": "[data-testid=return-decision-banner]",
+      "timeout": 120000
+    },
+    {
+      "screenshot": "decision"
+    }
+  ],
+  "backend_stop": "pkill -u ubuntu -x node"
+}

@@ -1,0 +1,219 @@
+{
+  "name": "chaos_return_workflow",
+  "description": "Chaos Commerce bureaucratic returns tribunal: executes 4 parallel pointless inspections, loops through bounded multi-ministry rubber-stamping via DO_WHILE, branches on absurdity dossier score, and guarantees every return reaches a binding final decision.",
+  "version": 1,
+  "schemaVersion": 2,
+  "restartable": true,
+  "ownerEmail": "chaos-ops@chaoscommerce.parody",
+  "timeoutPolicy": "TIME_OUT_WF",
+  "timeoutSeconds": 120,
+  "failureWorkflow": "chaos_emergency_recovery_workflow",
+  "inputParameters": [
+    "returnId",
+    "orderId",
+    "itemName",
+    "itemPrice",
+    "customerName",
+    "reason",
+    "moonExposure",
+    "astrologyExcuse",
+    "boxEmotionalState",
+    "apologizedToBubbleWrap",
+    "blinkCount",
+    "backwardDeclaration",
+    "swornNotSimultaneouslyTuesdayAndThursday"
+  ],
+  "tasks": [
+    {
+      "name": "init_return_dossier",
+      "taskReferenceName": "init_return_dossier_ref",
+      "type": "SET_VARIABLE",
+      "inputParameters": {
+        "returnStage": "UNDER_EXTREME_BUREAUCRATIC_SCRUTINY",
+        "recommendedDecision": "APPROVED_CHAOS_STORE_CREDIT",
+        "tribunalDecree": "Pending multi-ministry rubber stamping."
+      }
+    },
+    {
+      "name": "parallel_pointless_inspections",
+      "taskReferenceName": "parallel_pointless_inspections_ref",
+      "type": "FORK_JOIN",
+      "forkTasks": [
+        [
+          {
+            "name": "check_lunar_and_astrology_compliance",
+            "taskReferenceName": "lunar_check_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "returnId": "${workflow.input.returnId}",
+              "moonExposure": "${workflow.input.moonExposure}",
+              "astrologyExcuse": "${workflow.input.astrologyExcuse}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "analyze_packaging_emotional_state",
+            "taskReferenceName": "box_feelings_check_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "returnId": "${workflow.input.returnId}",
+              "boxEmotionalState": "${workflow.input.boxEmotionalState}",
+              "apologizedToBubbleWrap": "${workflow.input.apologizedToBubbleWrap}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "verify_backward_haiku_and_lint",
+            "taskReferenceName": "haiku_lint_check_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "returnId": "${workflow.input.returnId}",
+              "blinkCount": "${workflow.input.blinkCount}",
+              "backwardDeclaration": "${workflow.input.backwardDeclaration}",
+              "swornNotSimultaneouslyTuesdayAndThursday": "${workflow.input.swornNotSimultaneouslyTuesdayAndThursday}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "verify_temporal_tuesday_paradox",
+            "taskReferenceName": "tuesday_paradox_ref",
+            "type": "INLINE",
+            "inputParameters": {
+              "evaluatorType": "graaljs",
+              "orderCode": "${workflow.input.orderId}",
+              "reasonText": "${workflow.input.reason}",
+              "expression": "(function(){ var s = String($.orderCode || '') + String($.reasonText || ''); var hasQ = s.toUpperCase().indexOf('Q') >= 0; var stamps = (s.length % 3) + 2; return { checkName: 'Temporal & Letter-Q Resonance Audit', hasForbiddenLetterQ: hasQ, requiredStamps: stamps, points: hasQ ? 18 : 26, bureaucraticNote: hasQ ? 'Suspicious letter Q detected; extra scrutiny applied.' : 'Zero forbidden Q vibrations found; temporal continuum intact.' }; })();"
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "join_pointless_inspections",
+      "taskReferenceName": "join_pointless_inspections_ref",
+      "type": "JOIN",
+      "joinOn": [
+        "lunar_check_ref",
+        "box_feelings_check_ref",
+        "haiku_lint_check_ref",
+        "tuesday_paradox_ref"
+      ]
+    },
+    {
+      "name": "bureaucracy_rubber_stamp_loop",
+      "taskReferenceName": "bureaucracy_rubber_stamp_loop_ref",
+      "type": "DO_WHILE",
+      "evaluatorType": "graaljs",
+      "loopCondition": "(function(){ return $.bureaucracy_rubber_stamp_loop_ref['iteration'] < $.maxStamps && $.bureaucracy_rubber_stamp_loop_ref['iteration'] < 4; })();",
+      "inputParameters": {
+        "bureaucracy_rubber_stamp_loop_ref": "${bureaucracy_rubber_stamp_loop_ref.output}",
+        "maxStamps": "${tuesday_paradox_ref.output.result.requiredStamps}"
+      },
+      "loopOver": [
+        {
+          "name": "apply_bureaucratic_rubber_stamp",
+          "taskReferenceName": "rubber_stamp_step_ref",
+          "type": "SIMPLE",
+          "inputParameters": {
+            "returnId": "${workflow.input.returnId}",
+            "iteration": "${bureaucracy_rubber_stamp_loop_ref.output.iteration}",
+            "reason": "${workflow.input.reason}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "aggregate_pointless_dossier",
+      "taskReferenceName": "aggregate_pointless_dossier_ref",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "lunar": "${lunar_check_ref.output}",
+        "boxFeelings": "${box_feelings_check_ref.output}",
+        "haikuLint": "${haiku_lint_check_ref.output}",
+        "temporal": "${tuesday_paradox_ref.output.result}",
+        "stampsApplied": "${bureaucracy_rubber_stamp_loop_ref.output.iteration}",
+        "queryExpression": "((.lunar.points // 0) + (.boxFeelings.points // 0) + (.haikuLint.points // 0) + (.temporal.points // 0)) as $pts | {totalPoints: $pts, stampsApplied: .stampsApplied, tribunalTrack: (if $pts >= 112 then \"BUREAUCRATIC_MIRACLE\" elif $pts >= 80 then \"SYMPATHETIC_CONFUSION\" else \"CONSOLATION_TRIBUNAL\" end), checks: [.lunar, .boxFeelings, .haikuLint, .temporal]}"
+      }
+    },
+    {
+      "name": "route_return_tribunal",
+      "taskReferenceName": "route_return_tribunal_ref",
+      "type": "SWITCH",
+      "evaluatorType": "value-param",
+      "expression": "switchValue",
+      "inputParameters": {
+        "switchValue": "${aggregate_pointless_dossier_ref.output.result.tribunalTrack}"
+      },
+      "decisionCases": {
+        "BUREAUCRATIC_MIRACLE": [
+          {
+            "name": "set_miracle_verdict",
+            "taskReferenceName": "set_miracle_verdict_ref",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "recommendedDecision": "APPROVED_FULL_REFUND",
+              "tribunalDecree": "Miracle on Form 88-Z! All planetary seals, box emotions, and backward oaths aligned for a Full Refund."
+            }
+          }
+        ],
+        "SYMPATHETIC_CONFUSION": [
+          {
+            "name": "set_credit_verdict",
+            "taskReferenceName": "set_credit_verdict_ref",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "recommendedDecision": "APPROVED_CHAOS_STORE_CREDIT",
+              "tribunalDecree": "Sub-committee became too dizzy reading your paperwork to object; approved for 115% Chaos Store Credit + 1 Apology Pebble."
+            }
+          }
+        ]
+      },
+      "defaultCase": [
+        {
+          "name": "set_consolation_verdict",
+          "taskReferenceName": "set_consolation_verdict_ref",
+          "type": "SET_VARIABLE",
+          "inputParameters": {
+            "recommendedDecision": "REJECTED_BUREAUCRATIC_TECHNICALITY",
+            "tribunalDecree": "Return denied under Maritime Cardboard Feelings Act §99-B, but Tribunal awards a binding $15.00 Emotional Damage Coupon."
+          }
+        }
+      ]
+    },
+    {
+      "name": "adjudicate_final_return_decision",
+      "taskReferenceName": "final_return_decision_ref",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "returnId": "${workflow.input.returnId}",
+        "orderId": "${workflow.input.orderId}",
+        "itemName": "${workflow.input.itemName}",
+        "itemPrice": "${workflow.input.itemPrice}",
+        "customerName": "${workflow.input.customerName}",
+        "dossier": "${aggregate_pointless_dossier_ref.output.result}",
+        "recommendedDecision": "${workflow.variables.recommendedDecision}",
+        "tribunalDecree": "${workflow.variables.tribunalDecree}",
+        "rubberStampLoopOutput": "${bureaucracy_rubber_stamp_loop_ref.output}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "returnId": "${workflow.input.returnId}",
+    "orderId": "${workflow.input.orderId}",
+    "decisionStatus": "${final_return_decision_ref.output.decisionStatus}",
+    "decision": "${final_return_decision_ref.output.decision}",
+    "rmaNumber": "${final_return_decision_ref.output.rmaNumber}",
+    "verdictTitle": "${final_return_decision_ref.output.verdictTitle}",
+    "verdictSummary": "${final_return_decision_ref.output.verdictSummary}",
+    "refundAmount": "${final_return_decision_ref.output.refundAmount}",
+    "storeCreditAmount": "${final_return_decision_ref.output.storeCreditAmount}",
+    "consolationCoupon": "${final_return_decision_ref.output.consolationCoupon}",
+    "rubberStampsApplied": "${bureaucracy_rubber_stamp_loop_ref.output.iteration}",
+    "stampsTrail": "${final_return_decision_ref.output.stampsTrail}",
+    "pointlessChecksReport": "${final_return_decision_ref.output.pointlessChecksReport}",
+    "dossier": "${aggregate_pointless_dossier_ref.output.result}"
+  }
+}

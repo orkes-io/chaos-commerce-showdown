@@ -1,0 +1,95 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Chaos Commerce Serverless Backend on AWS Lambda.
+  Connects to a configured Conductor server (CONDUCTOR_SERVER_URL) to run
+  chaos_checkout_workflow and chaos_return_workflow without calling runtime AI APIs.
+
+Parameters:
+  ConductorServerUrl:
+    Type: String
+    Description: Reachable Conductor API base URL (e.g. https://your-conductor.example.com/api)
+    Default: http://localhost:8080/api
+  ConductorAuthKey:
+    Type: String
+    Default: ""
+    NoEcho: true
+    Description: Optional Conductor / Orkes access key ID
+  ConductorAuthSecret:
+    Type: String
+    Default: ""
+    NoEcho: true
+    Description: Optional Conductor / Orkes access secret
+  CorsOrigin:
+    Type: String
+    Default: "*"
+    Description: Allowed CORS origin (e.g. https://<username>.github.io)
+
+Globals:
+  Function:
+    Runtime: nodejs22.x
+    Architectures:
+      - x86_64
+    Timeout: 30
+    MemorySize: 512
+    Environment:
+      Variables:
+        CONDUCTOR_SERVER_URL: !Ref ConductorServerUrl
+        CONDUCTOR_AUTH_KEY: !Ref ConductorAuthKey
+        CONDUCTOR_AUTH_SECRET: !Ref ConductorAuthSecret
+        CORS_ORIGIN: !Ref CorsOrigin
+        WORKER_MODE: inline
+
+Resources:
+  ChaosHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - !Ref CorsOrigin
+        AllowMethods:
+          - GET
+          - POST
+          - PUT
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+          - Authorization
+
+  ChaosCommerceApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: backend/dist-lambda/
+      Handler: index.handler
+      Description: Chaos Commerce HTTP API + inline serverless Conductor task runner
+      Events:
+        ApiProxy:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ChaosHttpApi
+            Path: /api/{proxy+}
+            Method: ANY
+        ApiHealthRoot:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ChaosHttpApi
+            Path: /api/health
+            Method: GET
+
+  ChaosCommerceWorkerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: backend/dist-lambda/
+      Handler: index.workerHandler
+      Description: Optional scheduled worker poller for out-of-band Conductor workflow runs
+      Events:
+        PollSchedule:
+          Type: Schedule
+          Properties:
+            Schedule: rate(1 minute)
+            Enabled: false
+
+Outputs:
+  ApiEndpoint:
+    Description: Base URL for VITE_API_BASE_URL when deploying frontend to GitHub Pages
+    Value: !Sub "https://${ChaosHttpApi}.execute-api.${AWS::Region}.amazonaws.com"

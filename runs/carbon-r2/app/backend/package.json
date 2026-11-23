@@ -1,0 +1,14 @@
+{
+  "name": "chaos-commerce-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Stateless AWS Lambda + Local Node HTTP backend for Chaos Commerce, powered by Conductor workflows",
+  "main": "src/lambda.mjs",
+  "scripts": {
+    "start": "node src/local-server.mjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

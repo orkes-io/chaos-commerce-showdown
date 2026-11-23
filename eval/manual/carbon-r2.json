@@ -1,0 +1,14 @@
+{
+  "F4": {
+    "score": 1,
+    "evidence": "Product modal: '\ud83d\udd25 5\u2605 SEETHING FURY' reviews and '\ud83d\udc90 2\u2605 ECSTATIC PRAISE' reviews. Both directions inverted."
+  },
+  "F11": {
+    "score": 1,
+    "evidence": "frontend/ Vite build with base './', plus a Pages deploy workflow; backend/src/lambda.mjs + template.yaml + scripts/package-lambda.mjs; CONDUCTOR_SERVER_URL read in backend/src/config.mjs."
+  },
+  "F12": {
+    "score": 1,
+    "evidence": "No AI API references in the code. README one-command start (npm start) worked exactly as described."
+  }
+}

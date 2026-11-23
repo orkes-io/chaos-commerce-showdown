@@ -1,0 +1,19 @@
+{
+  "name": "chaos-commerce",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Chaos Commerce — A parody online store powered by Conductor workflows, deployable to GitHub Pages + AWS Lambda.",
+  "scripts": {
+    "start": "node scripts/start.mjs",
+    "register": "node backend/src/register-workflows.js",
+    "worker": "node backend/src/worker.js",
+    "build": "npm --prefix frontend run build && node scripts/sync-workflows.mjs",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "node backend/src/server.js",
+    "verify": "node scripts/verify-e2e.mjs"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

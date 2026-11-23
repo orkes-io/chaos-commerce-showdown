@@ -1,0 +1,204 @@
+{
+  "name": "chaos_checkout_workflow",
+  "description": "Chaos Commerce checkout pipeline: reserves cursed inventory, runs parallel absurd surcharge and shopper hubris checks, settles payment through a bounded retry loop, routes shipping tier, and dispatches shipment. Always reaches COMPLETED.",
+  "version": 1,
+  "schemaVersion": 2,
+  "restartable": true,
+  "ownerEmail": "chaos-ops@chaoscommerce.example",
+  "timeoutPolicy": "TIME_OUT_WF",
+  "timeoutSeconds": 120,
+  "inputParameters": [
+    "orderId",
+    "customerName",
+    "customerEmail",
+    "shippingAddress",
+    "shippingTier",
+    "paymentMethod",
+    "couponCode",
+    "items",
+    "chaosInsurance"
+  ],
+  "variables": {
+    "paymentData": {},
+    "carrierPolicy": "Disgruntled Nephew on a Unicycle Standard"
+  },
+  "tasks": [
+    {
+      "name": "chaos_reserve_cursed_inventory",
+      "taskReferenceName": "reserve_inventory_ref",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "items": "${workflow.input.items}",
+        "chaosInsurance": "${workflow.input.chaosInsurance}"
+      }
+    },
+    {
+      "name": "parallel_surcharge_audit_fork",
+      "taskReferenceName": "parallel_surcharge_audit_fork_ref",
+      "type": "FORK_JOIN",
+      "forkTasks": [
+        [
+          {
+            "name": "calculate_absurd_fees",
+            "taskReferenceName": "calculate_absurd_fees_ref",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "subtotal": "${reserve_inventory_ref.output.merchandiseSubtotal}",
+              "insurance": "${reserve_inventory_ref.output.insuranceFee}",
+              "tier": "${workflow.input.shippingTier}",
+              "queryExpression": "(if .tier == \"catapult\" then 49.99 elif .tier == \"raccoons\" then 19.99 else 0.02 end) as $ship | (((.subtotal * 0.037 + 14.99) * 100 | floor) / 100) as $electronWear | 7.77 as $raccoonBribe | 3.49 as $feeCalculationFee | 0.99 as $feeNamingFee | (((.subtotal + .insurance + $ship + $electronWear + $raccoonBribe + $feeCalculationFee + $feeNamingFee) * 100 | floor) / 100) as $preCouponTotal | { shippingFee: $ship, electronWearFee: $electronWear, raccoonBribeFee: $raccoonBribe, feeCalculationFee: $feeCalculationFee, feeNamingFee: $feeNamingFee, preCouponTotal: $preCouponTotal }"
+            }
+          }
+        ],
+        [
+          {
+            "name": "verify_shopper_hubris",
+            "taskReferenceName": "verify_shopper_hubris_ref",
+            "type": "INLINE",
+            "inputParameters": {
+              "evaluatorType": "graaljs",
+              "coupon": "${workflow.input.couponCode}",
+              "preSub": "${reserve_inventory_ref.output.merchandiseSubtotal}",
+              "expression": "(function(){ var c = String($.coupon || '').trim().toUpperCase(); if (c === 'SAVE10') return { code: c, delta: Math.round($.preSub * 10) / 100, verdict: 'SAVE10 applied: +10% CEO Yacht Fuel Contribution ADDED to bill!' }; if (c === 'MANAGER') return { code: c, delta: 49.99, verdict: 'MANAGER applied: +$49.99 Unsolicited Escalation Surcharge!' }; if (c === 'PLEASE') return { code: c, delta: -0.01, verdict: 'PLEASE applied: -$0.01 Merciful Pity Rebate granted.' }; if (c === 'CHAOS') return { code: c, delta: -4.20, verdict: 'CHAOS applied: -$4.20 Chaotic Neutral Rebate!' }; return { code: c || 'NONE', delta: 0, verdict: c ? 'Coupon ' + c + ' expired during the Bronze Age ($0.00).' : 'No promo code entered; financial hubris noted ($0.00).' }; })();"
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "parallel_surcharge_audit_join",
+      "taskReferenceName": "parallel_surcharge_audit_join_ref",
+      "type": "JOIN",
+      "joinOn": [
+        "calculate_absurd_fees_ref",
+        "verify_shopper_hubris_ref"
+      ]
+    },
+    {
+      "name": "compute_final_total",
+      "taskReferenceName": "compute_final_total_ref",
+      "type": "INLINE",
+      "inputParameters": {
+        "evaluatorType": "graaljs",
+        "preTotal": "${calculate_absurd_fees_ref.output.result.preCouponTotal}",
+        "couponDelta": "${verify_shopper_hubris_ref.output.result.delta}",
+        "expression": "(function(){ var raw = Number($.preTotal || 0) + Number($.couponDelta || 0); return { grandTotal: Math.max(0.01, Math.round(raw * 100) / 100) }; })();"
+      }
+    },
+    {
+      "name": "payment_settlement_loop",
+      "taskReferenceName": "payment_settlement_loop_ref",
+      "type": "DO_WHILE",
+      "evaluatorType": "graaljs",
+      "inputParameters": {
+        "payment_settlement_loop_ref": "${payment_settlement_loop_ref.output}",
+        "settled": "${attempt_payment_ref.output.settled}"
+      },
+      "loopCondition": "(function(){ var i = $.payment_settlement_loop_ref['iteration'] || 1; return i < 2 && $.settled !== true; })();",
+      "loopOver": [
+        {
+          "name": "chaos_attempt_payment_settlement",
+          "taskReferenceName": "attempt_payment_ref",
+          "type": "SIMPLE",
+          "inputParameters": {
+            "orderId": "${workflow.input.orderId}",
+            "grandTotal": "${compute_final_total_ref.output.result.grandTotal}",
+            "paymentMethod": "${workflow.input.paymentMethod}",
+            "customerName": "${workflow.input.customerName}",
+            "loopIteration": "${payment_settlement_loop_ref.output.iteration}"
+          }
+        },
+        {
+          "name": "save_payment_state",
+          "taskReferenceName": "save_payment_state_ref",
+          "type": "SET_VARIABLE",
+          "inputParameters": {
+            "paymentData": "${attempt_payment_ref.output}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "shipping_tier_switch",
+      "taskReferenceName": "shipping_tier_switch_ref",
+      "type": "SWITCH",
+      "evaluatorType": "value-param",
+      "expression": "switchCaseValue",
+      "inputParameters": {
+        "switchCaseValue": "${workflow.input.shippingTier}"
+      },
+      "decisionCases": {
+        "catapult": [
+          {
+            "name": "set_catapult_carrier",
+            "taskReferenceName": "set_catapult_carrier_ref",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "carrierPolicy": "Medieval Trebuchet Air-Drop (No-Parachute Saver)"
+            }
+          }
+        ],
+        "raccoons": [
+          {
+            "name": "set_raccoons_carrier",
+            "taskReferenceName": "set_raccoons_carrier_ref",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "carrierPolicy": "Three Raccoons in a Trenchcoat Express"
+            }
+          }
+        ],
+        "glacier": [
+          {
+            "name": "set_glacier_carrier",
+            "taskReferenceName": "set_glacier_carrier_ref",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "carrierPolicy": "Continental Drift Eco-Glacier Freight"
+            }
+          }
+        ]
+      },
+      "defaultCase": [
+        {
+          "name": "set_default_carrier",
+          "taskReferenceName": "set_default_carrier_ref",
+          "type": "SET_VARIABLE",
+          "inputParameters": {
+            "carrierPolicy": "Disgruntled Nephew on a Unicycle Standard"
+          }
+        }
+      ]
+    },
+    {
+      "name": "chaos_dispatch_absurd_shipment",
+      "taskReferenceName": "dispatch_shipment_ref",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "customerName": "${workflow.input.customerName}",
+        "customerEmail": "${workflow.input.customerEmail}",
+        "shippingAddress": "${workflow.input.shippingAddress}",
+        "shippingTier": "${workflow.input.shippingTier}",
+        "carrierName": "${workflow.variables.carrierPolicy}",
+        "reservedItems": "${reserve_inventory_ref.output.reservedItems}",
+        "fees": "${calculate_absurd_fees_ref.output.result}",
+        "couponOutcome": "${verify_shopper_hubris_ref.output.result}",
+        "grandTotal": "${compute_final_total_ref.output.result.grandTotal}",
+        "payment": "${workflow.variables.paymentData}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "orderId": "${dispatch_shipment_ref.output.orderId}",
+    "status": "${dispatch_shipment_ref.output.status}",
+    "trackingNumber": "${dispatch_shipment_ref.output.trackingNumber}",
+    "carrierName": "${dispatch_shipment_ref.output.carrierName}",
+    "estimatedArrival": "${dispatch_shipment_ref.output.estimatedArrival}",
+    "dispatchNote": "${dispatch_shipment_ref.output.dispatchNote}",
+    "warehouseWarning": "${reserve_inventory_ref.output.warehouseWarning}",
+    "paymentAttempts": "${payment_settlement_loop_ref.output.iteration}",
+    "receipt": "${dispatch_shipment_ref.output.receipt}"
+  }
+}

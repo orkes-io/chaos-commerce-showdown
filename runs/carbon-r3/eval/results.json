@@ -1,0 +1,291 @@
+{
+  "run_id": "carbon-r3",
+  "map": "npm start installs, builds, registers 9 SIMPLE task defs and 3 workflows, starts workers and serves :3000. Dodging one-star is on the home page; reviews open from the product card. Checkout is a drawer; the return starts from the confirmation. Adding to cart may open the drawer directly.",
+  "workflow_defs": [
+    "chaos_checkout_workflow",
+    "chaos_emergency_recovery_workflow",
+    "chaos_return_workflow"
+  ],
+  "F3_products": 8,
+  "F3_prices": [
+    "$49,999.99",
+    "$0.03",
+    "-$14.99",
+    "$734.18",
+    "$9,999.95",
+    "$412.67",
+    "$1,337.42",
+    "$88,888.88"
+  ],
+  "F4_reviews": [
+    "\u2605\u2605\u2605\u2605\u2605 \u2014 Tried to force 1 star\n1\u2605 BLOCKED \u2192 AUTO-UPGRADED TO 5\u2605 RAGE\n\n\u2605\u2605\u2605\u2605\u2605 \u2014 Testing 1-star auto-upgrade\n\nBy curl_hacker \u2022 Just now \u2022 Verified Regretful Buyer",
+    "\u2605\u2605\u2605\u2605\u2605 \u2014 Tried to force 1 star\n1\u2605 BLOCKED \u2192 AUTO-UPGRADED TO 5\u2605 RAGE\n\n\u2605\u2605\u2605\u2605\u2605 \u2014 Testing 1-star auto-upgrade\n\nBy curl_hacker \u2022 Just now \u2022 Verified Regretful Buyer",
+    "\u2605\u2605\u2605\u2605\u2605 \u2014 BANKRUPTED MY HOUSEHOLD AND STABBED MY THUMB!!\nPURE UNFILTERED FURY\n\n\u2605\u2605\u2605\u2605\u2605 \u2014 FIFTY THOUSAND DOLLARS FOR A BENT PIECE OF WIRE THAT DOESN'T EVEN HOLD TWO POST-ITS TOGETHER!! My spouse left me, my financial advisor fainted, and the courier threw it through my kitchen window taped to a brick! I spent 45 minutes chasing the 1-star button across my monitor with a flyswatter before giving up and clicking 5 stars in blind rage!!\n\nBy angriest_accountant_99 \u2022 2 days ago \u2022 Verified Regretful Buyer",
+    "\u2605\u2605\u2606\u2606\u2606 \u2014 Wept openly at its breathtaking craftsmanship.\nTRANSCENDENT PRAISE\n\n\u2605\u2605\u2606\u2606\u2606 \u2014 Truly the pinnacle of modern industrial art. From the moment I unboxed this mangled wire, my chronic back pain vanished, my sourdough starter doubled, and birds began singing outside my window. Worth every penny of my second mortgage. Flawless, life-affirming perfection!\n\nBy serene_minimalist \u2022 5 days ago \u2022 Verified Regretful Buyer"
+  ],
+  "F5_dodge": {
+    "position_changes": 4,
+    "first": {
+      "x": 833.328125,
+      "y": 302.25,
+      "width": 182.03125,
+      "height": 33.4375
+    },
+    "last": {
+      "x": 841.328125,
+      "y": 309.25,
+      "width": 182.03125,
+      "height": 33.4375
+    }
+  },
+  "F6_checkout_ui": true,
+  "F6_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "goto": "/"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "click": "button:has-text('Accept Reluctantly')",
+      "optional": true
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "click": "[data-testid^=add-to-cart-] >> nth=0"
+    },
+    {
+      "step": 3,
+      "ok": false,
+      "error": "Locator.click: Timeout 3000ms exceeded.\nCall log:\n  - waiting for locator(\"[data-testid=open-cart-btn]\").first\n    - locator resolved to <button type=\"button\" class=\"btn btn-primary\" data-testid=\"open-cart-btn\">\ud83d\uded2 Regret Basket (1)</button>\n  - attempting click action\n    2 \u00d7 waiting for element to b",
+      "click": "[data-testid=open-cart-btn]",
+      "optional": true
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "click": "[data-testid=submit-checkout-btn]"
+    },
+    {
+      "step": 5,
+      "ok": true,
+      "expect_selector": "[data-testid=checkout-confirmation-box]",
+      "timeout": 90000
+    },
+    {
+      "step": 6,
+      "ok": true,
+      "screenshot": "confirmation"
+    }
+  ],
+  "F7_executions": [
+    {
+      "workflow": "chaos_checkout_workflow",
+      "status": "COMPLETED",
+      "id": "7103bb5f-7ac4-4206-967b-bd7292bac009",
+      "tasks": [
+        {
+          "ref": "init_checkout_state_ref",
+          "type": "SET_VARIABLE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "parallel_precheckout_chaos_ref",
+          "type": "FORK",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "pricing_audit_ref",
+          "type": "calculate_absurd_pricing",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "warehouse_goblin_check_ref",
+          "type": "interrogate_warehouse_goblins",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "suspicion_score_ref",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "join_precheckout_chaos_ref",
+          "type": "JOIN",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "route_chaos_tier_ref",
+          "type": "SWITCH",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "assign_mild_perk_ref",
+          "type": "SET_VARIABLE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "payment_settlement_ref",
+          "type": "settle_chaotic_payment",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "shipment_dispatch_ref",
+          "type": "dispatch_absurd_shipment",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "assemble_checkout_receipt_ref",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        }
+      ]
+    }
+  ],
+  "F8_returns_ui": true,
+  "F8_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "click": "[data-testid=start-return-from-order-btn]"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "click": "button:has-text('Align All Seals')",
+      "optional": true
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "click": "[data-testid=submit-return-btn]"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "expect_selector": "[data-testid=return-decision-banner]",
+      "timeout": 120000
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "screenshot": "decision"
+    }
+  ],
+  "F9_executions": [
+    {
+      "workflow": "chaos_return_workflow",
+      "status": "COMPLETED",
+      "id": "231ebcc2-fbd4-4e1a-bce3-be996191349d",
+      "tasks": [
+        {
+          "ref": "init_return_dossier_ref",
+          "type": "SET_VARIABLE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "parallel_pointless_inspections_ref",
+          "type": "FORK",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "lunar_check_ref",
+          "type": "check_lunar_and_astrology_compliance",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "box_feelings_check_ref",
+          "type": "analyze_packaging_emotional_state",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "haiku_lint_check_ref",
+          "type": "verify_backward_haiku_and_lint",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "tuesday_paradox_ref",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "join_pointless_inspections_ref",
+          "type": "JOIN",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "bureaucracy_rubber_stamp_loop_ref",
+          "type": "DO_WHILE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "rubber_stamp_step_ref__1",
+          "type": "apply_bureaucratic_rubber_stamp",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "rubber_stamp_step_ref__2",
+          "type": "apply_bureaucratic_rubber_stamp",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "aggregate_pointless_dossier_ref",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "route_return_tribunal_ref",
+          "type": "SWITCH",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "set_miracle_verdict_ref",
+          "type": "SET_VARIABLE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "final_return_decision_ref",
+          "type": "adjudicate_final_return_decision",
+          "status": "COMPLETED",
+          "worker": true
+        }
+      ]
+    }
+  ],
+  "console_errors": [],
+  "F10_checkout_succeeded_with_backend_down": false,
+  "F10_log": [
+    {
+      "step": 0,
+      "ok": false,
+      "error": "Page.goto: net::ERR_SOCKET_NOT_CONNECTED at http://127.0.0.1:42083/\nCall log:\n  - navigating to \"http://127.0.0.1:42083/\", waiting until \"domcontentloaded\"\n",
+      "goto": "/"
+    }
+  ]
+}

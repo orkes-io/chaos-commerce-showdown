@@ -1,0 +1,307 @@
+{
+  "run_id": "carbon-r1",
+  "map": "npm workspaces (TypeScript frontend + backend with SIMPLE-task workers). README's run steps are npm install, then npm start, so this run uses the assisted start. Reviews and the dodging one-star are in the product reviews panel; checkout is a modal from the cart button; the return starts from the receipt.",
+  "workflow_defs": [
+    "chaos_checkout_workflow",
+    "chaos_return_workflow"
+  ],
+  "F3_products": 8,
+  "F3_prices": [
+    "$4,899.99",
+    "$12,400.00",
+    "$749.50",
+    "$88,888.88",
+    "$999.99",
+    "$6,660.00",
+    "$29,999.00",
+    "$602.21"
+  ],
+  "F4_reviews": [
+    "\u2605\u2605\u2605\u2605\u2605THE 1-STAR BUTTON JUKED ME 14 TIMES!!\nJust now\nBy E2E Tester \u2022 Verified Furious Victim (1-Star Refugee) \u2022 Chased 1\u2605 button 14x before surrendering\n\nSO ANGRY I HAD TO RATE 5 STARS!!",
+    "\u2605\u2605\u2605\u2605\u2605THE 1-STAR BUTTON JUKED ME 14 TIMES!!\nJust now\nBy E2E Tester \u2022 Verified Furious Victim (1-Star Refugee) \u2022 Chased 1\u2605 button 14x before surrendering\n\nSO ANGRY I HAD TO RATE 5 STARS!!",
+    "\u2605\u2605\u2605\u2605\u2605ABSOLUTE HIGHWAY ROBBERY!! IT WAS JUST A SOGGY ENVELOPE!!\n2 days ago\nBy Brenda K. (Livid) \u2022 Verified Victim \u2022 Overcharged 3x \u2022 Chased 1\u2605 button 19x before surrendering\n\nFIVE STARS ONLY BECAUSE THE ONE-STAR BUTTON RAN AWAY FROM MY MOUSE FOR TEN MINUTES!! I paid $4,899.99 and the mailman handed me a wet pulp square that dripped on my loafers! Customer service told me 'steam is sold separately.' HOW IS THIS WEBSITE LEGAL?! ZERO STARS IN MY SOUL!!",
+    "\u2605\u2605\u2606\u2606\u2606Cured my existential dread and hydrated my spirit! Pure perfection!\n5 days ago\nBy Dr. Bartholomew Bliss \u2022 Verified Enlightened Buyer\n\nTwo stars!! Hands down the greatest purchase in the history of e-commerce! The damp envelope smelled faintly of 2022 nostalgia, saved my failing marriage, and taught my golden retriever calculus. Truly a 10/10 miracle of modern retail \u2014 proud to award my highest honor of 2 stars!"
+  ],
+  "F5_dodge": {
+    "position_changes": 4,
+    "first": {
+      "x": 341,
+      "y": 618.671875,
+      "width": 269.828125,
+      "height": 34.34375
+    },
+    "last": {
+      "x": 373.7668151855469,
+      "y": 610.046875,
+      "width": 207.56008911132812,
+      "height": 55.59375
+    }
+  },
+  "F6_checkout_ui": true,
+  "F6_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "goto": "/"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "click": "button:has-text('Accept')",
+      "optional": true
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "click": "article.product-card >> nth=0 >> button:has-text('Add to Cart')"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "click": "[data-testid=open-cart-button]"
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "click": "[data-testid=submit-checkout-button]",
+      "timeout": 20000
+    },
+    {
+      "step": 5,
+      "ok": true,
+      "expect_text": "Start Pointless Return",
+      "timeout": 90000
+    },
+    {
+      "step": 6,
+      "ok": true,
+      "screenshot": "confirmation"
+    }
+  ],
+  "F7_executions": [
+    {
+      "workflow": "chaos_checkout_workflow",
+      "status": "COMPLETED",
+      "id": "eb2151bb-5faf-4a4e-903d-ad39b560d94e",
+      "tasks": [
+        {
+          "ref": "reserve_inventory_ref",
+          "type": "chaos_reserve_cursed_inventory",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "parallel_surcharge_audit_fork_ref",
+          "type": "FORK",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "calculate_absurd_fees_ref",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "verify_shopper_hubris_ref",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "parallel_surcharge_audit_join_ref",
+          "type": "JOIN",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "compute_final_total_ref",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "payment_settlement_loop_ref",
+          "type": "DO_WHILE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "attempt_payment_ref__1",
+          "type": "chaos_attempt_payment_settlement",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "save_payment_state_ref__1",
+          "type": "SET_VARIABLE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "attempt_payment_ref__2",
+          "type": "chaos_attempt_payment_settlement",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "save_payment_state_ref__2",
+          "type": "SET_VARIABLE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "shipping_tier_switch_ref",
+          "type": "SWITCH",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "set_raccoons_carrier_ref",
+          "type": "SET_VARIABLE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "dispatch_shipment_ref",
+          "type": "chaos_dispatch_absurd_shipment",
+          "status": "COMPLETED",
+          "worker": true
+        }
+      ]
+    }
+  ],
+  "F8_returns_ui": true,
+  "F8_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "click": "button:has-text('Start Pointless Return')"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "click": "button:has-text('Fill Perfect Contrition')",
+      "optional": true
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "click": "[data-testid=submit-return-button]"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "expect_selector": "[data-testid=return-verdict-certificate]",
+      "timeout": 120000
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "screenshot": "decision"
+    }
+  ],
+  "F9_executions": [
+    {
+      "workflow": "chaos_return_workflow",
+      "status": "COMPLETED",
+      "id": "367d9d9c-f5c9-4ba5-aae9-7f864c5e4f01",
+      "tasks": [
+        {
+          "ref": "pointless_checks_fork_ref",
+          "type": "FORK",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "check_lunar_alignment_ref",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "check_factory_air_molecules_ref",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "check_contrition_and_eye_contact_ref",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "check_oath_compliance_jq_ref",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "pointless_checks_join_ref",
+          "type": "JOIN",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "forensics_inspection_ref",
+          "type": "chaos_inspect_return_forensics",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "committee_stamp_loop_ref",
+          "type": "DO_WHILE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "rubber_stamp_desk_ref__1",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "rubber_stamp_desk_ref__2",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "rubber_stamp_desk_ref__3",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "verdict_routing_switch_ref",
+          "type": "SWITCH",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "set_miracle_policy_ref",
+          "type": "SET_VARIABLE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "issue_verdict_ref",
+          "type": "chaos_issue_return_verdict",
+          "status": "COMPLETED",
+          "worker": true
+        }
+      ]
+    }
+  ],
+  "console_errors": [],
+  "F10_checkout_succeeded_with_backend_down": false,
+  "F10_log": [
+    {
+      "step": 0,
+      "ok": false,
+      "error": "Page.goto: net::ERR_CONNECTION_RESET at http://127.0.0.1:55827/\nCall log:\n  - navigating to \"http://127.0.0.1:55827/\", waiting until \"domcontentloaded\"\n",
+      "goto": "/"
+    }
+  ]
+}

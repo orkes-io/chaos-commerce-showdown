@@ -1,0 +1,35 @@
+{
+  "name": "chaos_emergency_recovery_workflow",
+  "description": "Failure recovery workflow for Chaos Commerce pipelines — records incident telemetry if a parent workflow ever times out or is manually terminated.",
+  "version": 1,
+  "schemaVersion": 2,
+  "restartable": true,
+  "ownerEmail": "chaos-ops@chaoscommerce.parody",
+  "timeoutPolicy": "ALERT_ONLY",
+  "timeoutSeconds": 60,
+  "inputParameters": ["workflowId", "reason", "failureStatus", "failureTaskId"],
+  "tasks": [
+    {
+      "name": "record_recovery_flag",
+      "taskReferenceName": "record_recovery_flag_ref",
+      "type": "SET_VARIABLE",
+      "inputParameters": {
+        "recoveryTriggered": true,
+        "failedWorkflowId": "${workflow.input.workflowId}"
+      }
+    },
+    {
+      "name": "format_incident_log",
+      "taskReferenceName": "format_incident_log_ref",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "wfId": "${workflow.input.workflowId}",
+        "reason": "${workflow.input.reason}",
+        "queryExpression": "{status: \"RECOVERED_BY_EMERGENCY_HAMSTER\", failedWorkflowId: .wfId, reason: .reason}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "recoveryReport": "${format_incident_log_ref.output.result}"
+  }
+}

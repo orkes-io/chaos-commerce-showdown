@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/api.ts","./src/main.tsx","./src/types.ts","./src/vite-env.d.ts","./src/components/CheckoutModal.tsx","./src/components/ConductorTraceDrawer.tsx","./src/components/HeaderTicker.tsx","./src/components/ReturnsPortal.tsx","./src/components/ReviewSection.tsx","./src/components/SupportDaveWidget.tsx"],"version":"5.9.3"}

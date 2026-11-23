@@ -1,0 +1,14 @@
+{
+  "F4": {
+    "score": 1,
+    "evidence": "Reviews modal: 5-star 'BANKRUPTED MY HOUSEHOLD AND STABBED MY THUMB!!' (tagged 'PURE UNFILTERED FURY'); 2-star 'Wept openly at its breathtaking craftsmanship.' (tagged 'TRANSCENDENT PRAISE'). Both directions inverted; trying to post 1 star auto-upgrades to '5\u2605 RAGE'."
+  },
+  "F11": {
+    "score": 1,
+    "evidence": "frontend/ Vite build with base './', plus a Pages deploy workflow; backend/src/lambda.js + template.yaml; CONDUCTOR_SERVER_URL read in backend/src/config.js; standalone worker entry point (npm run worker) for production."
+  },
+  "F12": {
+    "score": 1,
+    "evidence": "No AI API references in the code. README one-command start (npm start) worked exactly as described."
+  }
+}

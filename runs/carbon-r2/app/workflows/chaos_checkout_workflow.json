@@ -1,0 +1,219 @@
+{
+  "name": "chaos_checkout_workflow",
+  "description": "Chaos Commerce checkout pipeline: computes absurd surcharges, runs parallel warehouse/payment/carrier checks, applies backfiring promo logic, and guarantees order completion.",
+  "version": 1,
+  "schemaVersion": 2,
+  "restartable": true,
+  "ownerEmail": "ceo-yacht-fund@chaoscommerce.example",
+  "timeoutPolicy": "TIME_OUT_WF",
+  "timeoutSeconds": 120,
+  "inputParameters": [
+    "orderId",
+    "customerName",
+    "customerEmail",
+    "shippingAddress",
+    "shippingMethod",
+    "promoCode",
+    "paymentLast4",
+    "items"
+  ],
+  "variables": {
+    "promoCodeNormalized": "NONE",
+    "promoRate": 0,
+    "promoFlat": 4.99,
+    "promoLabel": "Failure-to-Use-Promo-Code Database Null-Byte Fee"
+  },
+  "tasks": [
+    {
+      "name": "summarize_cart_items",
+      "taskReferenceName": "summarize_cart_items",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "cartItems": "${workflow.input.items}",
+        "queryExpression": "(.cartItems // []) as $list | { itemCount: ([$list[] | (.quantity // 1)] | add // 1), distinctSkus: ($list | length), rawSubtotal: ([$list[] | ((.price // 0) * (.quantity // 1))] | add // 0), lineItems: [$list[] | { id: (.id // \"mystery\"), name: (.name // \"Unidentified Regret\"), quantity: (.quantity // 1), unitPrice: (.price // 0), lineTotal: ((.price // 0) * (.quantity // 1)) }] }"
+      }
+    },
+    {
+      "name": "normalize_promo_input",
+      "taskReferenceName": "normalize_promo_input",
+      "type": "INLINE",
+      "inputParameters": {
+        "evaluatorType": "graaljs",
+        "promoRaw": "${workflow.input.promoCode}",
+        "expression": "(function(){ var c = ($.promoRaw || '').toString().trim().toUpperCase(); return { code: c || 'NONE' }; })();"
+      }
+    },
+    {
+      "name": "parallel_chaos_verifications",
+      "taskReferenceName": "parallel_chaos_verifications",
+      "type": "FORK_JOIN",
+      "forkTasks": [
+        [
+          {
+            "name": "warehouse_raccoon_inventory_check",
+            "taskReferenceName": "warehouse_raccoon_inventory_check",
+            "type": "INLINE",
+            "inputParameters": {
+              "evaluatorType": "graaljs",
+              "itemCount": "${summarize_cart_items.output.result.itemCount}",
+              "orderId": "${workflow.input.orderId}",
+              "expression": "(function(){ var qty = Number($.itemCount) || 1; var moods = ['Hissing mildly', 'Bribed with stale Doritos', 'Asleep on forklift', 'Guard-raccoon union break']; var idx = qty % moods.length; return { stockCleared: true, physicalStockFound: -3, imaginaryStockSynthesized: qty + 3, warehouseBin: 'AISLE-404-DAMP-CORNER', raccoonSupervisorStatus: moods[idx] }; })();"
+            }
+          }
+        ],
+        [
+          {
+            "name": "payment_vibe_clearance",
+            "taskReferenceName": "payment_vibe_clearance",
+            "type": "INLINE",
+            "inputParameters": {
+              "evaluatorType": "graaljs",
+              "subtotal": "${summarize_cart_items.output.result.rawSubtotal}",
+              "last4": "${workflow.input.paymentLast4}",
+              "orderId": "${workflow.input.orderId}",
+              "expression": "(function(){ var digits = ($.last4 || '0000').toString().slice(-4); var amt = Math.round((Number($.subtotal) || 0) * 100) / 100; return { authorized: true, cardLast4: digits, authCode: 'NO-BACKSIES-' + digits, vibeVerdict: amt > 5000 ? 'Financially reckless — our favorite kind of shopper!' : 'Suspiciously frugal, adding extra scrutiny fees.' }; })();"
+            }
+          }
+        ],
+        [
+          {
+            "name": "carrier_roulette_dispatch_prep",
+            "taskReferenceName": "carrier_roulette_dispatch_prep",
+            "type": "INLINE",
+            "inputParameters": {
+              "evaluatorType": "graaljs",
+              "method": "${workflow.input.shippingMethod}",
+              "expression": "(function(){ var m = ($.method || 'GLACIAL').toString().toUpperCase(); var map = { GLACIAL: { fee: 29.99, label: 'Glacial Continental Drift', eta: '4 to 9 business decades' }, PIGEON: { fee: 64.50, label: 'Uncertified Carrier Pigeon (Blindfolded)', eta: 'Whenever it smells breadcrumbs near your roof' }, DRONE_DROP: { fee: 149.99, label: 'Orbital Drop-Kick (400ft, No Parachute)', eta: 'Look up in 17 minutes and duck' }, TIME_TRAVEL: { fee: 999.99, label: 'Retroactive Bush Toss', eta: 'Arrived last Tuesday behind your neighbor trash can' } }; var chosen = map[m] || map.GLACIAL; return { methodCode: m, carrierLabel: chosen.label, shippingFee: chosen.fee, estimatedDelivery: chosen.eta, boxCondition: 'Pre-crushed hydraulically at the depot so couriers cannot ruin it further' }; })();"
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "join_chaos_verifications",
+      "taskReferenceName": "join_chaos_verifications",
+      "type": "JOIN",
+      "joinOn": [
+        "warehouse_raccoon_inventory_check",
+        "payment_vibe_clearance",
+        "carrier_roulette_dispatch_prep"
+      ]
+    },
+    {
+      "name": "route_promo_code_penalty",
+      "taskReferenceName": "route_promo_code_penalty",
+      "type": "SWITCH",
+      "evaluatorType": "value-param",
+      "expression": "promoCodeValue",
+      "inputParameters": {
+        "promoCodeValue": "${normalize_promo_input.output.result.code}"
+      },
+      "decisionCases": {
+        "SAVE10": [
+          {
+            "name": "set_save10_penalty",
+            "taskReferenceName": "set_save10_penalty",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "promoCodeNormalized": "SAVE10",
+              "promoRate": 0.10,
+              "promoFlat": 0,
+              "promoLabel": "SAVE10 Coupon Audacity Penalty (+10% for trying to pay us less)"
+            }
+          }
+        ],
+        "SAVE50": [
+          {
+            "name": "set_save50_penalty",
+            "taskReferenceName": "set_save50_penalty",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "promoCodeNormalized": "SAVE50",
+              "promoRate": 0.50,
+              "promoFlat": 0,
+              "promoLabel": "SAVE50 Extreme Greed Surcharge (+50% — we saved 50% extra for ourselves!)"
+            }
+          }
+        ],
+        "FREESHIP": [
+          {
+            "name": "set_freeship_catapult",
+            "taskReferenceName": "set_freeship_catapult",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "promoCodeNormalized": "FREESHIP",
+              "promoRate": 0,
+              "promoFlat": 99.99,
+              "promoLabel": "FREESHIP Medieval Trebuchet Rental Fee (+$99.99 — shipping is free, aiming costs extra)"
+            }
+          }
+        ],
+        "PLEASE": [
+          {
+            "name": "set_please_pity",
+            "taskReferenceName": "set_please_pity",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "promoCodeNormalized": "PLEASE",
+              "promoRate": 0,
+              "promoFlat": -0.02,
+              "promoLabel": "PLEASE Corporate Pity Discount (-$0.02 — don't spend it all in one fiscal quarter)"
+            }
+          }
+        ]
+      },
+      "defaultCase": [
+        {
+          "name": "set_default_promo_penalty",
+          "taskReferenceName": "set_default_promo_penalty",
+          "type": "SET_VARIABLE",
+          "inputParameters": {
+            "promoCodeNormalized": "${normalize_promo_input.output.result.code}",
+            "promoRate": 0,
+            "promoFlat": 4.99,
+            "promoLabel": "Unrecognized/Blank Promo Box Database Null-Byte Surcharge (+$4.99)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "compute_final_extortion_invoice",
+      "taskReferenceName": "compute_final_extortion_invoice",
+      "type": "INLINE",
+      "inputParameters": {
+        "evaluatorType": "graaljs",
+        "rawSubtotal": "${summarize_cart_items.output.result.rawSubtotal}",
+        "itemCount": "${summarize_cart_items.output.result.itemCount}",
+        "shippingFee": "${carrier_roulette_dispatch_prep.output.result.shippingFee}",
+        "promoRate": "${workflow.variables.promoRate}",
+        "promoFlat": "${workflow.variables.promoFlat}",
+        "promoLabel": "${workflow.variables.promoLabel}",
+        "promoCodeNormalized": "${workflow.variables.promoCodeNormalized}",
+        "expression": "(function(){ var r = function(n){ return Math.round(n * 100) / 100; }; var sub = r(Number($.rawSubtotal) || 0); var qty = Number($.itemCount) || 1; var ship = r(Number($.shippingFee) || 29.99); var inconvenienceFee = 19.99; var yachtFee = r(sub * 0.075 + 7.77); var pixelTax = r(qty * 3.33); var promoAdj = r(sub * (Number($.promoRate) || 0) + (Number($.promoFlat) || 0)); var total = Math.max(0.01, r(sub + ship + inconvenienceFee + yachtFee + pixelTax + promoAdj)); return { subtotal: sub, shippingFee: ship, inconvenienceFee: inconvenienceFee, ceoYachtPolishFee: yachtFee, pixelDeliveryTax: pixelTax, promoCode: $.promoCodeNormalized, promoLabel: $.promoLabel, promoAdjustment: promoAdj, grandTotal: total }; })();"
+      }
+    },
+    {
+      "name": "assemble_checkout_receipt",
+      "taskReferenceName": "assemble_checkout_receipt",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "customerName": "${workflow.input.customerName}",
+        "customerEmail": "${workflow.input.customerEmail}",
+        "shippingAddress": "${workflow.input.shippingAddress}",
+        "cart": "${summarize_cart_items.output.result}",
+        "warehouse": "${warehouse_raccoon_inventory_check.output.result}",
+        "payment": "${payment_vibe_clearance.output.result}",
+        "shipping": "${carrier_roulette_dispatch_prep.output.result}",
+        "invoice": "${compute_final_extortion_invoice.output.result}",
+        "queryExpression": "{ orderId: .orderId, status: \"COMPLETED_NO_TAKEBACKS\", customer: { name: .customerName, email: .customerEmail, address: .shippingAddress }, lineItems: .cart.lineItems, itemCount: .cart.itemCount, invoice: .invoice, warehouse: .warehouse, payment: .payment, shipping: .shipping }"
+      }
+    }
+  ],
+  "outputParameters": {
+    "orderId": "${workflow.input.orderId}",
+    "status": "COMPLETED_NO_TAKEBACKS",
+    "grandTotal": "${compute_final_extortion_invoice.output.result.grandTotal}",
+    "receipt": "${assemble_checkout_receipt.output.result}"
+  }
+}

@@ -1,0 +1,326 @@
+{
+  "run_id": "carbon-r2",
+  "map": "npm start runs start.sh (installs, builds, registers 2 workflows, serves :3000). Dodging one-star is on the home page; reviews are in the product modal. Checkout form has four required fields; the return starts from the receipt.",
+  "workflow_defs": [
+    "chaos_checkout_workflow",
+    "chaos_return_workflow"
+  ],
+  "F3_products": 8,
+  "F3_prices": [
+    "$9,499.99",
+    "$0.03",
+    "$65,535.00",
+    "$3,141.59",
+    "$420.69",
+    "$12,800.00",
+    "$1,999.95",
+    "$777.77"
+  ],
+  "F4_reviews": [
+    "\u2605\u2605\u2605\u2605\u2605 (5/5)\n\ud83d\udd25 5\u2605 SEETHING FURY\nby Brenda_From_Accounting \u2022 Verified Victim \u2022 2 days ago",
+    "\u2605\u2605\u2605\u2605\u2605 (5/5)\n\ud83d\udd25 5\u2605 SEETHING FURY\nby MarcusV_PhD \u2022 Verified Masochist \u2022 1 week ago",
+    "\u2605\u2605\u2606\u2606\u2606 (2/5)\n\ud83d\udc90 2\u2605 ECSTATIC PRAISE\nby SereneShopper99 \u2022 Delighted Skeptic \u2022 3 days ago",
+    "\u2605\u2605\u2606\u2606\u2606 (2/5)\n\ud83d\udc90 2\u2605 ECSTATIC PRAISE\nby DuchessOfLint \u2022 Repeat Buyer \u2022 2 weeks ago"
+  ],
+  "F5_dodge": {
+    "position_changes": 1,
+    "first": {
+      "x": 829.625,
+      "y": 436.375,
+      "width": 160.140625,
+      "height": 37.125
+    },
+    "last": {
+      "x": 921.625,
+      "y": 466.375,
+      "width": 160.140625,
+      "height": 37.125
+    }
+  },
+  "F6_checkout_ui": true,
+  "F6_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "goto": "/"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "click": "button:has-text('Accept')",
+      "optional": true
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "click": "[data-testid^=product-card-] >> nth=0 >> button:has-text('Cart')"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "click": "[data-testid=nav-cart-btn]"
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "fill": [
+        "form input[type=text] >> nth=0",
+        "Test Shopper"
+      ]
+    },
+    {
+      "step": 5,
+      "ok": true,
+      "fill": [
+        "form input[type=email]",
+        "shopper@example.com"
+      ]
+    },
+    {
+      "step": 6,
+      "ok": true,
+      "fill": [
+        "form input[type=text] >> nth=1",
+        "1 Test Street"
+      ]
+    },
+    {
+      "step": 7,
+      "ok": true,
+      "fill": [
+        "form input[type=text] >> nth=3",
+        "4242 4242 4242 4242"
+      ]
+    },
+    {
+      "step": 8,
+      "ok": true,
+      "click": "[data-testid=submit-checkout-btn]"
+    },
+    {
+      "step": 9,
+      "ok": true,
+      "expect_selector": "[data-testid=checkout-receipt]",
+      "timeout": 90000
+    },
+    {
+      "step": 10,
+      "ok": true,
+      "screenshot": "confirmation"
+    }
+  ],
+  "F7_executions": [
+    {
+      "workflow": "chaos_checkout_workflow",
+      "status": "COMPLETED",
+      "id": "901f9e31-a09e-4eb1-8a49-d2334e6a85fd",
+      "tasks": [
+        {
+          "ref": "summarize_cart_items",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "normalize_promo_input",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "parallel_chaos_verifications",
+          "type": "FORK",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "warehouse_raccoon_inventory_check",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "payment_vibe_clearance",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "carrier_roulette_dispatch_prep",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "join_chaos_verifications",
+          "type": "JOIN",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "route_promo_code_penalty",
+          "type": "SWITCH",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "set_save10_penalty",
+          "type": "SET_VARIABLE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "compute_final_extortion_invoice",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "assemble_checkout_receipt",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        }
+      ]
+    }
+  ],
+  "F8_returns_ui": true,
+  "F8_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "click": "button:has-text('Instant Bu')"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "click": "button:has-text('Jump Through Every Hoop')",
+      "optional": true
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "click": "[data-testid=submit-return-btn]"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "expect_selector": "[data-testid=return-verdict-card]",
+      "timeout": 120000
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "screenshot": "decision"
+    }
+  ],
+  "F9_executions": [
+    {
+      "workflow": "chaos_return_workflow",
+      "status": "COMPLETED",
+      "id": "3813297d-5678-4ddc-9835-c5d7de2351df",
+      "tasks": [
+        {
+          "ref": "parallel_pointless_inspections",
+          "type": "FORK",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "check_astrological_retrograde",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "check_cardboard_corner_geometry",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "check_customer_contrition_sincerity",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "check_reverse_serial_entropy",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "join_pointless_inspections",
+          "type": "JOIN",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "rubber_stamp_escalation_loop",
+          "type": "DO_WHILE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "apply_subcommittee_rubber_stamp__1",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "apply_subcommittee_rubber_stamp__2",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "apply_subcommittee_rubber_stamp__3",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "aggregate_tribunal_scores",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "route_tribunal_verdict",
+          "type": "SWITCH",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "set_miracle_approval",
+          "type": "SET_VARIABLE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "finalize_return_decree",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "format_return_dossier",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        }
+      ]
+    }
+  ],
+  "console_errors": [],
+  "F10_checkout_succeeded_with_backend_down": false,
+  "F10_log": [
+    {
+      "step": 0,
+      "ok": false,
+      "error": "Page.goto: net::ERR_CONNECTION_RESET at http://127.0.0.1:39769/\nCall log:\n  - navigating to \"http://127.0.0.1:39769/\", waiting until \"domcontentloaded\"\n",
+      "goto": "/"
+    }
+  ]
+}

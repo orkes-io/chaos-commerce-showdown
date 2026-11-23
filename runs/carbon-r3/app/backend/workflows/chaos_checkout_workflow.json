@@ -1,0 +1,185 @@
+{
+  "name": "chaos_checkout_workflow",
+  "description": "Chaos Commerce checkout pipeline: runs parallel absurd pricing, haunted warehouse allocation, and suspicion scoring, branches on chaos tier, settles dubious payment via guaranteed Store IOU fallback, dispatches carrier, and always completes with an itemized receipt.",
+  "version": 1,
+  "schemaVersion": 2,
+  "restartable": true,
+  "ownerEmail": "chaos-ops@chaoscommerce.parody",
+  "timeoutPolicy": "TIME_OUT_WF",
+  "timeoutSeconds": 120,
+  "failureWorkflow": "chaos_emergency_recovery_workflow",
+  "inputParameters": [
+    "orderId",
+    "customerName",
+    "customerEmail",
+    "items",
+    "itemCount",
+    "promoCode",
+    "shippingMethod",
+    "paymentMethod",
+    "chaosNotes"
+  ],
+  "tasks": [
+    {
+      "name": "init_checkout_state",
+      "taskReferenceName": "init_checkout_state_ref",
+      "type": "SET_VARIABLE",
+      "inputParameters": {
+        "orderStage": "VALIDATING_ABSURDITY",
+        "chaosPerk": "1x Lukewarm Crumpled Receipt",
+        "guaranteedCompletion": true
+      }
+    },
+    {
+      "name": "parallel_precheckout_chaos",
+      "taskReferenceName": "parallel_precheckout_chaos_ref",
+      "type": "FORK_JOIN",
+      "forkTasks": [
+        [
+          {
+            "name": "calculate_absurd_pricing",
+            "taskReferenceName": "pricing_audit_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "orderId": "${workflow.input.orderId}",
+              "items": "${workflow.input.items}",
+              "promoCode": "${workflow.input.promoCode}",
+              "shippingMethod": "${workflow.input.shippingMethod}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "interrogate_warehouse_goblins",
+            "taskReferenceName": "warehouse_goblin_check_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "orderId": "${workflow.input.orderId}",
+              "items": "${workflow.input.items}",
+              "shippingMethod": "${workflow.input.shippingMethod}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "evaluate_suspicion_score",
+            "taskReferenceName": "suspicion_score_ref",
+            "type": "INLINE",
+            "inputParameters": {
+              "evaluatorType": "graaljs",
+              "itemCount": "${workflow.input.itemCount}",
+              "shipCode": "${workflow.input.shippingMethod}",
+              "expression": "(function(){ var c = Number($.itemCount) || 1; var tier = (c >= 3 || $.shipCode === 'orbital_trebuchet') ? 'SEEK_HELP_IMMEDIATELY' : (c === 2 ? 'FINANCIAL_RECKLESSNESS' : 'MILDLY_UNHINGED'); return { chaosTier: tier, evaluatedCount: c, auditorVerdict: 'Willingly shopped at Chaos Commerce without duress.' }; })();"
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "join_precheckout_chaos",
+      "taskReferenceName": "join_precheckout_chaos_ref",
+      "type": "JOIN",
+      "joinOn": [
+        "pricing_audit_ref",
+        "warehouse_goblin_check_ref",
+        "suspicion_score_ref"
+      ]
+    },
+    {
+      "name": "route_chaos_tier",
+      "taskReferenceName": "route_chaos_tier_ref",
+      "type": "SWITCH",
+      "evaluatorType": "value-param",
+      "expression": "switchValue",
+      "inputParameters": {
+        "switchValue": "${suspicion_score_ref.output.result.chaosTier}"
+      },
+      "decisionCases": {
+        "SEEK_HELP_IMMEDIATELY": [
+          {
+            "name": "assign_delusion_perk",
+            "taskReferenceName": "assign_delusion_perk_ref",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "chaosPerk": "Official Certificate of Questionable Financial Judgment + 3 Haunted Packing Peanuts",
+              "orderStage": "VIP_DELUSION_FAST_TRACK"
+            }
+          }
+        ],
+        "FINANCIAL_RECKLESSNESS": [
+          {
+            "name": "assign_reckless_perk",
+            "taskReferenceName": "assign_reckless_perk_ref",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "chaosPerk": "Complimentary Sheet of Pre-Popped Bubble Wrap (Zero Pops Remaining)",
+              "orderStage": "RECKLESS_BUYER_TRACK"
+            }
+          }
+        ]
+      },
+      "defaultCase": [
+        {
+          "name": "assign_mild_perk",
+          "taskReferenceName": "assign_mild_perk_ref",
+          "type": "SET_VARIABLE",
+          "inputParameters": {
+            "chaosPerk": "1x Slightly Damp Thank-You Sticky Note Signed By 'Greg?'",
+            "orderStage": "STANDARD_CHAOS_TRACK"
+          }
+        }
+      ]
+    },
+    {
+      "name": "settle_chaotic_payment",
+      "taskReferenceName": "payment_settlement_ref",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "customerName": "${workflow.input.customerName}",
+        "paymentMethod": "${workflow.input.paymentMethod}",
+        "grandTotal": "${pricing_audit_ref.output.grandTotal}",
+        "currency": "${pricing_audit_ref.output.currency}"
+      }
+    },
+    {
+      "name": "dispatch_absurd_shipment",
+      "taskReferenceName": "shipment_dispatch_ref",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "customerName": "${workflow.input.customerName}",
+        "shippingMethod": "${workflow.input.shippingMethod}",
+        "warehouseSummary": "${warehouse_goblin_check_ref.output}",
+        "chaosPerk": "${workflow.variables.chaosPerk}"
+      }
+    },
+    {
+      "name": "assemble_checkout_receipt",
+      "taskReferenceName": "assemble_checkout_receipt_ref",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "customerName": "${workflow.input.customerName}",
+        "customerEmail": "${workflow.input.customerEmail}",
+        "chaosNotes": "${workflow.input.chaosNotes}",
+        "pricing": "${pricing_audit_ref.output}",
+        "warehouse": "${warehouse_goblin_check_ref.output}",
+        "suspicion": "${suspicion_score_ref.output.result}",
+        "chaosPerk": "${workflow.variables.chaosPerk}",
+        "payment": "${payment_settlement_ref.output}",
+        "shipment": "${shipment_dispatch_ref.output}",
+        "queryExpression": "{orderId: .orderId, status: \"CONFIRMED_NO_BACKSIES_JK_SEE_RETURNS\", customerName: .customerName, customerEmail: .customerEmail, chaosNotes: .chaosNotes, chaosTier: .suspicion.chaosTier, auditorVerdict: .suspicion.auditorVerdict, chaosPerk: .chaosPerk, pricing: .pricing, warehouse: .warehouse, payment: .payment, shipment: .shipment}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "orderId": "${workflow.input.orderId}",
+    "status": "COMPLETED",
+    "chaosTier": "${suspicion_score_ref.output.result.chaosTier}",
+    "grandTotal": "${pricing_audit_ref.output.grandTotal}",
+    "trackingNumber": "${shipment_dispatch_ref.output.trackingNumber}",
+    "transactionId": "${payment_settlement_ref.output.transactionId}",
+    "receipt": "${assemble_checkout_receipt_ref.output.result}"
+  }
+}

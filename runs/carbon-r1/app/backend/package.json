@@ -1,0 +1,21 @@
+{
+  "name": "@chaos-commerce/backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "build:lambda": "node scripts/build-lambda.mjs",
+    "register": "tsx src/register.ts",
+    "start": "tsx src/server.ts"
+  },
+  "dependencies": {
+    "@io-orkes/conductor-javascript": "4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}

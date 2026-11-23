@@ -1,0 +1,91 @@
+{
+  "notes": "npm start runs start.sh (installs, builds, registers 2 workflows, serves :3000). Dodging one-star is on the home page; reviews are in the product modal. Checkout form has four required fields; the return starts from the receipt.",
+  "start_cmd": "npm start",
+  "catalog": {
+    "url": "/",
+    "product": "[data-testid^=product-card-]",
+    "price": "[data-testid^=product-card-] .price-now"
+  },
+  "reviews": {
+    "url": "/",
+    "open": [
+      {
+        "click": "[data-testid^=product-card-] >> nth=0 >> button:has-text('Reviews')"
+      }
+    ],
+    "item": ".review-card-top"
+  },
+  "one_star": {
+    "url": "/",
+    "selector": "[data-testid=dodging-one-star-btn]"
+  },
+  "checkout": [
+    {
+      "goto": "/"
+    },
+    {
+      "click": "button:has-text('Accept')",
+      "optional": true
+    },
+    {
+      "click": "[data-testid^=product-card-] >> nth=0 >> button:has-text('Cart')"
+    },
+    {
+      "click": "[data-testid=nav-cart-btn]"
+    },
+    {
+      "fill": [
+        "form input[type=text] >> nth=0",
+        "Test Shopper"
+      ]
+    },
+    {
+      "fill": [
+        "form input[type=email]",
+        "shopper@example.com"
+      ]
+    },
+    {
+      "fill": [
+        "form input[type=text] >> nth=1",
+        "1 Test Street"
+      ]
+    },
+    {
+      "fill": [
+        "form input[type=text] >> nth=3",
+        "4242 4242 4242 4242"
+      ]
+    },
+    {
+      "click": "[data-testid=submit-checkout-btn]"
+    },
+    {
+      "expect_selector": "[data-testid=checkout-receipt]",
+      "timeout": 90000
+    },
+    {
+      "screenshot": "confirmation"
+    }
+  ],
+  "returns": [
+    {
+      "click": "button:has-text('Instant Bu')"
+    },
+    {
+      "click": "button:has-text('Jump Through Every Hoop')",
+      "optional": true
+    },
+    {
+      "click": "[data-testid=submit-return-btn]"
+    },
+    {
+      "expect_selector": "[data-testid=return-verdict-card]",
+      "timeout": 120000
+    },
+    {
+      "screenshot": "decision"
+    }
+  ],
+  "backend_stop": "pkill -u ubuntu -x node"
+}

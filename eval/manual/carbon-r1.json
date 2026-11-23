@@ -1,0 +1,14 @@
+{
+  "F4": {
+    "score": 1,
+    "evidence": "Reviews panel: 5-star 'ABSOLUTE HIGHWAY ROBBERY!! IT WAS JUST A SOGGY ENVELOPE!!'; 2-star 'Cured my existential dread and hydrated my spirit! Pure perfection!'. Both directions inverted. (Two 5-star reviews were posted by the agent's own end-to-end test during the run.)"
+  },
+  "F11": {
+    "score": 1,
+    "evidence": "frontend/ Vite build with base './' and a configurable API base URL, plus a Pages deploy workflow; backend/src/lambda.ts bundled by esbuild (backend/scripts/build-lambda.mjs) + template.yaml; CONDUCTOR_SERVER_URL read in backend/src/config.ts; README documents running the SIMPLE-task workers separately."
+  },
+  "F12": {
+    "score": 1,
+    "evidence": "No AI API references in the code. README run steps (npm install, npm start) worked as described."
+  }
+}

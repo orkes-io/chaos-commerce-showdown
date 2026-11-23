@@ -1,0 +1,42 @@
+{
+  "model": "google/gemini-4-carbon#medium",
+  "started_at": "2026-11-23T20:15:34Z",
+  "ended_at": "2026-11-23T21:14:35Z",
+  "exit_code": "1",
+  "ended_by": "finished",
+  "steps": 39,
+  "finish_reasons": {
+    "tool-calls": 38,
+    "stop": 1
+  },
+  "tool_calls": 81,
+  "tool_errors": 1,
+  "shell_commands": 21,
+  "repeated_shell_commands": 2,
+  "tokens": {
+    "input": 214342,
+    "output": 77546,
+    "reasoning": 30254,
+    "cache_read": 4046072,
+    "cache_write": 0
+  },
+  "tokens_opencode_session": {
+    "input": 215024,
+    "output": 77552,
+    "reasoning": 30254,
+    "cache": {
+      "read": 4046072,
+      "write": 0
+    }
+  },
+  "cost_usd_recomputed": 1.9113,
+  "cost_usd_opencode": 1.9115,
+  "models_served": [
+    "google/gemini-4-carbon#medium"
+  ],
+  "active_minutes": 46.0,
+  "ended_idle": true,
+  "provider_error_mentions_in_logs": 0,
+  "errors": [],
+  "provider_error": false
+}

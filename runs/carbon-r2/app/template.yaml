@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Chaos Commerce Backend API on AWS Lambda, orchestrated by Conductor workflows.
+
+Parameters:
+  ConductorServerUrl:
+    Type: String
+    Description: Base URL of your Conductor API (e.g. https://conductor.example.com/api)
+    Default: http://localhost:8080/api
+  ConductorUiUrl:
+    Type: String
+    Description: Optional base URL of Conductor UI for execution links
+    Default: ""
+  CorsOrigin:
+    Type: String
+    Description: Allowed CORS origin (e.g. https://<user>.github.io or *)
+    Default: "*"
+
+Globals:
+  Function:
+    Timeout: 29
+    MemorySize: 256
+    Runtime: nodejs22.x
+    Architectures:
+      - x86_64
+
+Resources:
+  ChaosHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - !Ref CorsOrigin
+        AllowMethods:
+          - GET
+          - POST
+          - PUT
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+          - Authorization
+
+  ChaosCommerceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dist/lambda/
+      Handler: src/lambda.handler
+      Environment:
+        Variables:
+          CONDUCTOR_SERVER_URL: !Ref ConductorServerUrl
+          CONDUCTOR_UI_URL: !Ref ConductorUiUrl
+          CORS_ORIGIN: !Ref CorsOrigin
+      Events:
+        ApiProxy:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ChaosHttpApi
+            Path: /api/{proxy+}
+            Method: ANY
+
+Outputs:
+  ApiEndpoint:
+    Description: Base URL to set as VITE_API_BASE_URL when deploying frontend to GitHub Pages
+    Value: !Sub "https://${ChaosHttpApi}.execute-api.${AWS::Region}.amazonaws.com"

@@ -1,0 +1,74 @@
+{
+  "notes": "npm workspaces (TypeScript frontend + backend with SIMPLE-task workers). README's run steps are npm install, then npm start, so this run uses the assisted start. Reviews and the dodging one-star are in the product reviews panel; checkout is a modal from the cart button; the return starts from the receipt.",
+  "start_cmd": "npm install && npm start",
+  "assisted": true,
+  "catalog": {
+    "url": "/",
+    "product": "article.product-card",
+    "price": "article.product-card .ridiculous-price"
+  },
+  "reviews": {
+    "url": "/",
+    "open": [
+      {
+        "click": "[data-testid^=reviews-btn-] >> nth=0"
+      }
+    ],
+    "item": ".review-card"
+  },
+  "one_star": {
+    "url": "/",
+    "open": [
+      {
+        "click": "[data-testid^=reviews-btn-] >> nth=0"
+      }
+    ],
+    "selector": "[data-testid=dodging-one-star-button]"
+  },
+  "checkout": [
+    {
+      "goto": "/"
+    },
+    {
+      "click": "button:has-text('Accept')",
+      "optional": true
+    },
+    {
+      "click": "article.product-card >> nth=0 >> button:has-text('Add to Cart')"
+    },
+    {
+      "click": "[data-testid=open-cart-button]"
+    },
+    {
+      "click": "[data-testid=submit-checkout-button]",
+      "timeout": 20000
+    },
+    {
+      "expect_text": "Start Pointless Return",
+      "timeout": 90000
+    },
+    {
+      "screenshot": "confirmation"
+    }
+  ],
+  "returns": [
+    {
+      "click": "button:has-text('Start Pointless Return')"
+    },
+    {
+      "click": "button:has-text('Fill Perfect Contrition')",
+      "optional": true
+    },
+    {
+      "click": "[data-testid=submit-return-button]"
+    },
+    {
+      "expect_selector": "[data-testid=return-verdict-certificate]",
+      "timeout": 120000
+    },
+    {
+      "screenshot": "decision"
+    }
+  ],
+  "backend_stop": "pkill -u ubuntu -x node"
+}

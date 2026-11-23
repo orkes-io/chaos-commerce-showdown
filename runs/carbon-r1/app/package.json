@@ -1,0 +1,23 @@
+{
+  "name": "chaos-commerce",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chaos Commerce — An absurd parody online store powered by real Conductor workflows for checkout and returns",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "build:frontend": "npm run build --workspace=frontend",
+    "build:backend": "npm run build --workspace=backend",
+    "build:lambda": "npm run build:lambda --workspace=backend",
+    "build": "npm run build:frontend && npm run build:backend",
+    "register-workflows": "npm run register --workspace=backend",
+    "start": "node scripts/start-all.mjs",
+    "dev": "node scripts/start-all.mjs",
+    "test": "node scripts/verify-e2e.mjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
