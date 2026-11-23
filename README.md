@@ -1,6 +1,6 @@
-# Chaos Commerce showdown: Gemini 4 Neon vs Fable 5.2
+# Chaos Commerce showdown: Gemini 4 Neon vs Fable 5.2 vs Gemini 4 Carbon
 
-Two models get the same four-sentence brief for a deliberately terrible online store, build it unattended in [OpenCode](https://opencode.ai) on a machine with Conductor OSS running, and get scored against a checklist written before the first run. Each model runs three times.
+Three models get the same four-sentence brief for a deliberately terrible online store, build it unattended in [OpenCode](https://opencode.ai) on a machine with Conductor OSS running, and get scored against a checklist written before the first run. Each model runs three times.
 
 Everything needed to rebuild the experiment is in this repo:
 - Terraform for the machines
@@ -10,9 +10,21 @@ Everything needed to rebuild the experiment is in this repo:
 - Claude Code commands that drive it all
 
 ## Results at a glance
-See [`report/tables.md`](report/tables.md). ⟦filled in after scoring⟧
+Medians over three runs per model. Every run, with ranges, is in [`report/tables.md`](report/tables.md) and [`report/data/runs.csv`](report/data/runs.csv).
 
-## The six stores
+| | Gemini 4 Neon | Gemini 4 Carbon | Fable 5.2 |
+|---|---|---|---|
+| Functional checklist (out of 12) | 10.5 | 10.5 | 11 |
+| Judge: engineering / UX / creativity / Conductor | 4 / 4 / 5 / 4 | 4 / 4 / 5 / 4 | 4 / 4 / 5 / 4 |
+| Human: UX / creativity | 3 / 3 | 2 / 1 | 2 / 3 |
+| Active minutes | 16.6 | 38.4 | 37.2 |
+| Cost per run (list prices) | $3.59 | $1.80 | $12.90 |
+
+![Cost and active minutes per run](report/charts/cost-and-time-per-run.png)
+
+`python3 report/build.py` rebuilds the tables, and `python3 report/chart.py` (needs matplotlib) redraws the chart.
+
+## The nine stores
 
 Each model built three of these from the same four-sentence brief. Gemini 4 Carbon (Stores G to I) was added after the first six were rated. They were labeled A to F, in random order, for the blind human rating. The rating is done, so each label now shows which model built that store.
 
