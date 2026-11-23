@@ -1,0 +1,60 @@
+{
+  "name": "chaos_score",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "description": "Scores every run in parallel, waits for the blind human rating, then builds the report",
+  "inputParameters": [
+    "runs",
+    "judge_model"
+  ],
+  "tasks": [
+    {
+      "name": "chaos_plan_score_fork",
+      "taskReferenceName": "plan",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "runs": "${workflow.input.runs}"
+      }
+    },
+    {
+      "name": "fork_scores",
+      "taskReferenceName": "fork_scores",
+      "type": "FORK_JOIN_DYNAMIC",
+      "dynamicForkTasksParam": "dynamicTasks",
+      "dynamicForkTasksInputParamName": "dynamicTasksInput",
+      "inputParameters": {
+        "dynamicTasks": "${plan.output.tasks}",
+        "dynamicTasksInput": "${plan.output.inputs}"
+      }
+    },
+    {
+      "name": "join_scores",
+      "taskReferenceName": "join_scores",
+      "type": "JOIN"
+    },
+    {
+      "name": "blind_rating",
+      "taskReferenceName": "blind_rating",
+      "type": "HUMAN",
+      "inputParameters": {
+        "instructions": "Rate Stores A-F on the rating page (make rate)."
+      }
+    },
+    {
+      "name": "chaos_report",
+      "taskReferenceName": "report",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "human_scores": "${blind_rating.output.scores}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "scores": "${join_scores.output}",
+    "human": "${blind_rating.output.scores}",
+    "report": "${report.output.summary}"
+  },
+  "timeoutSeconds": 21600,
+  "timeoutPolicy": "TIME_OUT_WF"
+}

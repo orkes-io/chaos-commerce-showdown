@@ -19,6 +19,8 @@ RSYNC := rsync -az -e "ssh -F .state/ssh_config"
 KEY_GOOGLE ?= ~/geminitempkey.txt
 KEY_ANTHROPIC ?= ~/nlclaude.txt
 SSH_KEY ?= ~/.ssh/chaos_commerce
+KEY_OPENAI ?= ~/openai-judge.key
+JUDGE_MODEL ?= gpt-6.1-sol
 CAP ?= 90
 IDLE ?= 10
 
@@ -92,3 +94,32 @@ push: scan
 
 down:
 	cd infra && terraform destroy -input=false -auto-approve
+
+# --- Scoring ---------------------------------------------------------------
+# make evalstart RUN=neon-r1 CMD="npm start"   reset the sandbox and start the store (for exploring)
+# make explore RUN=neon-r1                      screenshots + UI inventory to write eval/maps/<run>.json
+# make score                                    start chaos_score (all runs, blind labels A-F)
+# make rate                                     blind rating page on http://localhost:8765
+.PHONY: evalstart explore score rate openai-key
+
+evalstart:
+	$(SSH) chaos-$(RUN) 'cat > ~/eval_start.sh && chmod 755 ~/eval_start.sh' < infra/sandbox/eval_start.sh
+	$(SSH) chaos-$(RUN) '~/eval_start.sh $(shell python3 -c 'import json,sys; print(json.dumps(sys.argv[1]))' "$(CMD)") 300'
+
+explore:
+	$(RSYNC) eval/ chaos-core:/srv/chaos/repo/eval/
+	$(SSH) chaos-core 'cd /srv/chaos/repo && CHAOS_HOME=/srv/chaos /srv/chaos/venv/bin/python eval/driver.py explore $(RUN) $(RUN)'
+	$(RSYNC) chaos-core:/srv/chaos/repo/runs/$(RUN)/eval/ ./runs/$(RUN)/eval/
+
+openai-key:
+	$(SSH) chaos-core 'umask 077; cat > /srv/chaos/keys/openai.key' < $(KEY_OPENAI)
+
+score:
+	$(RSYNC) eval/ chaos-core:/srv/chaos/repo/eval/
+	$(SSH) chaos-core 'test -f /srv/chaos/blind_map.json || python3 -c "import json,random; r=[f\"{m}-r{i}\" for m in (\"neon\",\"fable\") for i in (1,2,3)]; random.shuffle(r); json.dump(dict(zip(\"ABCDEF\", r)), open(\"/srv/chaos/blind_map.json\",\"w\"))"'
+	$(SSH) chaos-core 'python3 -c "import json; b=json.load(open(\"/srv/chaos/blind_map.json\")); print(json.dumps({\"judge_model\": \"$(JUDGE_MODEL)\", \"runs\": [{\"run_id\": v, \"sandbox\": v, \"label\": \"Store \"+k, \"judge_model\": \"$(JUDGE_MODEL)\"} for k, v in sorted(b.items())]}))" | curl -s -X POST -H "Content-Type: application/json" -d @- http://localhost:8080/api/workflow/chaos_score; echo'
+
+rate:
+	$(SSH) chaos-core 'pkill -f rating_server.py; cd /srv/chaos/repo && nohup /srv/chaos/venv/bin/python eval/rating_server.py /srv/chaos/blind_map.json > /srv/chaos/rating.log 2>&1 &'
+	@echo "Blind rating page: http://localhost:8765  (Ctrl-C to close)"
+	$(SSH) -N -L 8765:localhost:8765 chaos-core

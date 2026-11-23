@@ -1,0 +1,63 @@
+# Builds both showcase storefronts and publishes them to GitHub Pages.
+# Started by `make deploy` (gh workflow run) with each store's Lambda function URL.
+# The URLs are inputs, never committed; per-store build settings live in deploy/stores.json.
+name: Publish storefronts
+
+on:
+  workflow_dispatch:
+    inputs:
+      neon_api:
+        description: Function URL for the neon store backend
+        required: true
+      fable_api:
+        description: Function URL for the fable store backend
+        required: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build each storefront
+        env:
+          NEON_API: ${{ inputs.neon_api }}
+          FABLE_API: ${{ inputs.fable_api }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          for store in $(jq -r 'keys[]' deploy/stores.json); do
+            dir=$(jq -r --arg s "$store" '.[$s].frontend_dir' deploy/stores.json)
+            build=$(jq -r --arg s "$store" '.[$s].frontend_build' deploy/stores.json)
+            dist=$(jq -r --arg s "$store" '.[$s].frontend_dist' deploy/stores.json)
+            api_env=$(jq -r --arg s "$store" '.[$s].frontend_api_env' deploy/stores.json)
+            api_var="$(echo "$store" | tr a-z A-Z)_API"
+            export "$api_env=${!api_var}"
+            export BASE_PATH="/${REPO_NAME}/${store}/"
+            (cd "$dir" && eval "$build")
+            cp -r "$dir/$dist" "_site/$store"
+          done
+          cp deploy/index.html _site/index.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/deploy-pages@v4

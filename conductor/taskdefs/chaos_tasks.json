@@ -53,5 +53,60 @@
     "responseTimeoutSeconds": 1500,
     "timeoutPolicy": "TIME_OUT_WF",
     "ownerEmail": "chaos-commerce@example.com"
+  },
+  {
+    "name": "chaos_plan_score_fork",
+    "description": "One chaos_score_one sub-workflow per run",
+    "retryCount": 1,
+    "retryLogic": "FIXED",
+    "retryDelaySeconds": 5,
+    "timeoutSeconds": 120,
+    "responseTimeoutSeconds": 60,
+    "timeoutPolicy": "TIME_OUT_WF",
+    "ownerEmail": "chaos-commerce@example.com"
+  },
+  {
+    "name": "chaos_eval_start",
+    "description": "Resets the sandbox and starts the store with the README command",
+    "retryCount": 1,
+    "retryLogic": "FIXED",
+    "retryDelaySeconds": 20,
+    "timeoutSeconds": 1200,
+    "responseTimeoutSeconds": 1000,
+    "timeoutPolicy": "TIME_OUT_WF",
+    "ownerEmail": "chaos-commerce@example.com"
+  },
+  {
+    "name": "chaos_check",
+    "description": "Runs the pre-registered checklist in Playwright",
+    "retryCount": 1,
+    "retryLogic": "FIXED",
+    "retryDelaySeconds": 20,
+    "timeoutSeconds": 1800,
+    "responseTimeoutSeconds": 1600,
+    "timeoutPolicy": "TIME_OUT_WF",
+    "ownerEmail": "chaos-commerce@example.com"
+  },
+  {
+    "name": "chaos_judge",
+    "description": "Blind OpenAI judge, 3 passes, median",
+    "retryCount": 2,
+    "retryLogic": "FIXED",
+    "retryDelaySeconds": 30,
+    "timeoutSeconds": 2400,
+    "responseTimeoutSeconds": 2000,
+    "timeoutPolicy": "TIME_OUT_WF",
+    "ownerEmail": "chaos-commerce@example.com"
+  },
+  {
+    "name": "chaos_report",
+    "description": "Builds report/ tables and charts",
+    "retryCount": 1,
+    "retryLogic": "FIXED",
+    "retryDelaySeconds": 10,
+    "timeoutSeconds": 900,
+    "responseTimeoutSeconds": 800,
+    "timeoutPolicy": "TIME_OUT_WF",
+    "ownerEmail": "chaos-commerce@example.com"
   }
 ]

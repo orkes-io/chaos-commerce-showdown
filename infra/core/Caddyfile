@@ -1,0 +1,18 @@
+# HTTPS proxy on core for the hosted stores (started by `make deploy`).
+# CORE_HOST and PROXY_PATH come from Terraform outputs at deploy time and are never committed.
+# Only /<PROXY_PATH>/<store>/api/* reaches that store's Conductor; metadata writes are refused.
+{$CORE_HOST} {
+	@meta_write {
+		path_regexp meta ^/{$PROXY_PATH}/[a-z]+/api/metadata
+		method POST PUT DELETE
+	}
+	respond @meta_write 403
+
+	handle_path /{$PROXY_PATH}/neon/* {
+		reverse_proxy localhost:8081
+	}
+	handle_path /{$PROXY_PATH}/fable/* {
+		reverse_proxy localhost:8082
+	}
+	respond 404
+}

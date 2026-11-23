@@ -1,0 +1,52 @@
+{
+  "name": "chaos_score_one",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "description": "Evaluate one run: reset + start the store, run the checklist, blind judge",
+  "inputParameters": [
+    "run_id",
+    "sandbox",
+    "label",
+    "judge_model"
+  ],
+  "tasks": [
+    {
+      "name": "chaos_eval_start",
+      "taskReferenceName": "start",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "run_id": "${workflow.input.run_id}",
+        "sandbox": "${workflow.input.sandbox}"
+      }
+    },
+    {
+      "name": "chaos_check",
+      "taskReferenceName": "check",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "run_id": "${workflow.input.run_id}",
+        "sandbox": "${workflow.input.sandbox}"
+      }
+    },
+    {
+      "name": "chaos_judge",
+      "taskReferenceName": "judge",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "run_id": "${workflow.input.run_id}",
+        "label": "${workflow.input.label}",
+        "judge_model": "${workflow.input.judge_model}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "run_id": "${workflow.input.run_id}",
+    "start": "${start.output}",
+    "check": "${check.output}",
+    "judge": "${judge.output}"
+  },
+  "timeoutSeconds": 7200,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "restartable": true
+}

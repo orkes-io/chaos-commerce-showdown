@@ -71,3 +71,9 @@ variable "lambda_role_name" {
   type        = string
   default     = ""
 }
+
+variable "pages_origin" {
+  description = "Origin of the GitHub Pages site, for the Lambda CORS rule."
+  type        = string
+  default     = "https://orkes-io.github.io"
+}

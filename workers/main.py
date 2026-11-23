@@ -118,6 +118,77 @@ def collect(sandbox: str, run_id: str, model: str) -> dict:
             "provider_error": m.get("provider_error", False)}
 
 
+# --- chaos_score: evaluate each run, judge it, then the blind human rating ------
+
+EVAL = R.REPO / "eval"
+VENV_PY = str(R.CHAOS_HOME / "venv" / "bin" / "python")
+
+
+def _map(run_id: str) -> dict:
+    f = EVAL / "maps" / f"{run_id}.json"
+    if not f.exists():
+        raise RuntimeError(f"no map for {run_id}: write eval/maps/{run_id}.json (see make explore)")
+    return json.loads(f.read_text())
+
+
+@worker_task(task_definition_name="chaos_plan_score_fork")
+def plan_score_fork(runs: list[dict]) -> dict:
+    tasks, inputs = [], {}
+    for r in runs:
+        ref = f"score_{r['run_id'].replace('-', '_')}"
+        tasks.append({"name": "chaos_score_one", "taskReferenceName": ref, "type": "SUB_WORKFLOW",
+                      "subWorkflowParam": {"name": "chaos_score_one", "version": 1}})
+        inputs[ref] = r
+    return {"tasks": tasks, "inputs": inputs}
+
+
+@worker_task(task_definition_name="chaos_eval_start", thread_count=6)
+def eval_start(run_id: str, sandbox: str) -> dict:
+    m = _map(run_id)
+    R.put(sandbox, R.REPO / "infra" / "sandbox" / "eval_start.sh", "~/eval_start.sh")
+    out = R.sh(sandbox, f"~/eval_start.sh {json.dumps(m['start_cmd'])} 300", timeout=900)
+    kv = dict(line.split("=", 1) for line in out.strip().replace(" seconds=", "\nseconds=").splitlines() if "=" in line)
+    res = {"store_up": kv.get("store_up") == "yes", "start_seconds": kv.get("seconds"),
+           "workflows_registered": kv.get("workflows_registered"), "start_cmd": m["start_cmd"],
+           "assisted": bool(m.get("assisted"))}
+    d = R.REPO / "runs" / run_id / "eval"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "start.json").write_text(json.dumps(res, indent=2))
+    return res
+
+
+@worker_task(task_definition_name="chaos_check", thread_count=3)
+def check(run_id: str, sandbox: str) -> dict:
+    r = subprocess.run([VENV_PY, str(EVAL / "driver.py"), "check", run_id, sandbox], capture_output=True,
+                       text=True, timeout=1500)
+    if r.returncode != 0:
+        raise RuntimeError(r.stderr[-1500:])
+    res = json.loads((R.REPO / "runs" / run_id / "eval" / "results.json").read_text())
+    return {k: v for k, v in res.items() if not k.endswith("_log")}
+
+
+@worker_task(task_definition_name="chaos_judge", thread_count=6)
+def judge(run_id: str, label: str, judge_model: str = "") -> dict:
+    env = {**os.environ, "OPENAI_API_KEY": (R.KEYS / "openai.key").read_text().strip()}
+    if judge_model:
+        env["JUDGE_MODEL"] = judge_model
+    r = subprocess.run([VENV_PY, str(EVAL / "judge.py"), run_id, label], capture_output=True, text=True,
+                       timeout=1800, env=env)
+    if r.returncode != 0:
+        raise RuntimeError(r.stderr[-1500:])
+    return json.loads(r.stdout.strip().splitlines()[-1])
+
+
+@worker_task(task_definition_name="chaos_report")
+def report(human_scores: dict = None) -> dict:
+    if human_scores:
+        (R.CHAOS_HOME / "human_scores.json").write_text(json.dumps(human_scores, indent=2))
+    r = subprocess.run([VENV_PY, str(R.REPO / "report" / "build.py")], capture_output=True, text=True, timeout=600)
+    if r.returncode != 0:
+        raise RuntimeError(r.stderr[-1500:])
+    return {"summary": r.stdout[-3000:]}
+
+
 def main():
     os.environ.setdefault("CONDUCTOR_SERVER_URL", "http://localhost:8080/api")
     os.environ.setdefault("CONDUCTOR_HTTP2_ENABLED", "false")
