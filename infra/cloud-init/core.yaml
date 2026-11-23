@@ -22,6 +22,7 @@ runcmd:
   - systemctl enable --now docker
   - usermod -aG docker ubuntu
   - mkdir -p /srv/chaos && chown ubuntu:ubuntu /srv/chaos
+  - bash -c 'for i in 1 2 3 4 5; do docker pull -q conductoross/conductor:${conductor_version} && exit 0; sleep 15; done; exit 1'
   - docker run -d --name conductor --restart unless-stopped -p 127.0.0.1:8080:8080 conductoross/conductor:${conductor_version}
   - bash -c 'for i in $(seq 1 120); do curl -sf http://localhost:8080/api/metadata/workflow >/dev/null && exit 0; sleep 5; done; exit 1'
   - touch /var/lib/chaos-ready

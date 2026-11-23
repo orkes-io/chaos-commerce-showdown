@@ -39,6 +39,7 @@ runcmd:
   - cp /etc/chaos/opencode.json /home/ubuntu/.config/opencode/opencode.json
   - chown -R ubuntu:ubuntu /home/ubuntu
   - sudo -u ubuntu -H bash -lc 'npx -y @conductor-oss/conductor-skills@${skills_version} --agent opencode --global'
+  - bash -c 'for i in 1 2 3 4 5; do docker pull -q conductoross/conductor:${conductor_version} && exit 0; sleep 15; done; exit 1'
   - docker run -d --name conductor --restart unless-stopped --network host conductoross/conductor:${conductor_version}
   - bash -c 'for i in $(seq 1 120); do curl -sf http://localhost:8080/api/metadata/workflow >/dev/null && exit 0; sleep 5; done; exit 1'
   - touch /var/lib/chaos-ready
