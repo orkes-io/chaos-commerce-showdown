@@ -15,6 +15,7 @@ Both get the same output limit (64,000 tokens per step), the same OpenCode versi
 - Conductor OSS 3.34.0 runs on the sandbox at `http://localhost:8080` before the agent starts.
 - The official Conductor agent skill (conductor-skills 1.8.0) is installed globally for OpenCode. `CONDUCTOR_SERVER_URL` points at the local server.
 - The workspace is an empty folder. No AGENTS.md, CLAUDE.md or other instructions exist on the machine.
+- The model API key reaches the sandbox as a 0600 file that `run_agent.sh` reads into the OpenCode process environment and deletes before the agent starts. (OpenCode 2.4.1's key login needs an interactive terminal.) An agent could still read its own process environment, so every artifact is scrubbed for the exact key value before it leaves core.
 
 ## Runs
 - 3 runs per model, all 6 started at the same time, one prompt each (`prompt.txt`), no follow-up messages.

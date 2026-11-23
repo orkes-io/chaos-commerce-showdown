@@ -7,6 +7,14 @@ RUN="$HOME/run"
 mkdir -p "$RUN"
 cd "$HOME/work" || exit 1
 
+# The model key arrives in ~/.chaos/key (pushed by chaos_prepare). It is exported
+# only for this OpenCode process and the file is deleted before the agent starts.
+case "${MODEL%%/*}" in
+  google)    export GOOGLE_GENERATIVE_AI_API_KEY="$(cat "$HOME/.chaos/key")" ;;
+  anthropic) export ANTHROPIC_API_KEY="$(cat "$HOME/.chaos/key")" ;;
+esac
+rm -rf "$HOME/.chaos"
+
 date -u +%FT%TZ > "$RUN/started_at"
 docker events --format '{{json .}}' > "$RUN/docker-events.jsonl" 2>&1 &
 EV=$!

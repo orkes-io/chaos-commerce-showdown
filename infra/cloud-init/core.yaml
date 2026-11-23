@@ -1,6 +1,10 @@
 #cloud-config
 # core: the pipeline's Conductor (localhost only; reach the UI through an SSH
 # tunnel) plus the Python workers, which `make sync` installs.
+apt:
+  conf: |
+    Acquire::http::Timeout "30";
+    Acquire::Retries "5";
 package_update: true
 packages:
   - git
@@ -13,7 +17,6 @@ packages:
   - python3-pip
   - ca-certificates
   - docker.io
-  - ffmpeg
 
 runcmd:
   - systemctl enable --now docker

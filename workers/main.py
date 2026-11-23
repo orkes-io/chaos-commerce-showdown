@@ -3,7 +3,6 @@
 Start: /srv/chaos/venv/bin/python workers/main.py  (systemd unit installed by `make sync`)
 Env:   CONDUCTOR_SERVER_URL=http://localhost:8080/api, CONDUCTOR_HTTP2_ENABLED=false
 """
-from __future__ import annotations
 
 import json
 import os
@@ -30,7 +29,7 @@ SANDBOX_SCRIPTS = R.REPO / "infra" / "sandbox"
 # --- chaos_runs: fan out one sub-workflow per run --------------------------------
 
 @worker_task(task_definition_name="chaos_plan_fork")
-def plan_fork(runs: list, cap_minutes: int = 90, idle_minutes: int = 10) -> dict:
+def plan_fork(runs: list[dict], cap_minutes: int = 90, idle_minutes: int = 10) -> dict:
     tasks, inputs = [], {}
     for r in runs:
         ref = f"run_{r['run_id'].replace('-', '_')}"
@@ -46,11 +45,11 @@ def plan_fork(runs: list, cap_minutes: int = 90, idle_minutes: int = 10) -> dict
 def prepare(sandbox: str, model: str, run_id: str):
     ready = R.sh(sandbox, "test -f /var/lib/chaos-ready && curl -sf http://localhost:8080/api/metadata/workflow >/dev/null && echo yes || echo no").strip()
     if ready != "yes":
-        return TaskInProgress(callback_after=30, output={"status": "waiting for cloud-init"})
+        return TaskInProgress(callback_after_seconds=30, output={"status": "waiting for cloud-init"})
     provider = R.provider_of(model)
-    # Store the model key in OpenCode's own credential store (not the shell env).
-    R.sh(sandbox, f"opencode auth login {provider} --method key", stdin=R.read_key(provider) + "\n", timeout=120)
-    check = R.sh(sandbox, "opencode auth list 2>&1 | head -20", check=False)
+    # The key goes to a 0600 file that run_agent.sh reads into the OpenCode process env and
+    # deletes before the agent starts. (`opencode auth login --method key` needs a TTY in 2.4.1.)
+    R.sh(sandbox, "umask 077; mkdir -p ~/.chaos && cat > ~/.chaos/key", stdin=R.read_key(provider))
     R.sh(sandbox, "cat > ~/prompt.txt", stdin=(R.REPO / "prereg" / "prompt.txt").read_text())
     for script in ("run_agent.sh", "collect.sh"):
         R.put(sandbox, SANDBOX_SCRIPTS / script, f"~/{script}")
@@ -59,7 +58,7 @@ def prepare(sandbox: str, model: str, run_id: str):
                              "echo conductor_image=$(docker inspect --format '{{.Config.Image}}' conductor); "
                              "echo skill=$(ls ~/.agents/skills 2>/dev/null | tr '\\n' ' ')")
     return {"run_id": run_id, "versions": dict(l.split("=", 1) for l in versions.split("\n") if "=" in l),
-            "auth_ok": provider in check.lower()}
+            "key_pushed": True}
 
 
 @worker_task(task_definition_name="chaos_start")
@@ -74,7 +73,7 @@ def wait(sandbox: str):
     out = R.sh(sandbox, "if [ -f ~/run/done ]; then echo DONE $(cat ~/run/exit_code) $(cat ~/run/ended_by); "
                         "else echo RUNNING $(stat -c %s ~/run/events.jsonl 2>/dev/null || echo 0); fi").split()
     if out[0] != "DONE":
-        return TaskInProgress(callback_after=60, output={"event_bytes": int(out[1]) if len(out) > 1 else 0})
+        return TaskInProgress(callback_after_seconds=60, output={"event_bytes": int(out[1]) if len(out) > 1 else 0})
     return {"exit_code": int(out[1]), "ended_by": out[2]}
 
 
@@ -91,8 +90,7 @@ def collect(sandbox: str, run_id: str, model: str) -> dict:
     with tarfile.open(raw / "run" / "workspace.tgz") as t:
         t.extractall(raw / "run", filter="data")
     (raw / "run" / "workspace.tgz").unlink()
-    # Remove the model key from the sandbox now that the session is exported.
-    R.sh(sandbox, f"opencode auth logout {R.provider_of(model)} >/dev/null 2>&1; true", check=False)
+    R.sh(sandbox, "rm -rf ~/.chaos", check=False)  # in case the run never started
 
     m = metrics.compute(raw / "run", model)
     (raw / "run" / "metrics.json").write_text(json.dumps(m, indent=2))

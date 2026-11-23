@@ -6,8 +6,9 @@ RUN="$HOME/run"
 mkdir -p "$RUN/conductor" "$RUN/env"
 cd "$HOME" || exit 1
 
-# OpenCode session (one per sandbox)
-opencode session list --format json > "$RUN/sessions.json" 2>> "$RUN/collect.err"
+# OpenCode session (one per sandbox; sessions are listed per project directory)
+cd "$HOME/work" || exit 1
+opencode session list --standalone --format json > "$RUN/sessions.json" 2>> "$RUN/collect.err"
 SID=$(python3 - "$RUN/sessions.json" <<'EOF'
 import json, sys
 try:
@@ -21,10 +22,10 @@ print(ids[0] if ids else "")
 EOF
 )
 if [ -n "$SID" ]; then
-  opencode session export "$SID" > "$RUN/session.raw.json" 2>> "$RUN/collect.err"
-  opencode session export "$SID" --sanitize > "$RUN/session.json" 2>> "$RUN/collect.err"
+  opencode session export --standalone "$SID" > "$RUN/session.raw.json" 2>> "$RUN/collect.err"
+  opencode session export --standalone --sanitize "$SID" > "$RUN/session.json" 2>> "$RUN/collect.err"
 fi
-opencode stats --json > "$RUN/stats.json" 2>> "$RUN/collect.err"
+cd "$HOME" || exit 1
 cp -r "$HOME/.local/share/opencode/log" "$RUN/opencode-log" 2>/dev/null
 
 # Conductor state the agent left behind

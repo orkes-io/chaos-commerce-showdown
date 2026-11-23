@@ -1,5 +1,9 @@
 #cloud-config
 # One sandbox = one agent run. Identical for both models.
+apt:
+  conf: |
+    Acquire::http::Timeout "30";
+    Acquire::Retries "5";
 package_update: true
 packages:
   - git
@@ -30,6 +34,7 @@ runcmd:
   - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
   - apt-get install -y nodejs
   - npm install -g @opencode/cli@${opencode_version} @conductor-oss/conductor-cli@${conductor_cli_version}
+  - bash -c 'cd "$(npm root -g)/@opencode/cli" && node ./postinstall.mjs'
   - mkdir -p /home/ubuntu/.config/opencode /home/ubuntu/work
   - cp /etc/chaos/opencode.json /home/ubuntu/.config/opencode/opencode.json
   - chown -R ubuntu:ubuntu /home/ubuntu

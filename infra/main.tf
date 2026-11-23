@@ -106,8 +106,10 @@ resource "aws_instance" "core" {
     role = "core"
   }
 
+  # Sandboxes are disposable: a cloud-init change applies to new ones and never
+  # restarts a sandbox that is mid-run.
   lifecycle {
-    ignore_changes = [ami]
+    ignore_changes = [ami, user_data]
   }
 }
 
@@ -142,7 +144,9 @@ resource "aws_instance" "sandbox" {
     run  = each.key
   }
 
+  # Sandboxes are disposable: a cloud-init change applies to new ones and never
+  # restarts a sandbox that is mid-run.
   lifecycle {
-    ignore_changes = [ami]
+    ignore_changes = [ami, user_data]
   }
 }
