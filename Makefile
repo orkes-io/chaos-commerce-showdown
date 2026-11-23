@@ -136,3 +136,16 @@ deploy:
 	$(MAKE) outputs
 	python3 scripts/deploy_core.py
 	cd infra && terraform output -json function_urls | python3 -c 'import json,sys,subprocess; u=json.load(sys.stdin); subprocess.run(["gh","workflow","run","pages.yml","-R","orkes-io/chaos-commerce-showdown","-f",f"neon_api={u[\"neon\"]}","-f",f"fable_api={u[\"fable\"]}"], check=True); print("pages build started")'
+
+# --- Demo walkthroughs (human-paced, for the post and social) ---------------
+# make demo RUN=neon-r2        record runs/<run>/demo/walkthrough.webm on core and pull it
+# make demo-clips RUN=neon-r2  convert to MP4 (H.264) locally
+.PHONY: demo demo-clips
+demo:
+	$(RSYNC) eval/ chaos-core:/srv/chaos/repo/eval/
+	$(SSH) chaos-core 'cd /srv/chaos/repo && CHAOS_HOME=/srv/chaos /srv/chaos/venv/bin/python eval/demo.py $(RUN) $(RUN)'
+	mkdir -p runs/$(RUN)/demo && $(RSYNC) chaos-core:/srv/chaos/repo/runs/$(RUN)/demo/ ./runs/$(RUN)/demo/
+
+demo-clips:
+	ffmpeg -loglevel error -y -i runs/$(RUN)/demo/walkthrough.webm -c:v libx264 -pix_fmt yuv420p -crf 23 -movflags +faststart runs/$(RUN)/demo/walkthrough.mp4
+	@echo "runs/$(RUN)/demo/walkthrough.mp4"
