@@ -58,7 +58,7 @@ import json, sys
 names = json.load(open(".state/hosts.json"))["sandboxes"]
 pilot = sys.argv[1] == "pilot"
 only = set(sys.argv[4].split()) if len(sys.argv) > 4 and sys.argv[4].strip() else None
-models = {"neon": "google/gemini-4-neon#high", "fable": "anthropic/claude-fable-5-2#high"}
+models = {"neon": "google/gemini-4-neon#high", "fable": "anthropic/claude-fable-5-2#high", "carbon": "google/gemini-4-carbon#medium"}
 runs = []
 for n in sorted(names):
     if n.startswith("pilot-") != pilot or (only and n not in only):
@@ -136,7 +136,7 @@ deploy:
 	cd infra && terraform apply -input=false -auto-approve
 	$(MAKE) outputs
 	python3 scripts/deploy_core.py
-	cd infra && terraform output -json function_urls | python3 -c 'import json,sys,subprocess; u=json.load(sys.stdin); subprocess.run(["gh","workflow","run","pages.yml","-R","orkes-io/chaos-commerce-showdown","-f",f"neon_api={u[\"neon\"]}","-f",f"fable_api={u[\"fable\"]}"], check=True); print("pages build started")'
+	python3 scripts/pages_trigger.py
 
 # --- Demo walkthroughs (human-paced, for the post and social) ---------------
 # make demo RUN=neon-r2        record runs/<run>/demo/walkthrough.webm on core and pull it

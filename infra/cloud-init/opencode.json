@@ -3,18 +3,39 @@
   "update": "disable",
   "share": "disabled",
   "permissions": [
-    { "action": "*", "resource": "*", "effect": "allow" },
-    { "action": "question", "resource": "*", "effect": "deny" }
+    {
+      "action": "*",
+      "resource": "*",
+      "effect": "allow"
+    },
+    {
+      "action": "question",
+      "resource": "*",
+      "effect": "deny"
+    }
   ],
   "providers": {
     "google": {
       "models": {
-        "gemini-4-neon": { "limit": { "output": 64000 } }
+        "gemini-4-neon": {
+          "limit": {
+            "output": 64000
+          }
+        },
+        "gemini-4-carbon": {
+          "limit": {
+            "output": 64000
+          }
+        }
       }
     },
     "anthropic": {
       "models": {
-        "claude-fable-5-2": { "limit": { "output": 64000 } }
+        "claude-fable-5-2": {
+          "limit": {
+            "output": 64000
+          }
+        }
       }
     }
   }

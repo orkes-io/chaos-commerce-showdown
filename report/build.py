@@ -13,7 +13,7 @@ REPO = Path(__file__).resolve().parent.parent
 RUNS = REPO / "runs"
 OUT = REPO / "report"
 CHAOS = Path("/srv/chaos")
-MODEL_NAME = {"neon": "Gemini 4 Neon", "fable": "Fable 5.2"}
+MODEL_NAME = {"neon": "Gemini 4 Neon", "carbon": "Gemini 4 Carbon", "fable": "Fable 5.2"}
 PRICE_NUM = re.compile(r"-?\d[\d,]*(?:\.\d+)?")
 
 
@@ -122,14 +122,14 @@ def main():
         lines.append(f"| {r['run']} | {r['model']} | {r['functional_of_12']} | {j} | {r.get('human_ux') or '–'} / "
                      f"{r.get('human_creativity') or '–'} | {r['ended_by']} | {r['active_minutes']} | ${r['cost_usd']} |")
     lines += ["", "## Per model: median (range) over 3 runs", "",
-              "| Metric | Gemini 4 Neon | Fable 5.2 |", "|---|---|---|"]
+              "| Metric | Gemini 4 Neon | Gemini 4 Carbon | Fable 5.2 |", "|---|---|---|---|"]
     for key, name in [("functional_of_12", "Functional score /12"), ("judge_engineering_quality", "Judge: engineering"),
                       ("judge_product_ux", "Judge: product and UX"), ("judge_creativity_delight", "Judge: creativity"),
                       ("judge_conductor_usage", "Judge: Conductor usage"), ("human_ux", "Human: UX"),
                       ("human_creativity", "Human: creativity"), ("active_minutes", "Active minutes"),
                       ("steps", "Model steps"), ("output_tokens", "Output tokens"), ("cost_usd", "Cost (USD)")]:
-        by = {m: [r.get(key) for r in rows if r["model"] == m] for m in ("Gemini 4 Neon", "Fable 5.2")}
-        lines.append(f"| {name} | {med_range(by['Gemini 4 Neon'])} | {med_range(by['Fable 5.2'])} |")
+        by = {m: [r.get(key) for r in rows if r["model"] == m] for m in ("Gemini 4 Neon", "Gemini 4 Carbon", "Fable 5.2")}
+        lines.append(f"| {name} | {med_range(by['Gemini 4 Neon'])} | {med_range(by['Gemini 4 Carbon'])} | {med_range(by['Fable 5.2'])} |")
     (OUT / "tables.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
 
