@@ -20,7 +20,7 @@ KEY_GOOGLE ?= ~/geminitempkey.txt
 KEY_ANTHROPIC ?= ~/nlclaude.txt
 SSH_KEY ?= ~/.ssh/chaos_commerce
 KEY_OPENAI ?= ~/openai-judge.key
-JUDGE_MODEL ?= gpt-6.1-sol
+JUDGE_MODEL ?= gpt-6.2-sol
 CAP ?= 90
 IDLE ?= 10
 

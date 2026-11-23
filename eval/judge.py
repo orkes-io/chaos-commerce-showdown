@@ -55,7 +55,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("run_id")
     ap.add_argument("label")
-    ap.add_argument("--model", default=os.environ.get("JUDGE_MODEL", "gpt-6.1-sol"))
+    ap.add_argument("--model", default=os.environ.get("JUDGE_MODEL", "gpt-6.2-sol"))
     ap.add_argument("--passes", type=int, default=3)
     a = ap.parse_args()
     from openai import OpenAI
