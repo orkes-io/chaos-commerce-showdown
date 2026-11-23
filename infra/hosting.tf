@@ -60,11 +60,8 @@ resource "aws_lambda_function_url" "store" {
   for_each           = local.stores
   function_name      = aws_lambda_function.store[each.key].function_name
   authorization_type = "NONE"
-  cors {
-    allow_origins = [var.pages_origin]
-    allow_methods = ["*"]
-    allow_headers = ["*"]
-  }
+  # No cors block: both stores send their own CORS headers, and an AWS-level rule
+  # on top produces duplicate Access-Control-Allow-Origin headers that browsers reject.
 }
 
 resource "aws_lambda_permission" "url_invoke" {

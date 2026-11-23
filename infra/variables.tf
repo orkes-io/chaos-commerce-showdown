@@ -71,9 +71,3 @@ variable "lambda_role_name" {
   type        = string
   default     = ""
 }
-
-variable "pages_origin" {
-  description = "Allowed origin for the Lambda CORS rule. The store APIs are public and use no credentials, and private Pages sites get their own domain, so the default allows any origin."
-  type        = string
-  default     = "*"
-}
