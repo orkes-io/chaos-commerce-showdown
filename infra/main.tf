@@ -51,6 +51,19 @@ resource "aws_security_group" "core" {
     cidr_blocks = [var.admin_cidr]
   }
 
+  # Hosting only: Caddy's HTTPS proxy (and ACME on :80). Kept inline, because a
+  # separate aws_security_group_rule is wiped whenever this group is re-applied.
+  dynamic "ingress" {
+    for_each = var.hosting_enabled ? [80, 443] : []
+    content {
+      description = "Caddy (ACME + store API proxy)"
+      from_port   = ingress.value
+      to_port     = ingress.value
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
