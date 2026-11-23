@@ -14,7 +14,7 @@ See [`report/tables.md`](report/tables.md). ⟦filled in after scoring⟧
 
 ## The six stores
 
-Each model built three of these from the same four-sentence brief. They were labeled A to F, in random order, for the blind human rating. The rating is done, so each label now shows which model built that store.
+Each model built three of these from the same four-sentence brief. Gemini 4 Carbon (Stores G to I) was added after the first six were rated. They were labeled A to F, in random order, for the blind human rating. The rating is done, so each label now shows which model built that store.
 
 | | Storefront | A return reaching its decision |
 |---|---|---|
@@ -24,6 +24,9 @@ Each model built three of these from the same four-sentence brief. They were lab
 | **Store D**<br>Fable 5.2 (`fable-r3b`) | ![Store D catalog](docs/gallery/store-d-catalog.jpg) | ![Store D return decision](docs/gallery/store-d-return.jpg) |
 | **Store E**<br>Fable 5.2 (`fable-r1b`) | ![Store E catalog](docs/gallery/store-e-catalog.jpg) | ![Store E return decision](docs/gallery/store-e-return.jpg) |
 | **Store F**<br>Gemini 4 Neon (`neon-r1`) | ![Store F catalog](docs/gallery/store-f-catalog.jpg) | ![Store F return decision](docs/gallery/store-f-return.jpg) |
+| **Store G**<br>Gemini 4 Carbon (`carbon-r3`) | ![Store G catalog](docs/gallery/store-g-catalog.jpg) | ![Store G return decision](docs/gallery/store-g-return.jpg) |
+| **Store H**<br>Gemini 4 Carbon (`carbon-r2`) | ![Store H catalog](docs/gallery/store-h-catalog.jpg) | ![Store H return decision](docs/gallery/store-h-return.jpg) |
+| **Store I**<br>Gemini 4 Carbon (`carbon-r1`) | ![Store I catalog](docs/gallery/store-i-catalog.jpg) | ![Store I return decision](docs/gallery/store-i-return.jpg) |
 
 ## How it fits together
 

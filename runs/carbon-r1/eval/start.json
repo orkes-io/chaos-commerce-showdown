@@ -1,0 +1,7 @@
+{
+  "store_up": true,
+  "start_seconds": "26",
+  "workflows_registered": "2",
+  "start_cmd": "npm install && npm start",
+  "assisted": true
+}

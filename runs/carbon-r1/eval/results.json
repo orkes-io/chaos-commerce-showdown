@@ -31,10 +31,10 @@
       "height": 34.34375
     },
     "last": {
-      "x": 373.7668151855469,
-      "y": 610.046875,
-      "width": 207.56008911132812,
-      "height": 55.59375
+      "x": 486.04144287109375,
+      "y": 596.8065795898438,
+      "width": 307.2764892578125,
+      "height": 66.0743408203125
     }
   },
   "F6_checkout_ui": true,
@@ -82,7 +82,7 @@
     {
       "workflow": "chaos_checkout_workflow",
       "status": "COMPLETED",
-      "id": "eb2151bb-5faf-4a4e-903d-ad39b560d94e",
+      "id": "8ee429f9-2249-4583-9e7a-2f0b0d345fbb",
       "tasks": [
         {
           "ref": "reserve_inventory_ref",
@@ -180,7 +180,8 @@
     },
     {
       "step": 1,
-      "ok": true,
+      "ok": false,
+      "error": "Locator.click: Timeout 3000ms exceeded.\nCall log:\n  - waiting for locator(\"button:has-text('Fill Perfect Contrition')\").first\n    - locator resolved to <button type=\"button\" class=\"btn-secondary\">\ud83d\ude07 Fill Perfect Contrition (Miracle Refund)</button>\n  - attempting click action\n    - waiting for elemen",
       "click": "button:has-text('Fill Perfect Contrition')",
       "optional": true
     },
@@ -205,7 +206,7 @@
     {
       "workflow": "chaos_return_workflow",
       "status": "COMPLETED",
-      "id": "367d9d9c-f5c9-4ba5-aae9-7f864c5e4f01",
+      "id": "515e5405-99b1-472d-8407-9a078d8eb557",
       "tasks": [
         {
           "ref": "pointless_checks_fork_ref",
@@ -300,7 +301,7 @@
     {
       "step": 0,
       "ok": false,
-      "error": "Page.goto: net::ERR_CONNECTION_RESET at http://127.0.0.1:55827/\nCall log:\n  - navigating to \"http://127.0.0.1:55827/\", waiting until \"domcontentloaded\"\n",
+      "error": "Page.goto: net::ERR_CONNECTION_RESET at http://127.0.0.1:47533/\nCall log:\n  - navigating to \"http://127.0.0.1:47533/\", waiting until \"domcontentloaded\"\n",
       "goto": "/"
     }
   ]

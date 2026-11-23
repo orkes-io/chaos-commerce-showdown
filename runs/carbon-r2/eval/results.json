@@ -23,7 +23,7 @@
     "\u2605\u2605\u2606\u2606\u2606 (2/5)\n\ud83d\udc90 2\u2605 ECSTATIC PRAISE\nby DuchessOfLint \u2022 Repeat Buyer \u2022 2 weeks ago"
   ],
   "F5_dodge": {
-    "position_changes": 1,
+    "position_changes": 3,
     "first": {
       "x": 829.625,
       "y": 436.375,
@@ -31,8 +31,8 @@
       "height": 37.125
     },
     "last": {
-      "x": 921.625,
-      "y": 466.375,
+      "x": 836.625,
+      "y": 454.375,
       "width": 160.140625,
       "height": 37.125
     }
@@ -46,7 +46,8 @@
     },
     {
       "step": 1,
-      "ok": true,
+      "ok": false,
+      "error": "Locator.click: Timeout 3000ms exceeded.\nCall log:\n  - waiting for locator(\"button:has-text('Accept')\").first\n    - locator resolved to <button type=\"button\" class=\"cookie-btn accept\">Accept All & Surrender Dignity</button>\n  - attempting click action\n    - waiting for element to be visible, enabled ",
       "click": "button:has-text('Accept')",
       "optional": true
     },
@@ -113,7 +114,7 @@
     {
       "workflow": "chaos_checkout_workflow",
       "status": "COMPLETED",
-      "id": "901f9e31-a09e-4eb1-8a49-d2334e6a85fd",
+      "id": "e2dc6d9c-c58c-46b2-8fe4-4842a56865a5",
       "tasks": [
         {
           "ref": "summarize_cart_items",
@@ -218,7 +219,7 @@
     {
       "workflow": "chaos_return_workflow",
       "status": "COMPLETED",
-      "id": "3813297d-5678-4ddc-9835-c5d7de2351df",
+      "id": "0179679a-586c-4e65-b128-e4ce7103d661",
       "tasks": [
         {
           "ref": "parallel_pointless_inspections",
@@ -319,7 +320,7 @@
     {
       "step": 0,
       "ok": false,
-      "error": "Page.goto: net::ERR_CONNECTION_RESET at http://127.0.0.1:39769/\nCall log:\n  - navigating to \"http://127.0.0.1:39769/\", waiting until \"domcontentloaded\"\n",
+      "error": "Page.goto: net::ERR_SOCKET_NOT_CONNECTED at http://127.0.0.1:43425/\nCall log:\n  - navigating to \"http://127.0.0.1:43425/\", waiting until \"domcontentloaded\"\n",
       "goto": "/"
     }
   ]

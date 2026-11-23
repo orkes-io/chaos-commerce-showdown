@@ -1,0 +1,66 @@
+{
+  "label": "Store I",
+  "model": "gpt-6.2-sol",
+  "passes": [
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The TypeScript workspaces, separate workflow and worker code, configurable deployment, and branch-covering integration tests are strong, but the public order and execution endpoints lack access controls and the synchronous Lambda path leaves little room for recovery."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "The storefront is visually consistent and the tested checkout and return flows gave clear feedback, though floating widgets obscure some content and the optional return autofill did not respond in time."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "The pre-melted ice cube, coupon that adds a yacht-fuel surcharge, raccoon shipping, and mandatory apology to Forklift #4 make the parody feel like one coherent store rather than a collection of unrelated gags."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both tested workflows completed in Conductor and used separate checks, bounded loops, branching, and workers to produce the receipt and verdict, with retries and timeouts configured but no workflow-level recovery path for terminal failures."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The TypeScript workspaces separate the frontend, API, workers, and workflow definitions, with externalized configuration and meaningful integration tests, but the unauthenticated order history exposes checkout contact details and the Lambda reviews rely on instance-local storage."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "The catalog is easy to scan, checkout leads to a clear receipt, and the tested return reached a visible decision, though floating overlays obscure some content and the optional return autofill timed out."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "The store carries its satire well beyond the brief, from coupon codes that raise prices and raccoon delivery to factory-air audits and legally sufficient forklift flattery."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Verified executions show both workflows doing substantive work through distinct checks, workers, bounded loops, and branching, with retries and timeouts configured but no workflow-level recovery path that ensures a receipt or verdict after a terminal failure."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The TypeScript workspaces separate the API, workers, and workflow definitions, with externalized configuration and meaningful integration tests, but weak input validation and unauthenticated access to order histories and execution traces keep it short of a 5."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "The storefront is visually consistent and the tested flows reached a clear receipt and return verdict, though floating overlays obscure some content and the optional return autofill timed out."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "Reverse coupons, raccoon shipping, a fee for naming the previous fee, and legally sufficient forklift flattery extend the same sharp retail satire from the catalog through checkout and returns."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both verified executions use Conductor for substantive work through distinct checks, bounded loops, branching, and workers, but failures beyond task retries surface as errors rather than entering a recovery workflow."
+      }
+    }
+  ],
+  "median": {
+    "engineering_quality": 4,
+    "product_ux": 4,
+    "creativity_delight": 5,
+    "conductor_usage": 4
+  }
+}

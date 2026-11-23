@@ -4,5 +4,8 @@
   "C": "neon-r3",
   "D": "fable-r3b",
   "E": "fable-r1b",
-  "F": "neon-r1"
+  "F": "neon-r1",
+  "G": "carbon-r3",
+  "H": "carbon-r2",
+  "I": "carbon-r1"
 }

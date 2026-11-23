@@ -32,8 +32,8 @@
       "height": 33.4375
     },
     "last": {
-      "x": 841.328125,
-      "y": 309.25,
+      "x": 829.328125,
+      "y": 336.25,
       "width": 182.03125,
       "height": 33.4375
     }
@@ -47,7 +47,8 @@
     },
     {
       "step": 1,
-      "ok": true,
+      "ok": false,
+      "error": "Locator.click: Timeout 3000ms exceeded.\nCall log:\n  - waiting for locator(\"button:has-text('Accept Reluctantly')\").first\n    - locator resolved to <button type=\"button\" class=\"btn btn-sm\">Accept Reluctantly (Sigh Logged)</button>\n  - attempting click action\n    - waiting for element to be visible, e",
       "click": "button:has-text('Accept Reluctantly')",
       "optional": true
     },
@@ -59,7 +60,7 @@
     {
       "step": 3,
       "ok": false,
-      "error": "Locator.click: Timeout 3000ms exceeded.\nCall log:\n  - waiting for locator(\"[data-testid=open-cart-btn]\").first\n    - locator resolved to <button type=\"button\" class=\"btn btn-primary\" data-testid=\"open-cart-btn\">\ud83d\uded2 Regret Basket (1)</button>\n  - attempting click action\n    2 \u00d7 waiting for element to b",
+      "error": "Locator.click: Timeout 3000ms exceeded.\nCall log:\n  - waiting for locator(\"[data-testid=open-cart-btn]\").first\n    - locator resolved to <button type=\"button\" class=\"btn btn-primary\" data-testid=\"open-cart-btn\">\ud83d\uded2 Regret Basket (1)</button>\n  - attempting click action\n    - waiting for element to be ",
       "click": "[data-testid=open-cart-btn]",
       "optional": true
     },
@@ -84,7 +85,7 @@
     {
       "workflow": "chaos_checkout_workflow",
       "status": "COMPLETED",
-      "id": "7103bb5f-7ac4-4206-967b-bd7292bac009",
+      "id": "59d7741d-bb79-4faa-a5b6-93d7915dd22c",
       "tasks": [
         {
           "ref": "init_checkout_state_ref",
@@ -189,7 +190,7 @@
     {
       "workflow": "chaos_return_workflow",
       "status": "COMPLETED",
-      "id": "231ebcc2-fbd4-4e1a-bce3-be996191349d",
+      "id": "5461d178-d274-4caa-b9ad-9e2c2afb96a9",
       "tasks": [
         {
           "ref": "init_return_dossier_ref",
@@ -284,7 +285,7 @@
     {
       "step": 0,
       "ok": false,
-      "error": "Page.goto: net::ERR_SOCKET_NOT_CONNECTED at http://127.0.0.1:42083/\nCall log:\n  - navigating to \"http://127.0.0.1:42083/\", waiting until \"domcontentloaded\"\n",
+      "error": "Page.goto: net::ERR_SOCKET_NOT_CONNECTED at http://127.0.0.1:39089/\nCall log:\n  - navigating to \"http://127.0.0.1:39089/\", waiting until \"domcontentloaded\"\n",
       "goto": "/"
     }
   ]

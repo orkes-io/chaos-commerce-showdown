@@ -1,0 +1,66 @@
+{
+  "label": "Store H",
+  "model": "gpt-6.2-sol",
+  "passes": [
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The frontend, API, and workflow definitions are clearly separated, with externalized configuration and meaningful integration tests, but Lambda state is not shared or durable and the order listing exposes customer details without authentication."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "The storefront is visually consistent and both tested flows completed with clear status feedback, but the sticky cookie banner covers content and the detailed receipt and verdict can appear above the shopper\u2019s viewport."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "The parody extends well beyond the brief with bottled mall air, third-letter sorting, coupons that raise prices, and a returns tribunal that penalizes making eye contact with cardboard."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both verified workflows use distinct native tasks to calculate the invoice and decide returns, with parallel checks, branching, a bounded loop, and workflow timeouts, but they lack task-level retry policies and a recovery path for failed executions."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The frontend, API, and workflow definitions are clearly separated, with environment-based configuration and meaningful integration tests, but Lambda state is not durable across instances and persistence errors are silently ignored."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "Consistent styling, clear navigation, and visible success feedback make both tested flows usable, but the cookie banner covers content and the receipt and verdict appear above the current scroll position."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "Third-letter sorting, backfiring coupons, bottled mall air, and espresso-stamped return paperwork turn the same fictional retailer\u2019s contempt for its customers into consistently funny interactions."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both verified Conductor runs perform substantive work through native tasks, including parallel checks, invoice calculation, and a bounded verdict loop, but task-level retries and recovery paths are missing."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The frontend, API, and workflow definitions are cleanly separated, configuration is externalized, and the integration suite covers meaningful cases, but Lambda state is neither durable nor shared and the public orders endpoint exposes customer details."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "The storefront is visually consistent and both tested flows give clear success feedback, but the fixed cookie banner obscures content and the detailed receipt and verdict can appear above the shopper\u2019s current scroll position."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "Third-letter sorting, bottled mall air, coupons that raise prices, and a return tribunal that grades apologies to a forklift make the store\u2019s absurdity specific, funny, and consistent."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both verified executions use native Conductor tasks to do substantive work through parallel checks, branching, and a bounded return loop, but the workflows lack task-level retry policies and explicit recovery paths."
+      }
+    }
+  ],
+  "median": {
+    "engineering_quality": 4,
+    "product_ux": 4,
+    "creativity_delight": 5,
+    "conductor_usage": 4
+  }
+}

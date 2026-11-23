@@ -1,0 +1,66 @@
+{
+  "label": "Store G",
+  "model": "gpt-6.2-sol",
+  "passes": [
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The frontend, API, workers, and workflow definitions are clearly separated, with external configuration and meaningful end-to-end checks, but weak input validation, public access to order data, and ephemeral Lambda storage limit deployment readiness."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "The storefront has a consistent visual style, and the tested flows reached an itemized checkout confirmation and a return verdict, though the fixed cookie and support overlays obscure catalog content."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "Backfiring coupons, a fee for calculating other fees, emotionally distressed packaging, and refunds measured in business Tuesdays make the satire part of how the store works, not just what it says."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Verified executions show distinct worker-backed steps, parallel checks, branching, a bounded stamping loop, and configured retries and timeouts, but the recovery workflow only records failures rather than completing the checkout or deciding the return."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The code separates the frontend, API, workers, and workflow definitions, with externalized configuration and meaningful end-to-end tests, but weak input validation, unauthenticated order history, and instance-local Lambda storage limit deployment readiness."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "The store has a consistent visual style, a clear itemized checkout receipt, and a direct route from confirmation to returns, but dense cards and floating overlays sometimes obscure content and controls."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "Backfiring coupons, a fee for calculating fees, a blindfolded pigeon courier, and a cardboard-box trauma audit carry the same sharp retail satire from the catalog through checkout and returns."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Verified executions show that distinct workers, parallel checks, branching, and bounded stamping perform the actual checkout and return work with configured retries and timeouts, but the failure workflow only records an incident rather than completing the order or issuing a decision."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 3,
+        "reason": "The code separates workflows, workers, and API adapters, externalizes configuration, and includes meaningful end-to-end tests, but weak input validation, unauthenticated order records containing customer emails, and instance-local Lambda storage leave significant gaps."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "The consistent visual style, itemized checkout confirmation, and direct handoff to returns make the tested flows easy to follow, though the fixed cookie and support overlays obscure catalog content."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "Backfiring coupons, a fee for calculating fees, quantum freight that collapses into Hoboken, and a cardboard trauma tribunal turn the parody into a running joke across the whole store."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both verified executions perform substantive work through distinct tasks, parallel checks, branches, and a bounded stamping loop, with retries and timeouts configured, but the failure workflow records an incident rather than completing the checkout or issuing a return decision."
+      }
+    }
+  ],
+  "median": {
+    "engineering_quality": 4,
+    "product_ux": 4,
+    "creativity_delight": 5,
+    "conductor_usage": 4
+  }
+}
