@@ -15,12 +15,21 @@ RUN="$HOME/run"
 ENDED_BY=finished
 
 turn_ended() {
-  tail -n 1 "$RUN/events.jsonl" 2>/dev/null | python3 -c '
+  # The turn has ended if the last real event is a step_finish that isn't a tool call.
+  # OpenCode emits `background_wait` after that when a background job (e.g. a dev
+  # server) holds the run open, so skip those when looking for the last event.
+  tail -n 5 "$RUN/events.jsonl" 2>/dev/null | python3 -c '
 import json, sys
-try:
-    e = json.loads(sys.stdin.read())
-except Exception:
+events = []
+for line in sys.stdin:
+    try:
+        events.append(json.loads(line))
+    except Exception:
+        pass
+events = [e for e in events if e.get("type") != "background_wait"]
+if not events:
     print("no"); sys.exit()
+e = events[-1]
 reason = (e.get("part") or {}).get("reason")
 print("yes" if e.get("type") == "step_finish" and reason not in ("tool-calls", "tool_calls") else "no")'
 }
