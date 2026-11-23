@@ -1,0 +1,10 @@
+{
+  "name": "chaos-commerce-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chaos Commerce API: a dependency-free AWS Lambda handler that runs checkout and returns as Conductor workflows.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  }
+}

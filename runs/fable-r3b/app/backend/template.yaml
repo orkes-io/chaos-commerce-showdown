@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Chaos Commerce API - one Lambda function behind an API Gateway HTTP API.
+
+Parameters:
+  ConductorServerUrl:
+    Type: String
+    Description: Conductor API base URL the function can reach, e.g. https://conductor.example.com/api
+    AllowedPattern: '^https?://.+'
+  AllowedOrigin:
+    Type: String
+    Default: '*'
+    Description: Origin allowed to call the API, e.g. https://your-name.github.io ("*" allows any site)
+  ConductorAuthKey:
+    Type: String
+    Default: ''
+    NoEcho: true
+    Description: Conductor access key id (leave empty for a server without authentication)
+  ConductorAuthSecret:
+    Type: String
+    Default: ''
+    NoEcho: true
+    Description: Conductor access key secret (leave empty for a server without authentication)
+
+Resources:
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Chaos Commerce API (checkout and returns via Conductor workflows)
+      CodeUri: .
+      Handler: src/lambda.handler
+      Runtime: nodejs22.x
+      Architectures:
+        - arm64
+      MemorySize: 256
+      # Just under API Gateway's 30 s limit. A checkout waits up to
+      # CHECKOUT_WAIT_MS for its workflow, plus Conductor calls of up to 7 s (12 s to start it).
+      Timeout: 29
+      Environment:
+        Variables:
+          CONDUCTOR_SERVER_URL: !Ref ConductorServerUrl
+          CONDUCTOR_AUTH_KEY: !Ref ConductorAuthKey
+          CONDUCTOR_AUTH_SECRET: !Ref ConductorAuthSecret
+          ALLOWED_ORIGIN: !Ref AllowedOrigin
+          CHECKOUT_WAIT_MS: '12000'
+      Events:
+        # Catch-all route. CORS, including OPTIONS preflights, is answered by
+        # the function itself, so no CorsConfiguration is set on the API.
+        Api:
+          Type: HttpApi
+
+Outputs:
+  ApiBaseUrl:
+    Description: Put this in the storefront's config.js (apiBaseUrl) / the CHAOS_API_BASE_URL repository variable
+    Value: !Sub 'https://${ServerlessHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}'

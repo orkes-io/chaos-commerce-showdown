@@ -1,0 +1,51 @@
+name: Deploy storefront to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/deploy-frontend.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # The published config.js points the storefront at the deployed backend.
+      # Set the repository variable CHAOS_API_BASE_URL to the ApiBaseUrl output
+      # of the backend stack (Settings > Secrets and variables > Actions > Variables).
+      - name: Point the storefront at the backend
+        env:
+          CHAOS_API_BASE_URL: ${{ vars.CHAOS_API_BASE_URL }}
+        run: |
+          if [ -z "$CHAOS_API_BASE_URL" ]; then
+            echo "::error::Repository variable CHAOS_API_BASE_URL is not set."
+            exit 1
+          fi
+          node -e '
+            const url = process.env.CHAOS_API_BASE_URL.trim().replace(/\/+$/, "");
+            new URL(url);
+            require("fs").writeFileSync("frontend/config.js", "window.CHAOS_CONFIG = " + JSON.stringify({ apiBaseUrl: url }) + ";\n");
+          '
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend
+      - id: deployment
+        uses: actions/deploy-pages@v4

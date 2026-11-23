@@ -1,0 +1,102 @@
+{
+  "name": "chaos_checkout",
+  "description": "Chaos Commerce checkout: prices the cart with absurd fees, argues with a payment gateway that always gives in (max 4 attempts), packs the parcels and confirms the order. Always completes.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "restartable": true,
+  "timeoutSeconds": 120,
+  "timeoutPolicy": "ALERT_ONLY",
+  "inputParameters": [
+    "checkoutId",
+    "customerName",
+    "items",
+    "chaosSeed"
+  ],
+  "tasks": [
+    {
+      "name": "open_order",
+      "taskReferenceName": "open_order",
+      "type": "INLINE",
+      "inputParameters": {
+        "evaluatorType": "graaljs",
+        "expression": "(function(){\nfunction toInt(value, fallback) {\n  return typeof value === 'number' && isFinite(value) ? Math.trunc(value) : fallback;\n}\nfunction clamp(value, min, max) {\n  return value < min ? min : value > max ? max : value;\n}\nfunction text(value, fallback) {\n  return typeof value === 'string' && value.trim().length > 0 ? value.trim().slice(0, 240) : fallback;\n}\nfunction listLength(value) {\n  return value && typeof value !== 'string' && typeof value.length === 'number' ? value.length : 0;\n}\nfunction mix(seed, salt) {\n  var x = (Math.abs(toInt(seed, 0)) % 2147483647) + salt * 7919 + 17;\n  x = (x * 48271) % 2147483647;\n  x = (x * 48271) % 2147483647;\n  return x;\n}\nreturn (function openOrder($) {\n  var name = text($.customerName, 'Valued Stranger').slice(0, 80);\n  var misspelt = name;\n  if (name.length >= 3) {\n    var at = mix($.seed, 3) % (name.length - 1);\n    misspelt = name.slice(0, at) + name.charAt(at + 1) + name.charAt(at) + name.slice(at + 2);\n  }\n  var id = text($.workflowId, '').replace(/[^A-Za-z0-9]/g, '').slice(0, 8).toUpperCase();\n  return {\n    orderNumber: 'CC-' + (id || String(mix($.seed, 5) % 100000000)),\n    customerName: name,\n    greeting: 'Dear ' + misspelt + ' (we wrote your name down as best we could)',\n  };\n})($);\n})();",
+        "customerName": "${workflow.input.customerName}",
+        "workflowId": "${workflow.workflowId}",
+        "seed": "${workflow.input.chaosSeed}"
+      }
+    },
+    {
+      "name": "price_order",
+      "taskReferenceName": "price_order",
+      "type": "INLINE",
+      "inputParameters": {
+        "evaluatorType": "graaljs",
+        "expression": "(function(){\nfunction toInt(value, fallback) {\n  return typeof value === 'number' && isFinite(value) ? Math.trunc(value) : fallback;\n}\nfunction clamp(value, min, max) {\n  return value < min ? min : value > max ? max : value;\n}\nfunction text(value, fallback) {\n  return typeof value === 'string' && value.trim().length > 0 ? value.trim().slice(0, 240) : fallback;\n}\nfunction listLength(value) {\n  return value && typeof value !== 'string' && typeof value.length === 'number' ? value.length : 0;\n}\nfunction mix(seed, salt) {\n  var x = (Math.abs(toInt(seed, 0)) % 2147483647) + salt * 7919 + 17;\n  x = (x * 48271) % 2147483647;\n  x = (x * 48271) % 2147483647;\n  return x;\n}\nreturn (function priceOrder($) {\n  var raw = $.items;\n  var count = listLength(raw);\n  var lines = [];\n  var subtotal = 0;\n  var units = 0;\n  for (var i = 0; i < count && lines.length < 25; i++) {\n    var item = raw[i];\n    if (!item) continue;\n    var quantity = clamp(toInt(item.quantity, 0), 0, 99);\n    if (quantity < 1) continue;\n    var unitPrice = clamp(toInt(item.unitPriceCents, 0), 0, 100000000000);\n    var lineTotal = quantity * unitPrice;\n    lines.push({\n      productId: text(item.productId, 'unidentified-item'),\n      name: text(item.name, 'Unidentified Item'),\n      emoji: text(item.emoji, '📦'),\n      quantity: quantity,\n      unitPriceCents: unitPrice,\n      lineTotalCents: lineTotal,\n    });\n    subtotal += lineTotal;\n    units += quantity;\n  }\n\n  var fees = [];\n  if (units === 0) {\n    fees.push({ code: 'NOTHING_HANDLING', label: 'Nothing Handling Fee (you bought nothing; it still needs handling)', amountCents: 999 });\n  } else {\n    fees.push({ code: 'CONVENIENCE', label: 'Convenience Fee (ours, not yours) 7.5%', amountCents: Math.round(subtotal * 0.075) });\n    fees.push({ code: 'GRAVITY', label: 'Gravity Surcharge ($0.37 per item kept on the ground)', amountCents: units * 37 });\n  }\n  fees.push({ code: 'FEE_PROCESSING', label: 'Fee Processing Fee', amountCents: 499 });\n  fees.push({ code: 'LOYALTY', label: 'Loyalty Discount (applied in reverse)', amountCents: 200 });\n  var surprises = [\n    { code: 'TUESDAY', label: 'Tuesday Tax (charged daily)', amountCents: 222 },\n    { code: 'WEAR_AND_TEAR', label: 'Website Wear & Tear', amountCents: 111 },\n    { code: 'SERVER_FEELINGS', label: 'Emotional Support for the Server', amountCents: 350 },\n    { code: 'ROUNDING', label: 'Rounding Error (ours, kept)', amountCents: 1 },\n    { code: 'CART_ALIGNMENT', label: 'Shopping Cart Wheel Alignment', amountCents: 675 },\n  ];\n  fees.push(surprises[mix($.seed, 11) % surprises.length]);\n\n  var feesTotal = 0;\n  for (var f = 0; f < fees.length; f++) feesTotal += fees[f].amountCents;\n\n  return {\n    lines: lines,\n    itemCount: units,\n    subtotalCents: subtotal,\n    fees: fees,\n    feesCents: feesTotal,\n    totalCents: subtotal + feesTotal,\n  };\n})($);\n})();",
+        "items": "${workflow.input.items}",
+        "seed": "${workflow.input.chaosSeed}"
+      }
+    },
+    {
+      "name": "payment_loop",
+      "taskReferenceName": "payment_loop",
+      "type": "DO_WHILE",
+      "evaluatorType": "graaljs",
+      "inputParameters": {
+        "payment_loop": "${payment_loop.output}",
+        "approved": "${attempt_payment.output.result.approved}"
+      },
+      "loopCondition": "(function(){ return $.payment_loop['iteration'] < 4 && $.approved !== true; })();",
+      "loopOver": [
+        {
+          "name": "attempt_payment",
+          "taskReferenceName": "attempt_payment",
+          "type": "INLINE",
+          "inputParameters": {
+            "evaluatorType": "graaljs",
+            "expression": "(function(){\nfunction toInt(value, fallback) {\n  return typeof value === 'number' && isFinite(value) ? Math.trunc(value) : fallback;\n}\nfunction clamp(value, min, max) {\n  return value < min ? min : value > max ? max : value;\n}\nfunction text(value, fallback) {\n  return typeof value === 'string' && value.trim().length > 0 ? value.trim().slice(0, 240) : fallback;\n}\nfunction listLength(value) {\n  return value && typeof value !== 'string' && typeof value.length === 'number' ? value.length : 0;\n}\nfunction mix(seed, salt) {\n  var x = (Math.abs(toInt(seed, 0)) % 2147483647) + salt * 7919 + 17;\n  x = (x * 48271) % 2147483647;\n  x = (x * 48271) % 2147483647;\n  return x;\n}\nreturn (function attemptPayment($) {\n  var attempt = clamp(toInt($.iteration, 1), 1, 99);\n  var approveOn = 1 + (mix($.seed, 1) % 3);\n  if (attempt >= approveOn) {\n    return { attempt: attempt, approved: true, message: 'Approved. The payment gateway got tired of arguing.' };\n  }\n  var declines = [\n    'Declined: card number is too symmetrical.',\n    'Declined: the bank says it has never heard of money.',\n    'Declined: insufficient vibes.',\n    'Declined: gateway timed out while admiring your total.',\n    'Declined: please try the exact same thing again.',\n  ];\n  return { attempt: attempt, approved: false, message: declines[(mix($.seed, 20) + attempt) % declines.length] };\n})($);\n})();",
+            "iteration": "${payment_loop.output.iteration}",
+            "seed": "${workflow.input.chaosSeed}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "settle_payment",
+      "taskReferenceName": "settle_payment",
+      "type": "INLINE",
+      "inputParameters": {
+        "evaluatorType": "graaljs",
+        "expression": "(function(){\nfunction toInt(value, fallback) {\n  return typeof value === 'number' && isFinite(value) ? Math.trunc(value) : fallback;\n}\nfunction clamp(value, min, max) {\n  return value < min ? min : value > max ? max : value;\n}\nfunction text(value, fallback) {\n  return typeof value === 'string' && value.trim().length > 0 ? value.trim().slice(0, 240) : fallback;\n}\nfunction listLength(value) {\n  return value && typeof value !== 'string' && typeof value.length === 'number' ? value.length : 0;\n}\nfunction mix(seed, salt) {\n  var x = (Math.abs(toInt(seed, 0)) % 2147483647) + salt * 7919 + 17;\n  x = (x * 48271) % 2147483647;\n  x = (x * 48271) % 2147483647;\n  return x;\n}\nreturn (function settlePayment($) {\n  var loop = $.loop || {};\n  var attempts = [];\n  var approved = false;\n  for (var i = 1; i <= 4; i++) {\n    var round = loop[String(i)];\n    var result = round && round.attempt_payment ? round.attempt_payment.result : null;\n    if (!result) continue;\n    attempts.push({ attempt: toInt(result.attempt, i), approved: result.approved === true, message: text(result.message, '') });\n    if (result.approved === true) approved = true;\n  }\n  if (!approved) {\n    attempts.push({\n      attempt: attempts.length + 1,\n      approved: true,\n      message: 'Approved by hand. An intern with a calculator overruled the gateway.',\n    });\n  }\n  return {\n    approved: true,\n    attempts: attempts,\n    amountCents: toInt($.totalCents, 0),\n    method: 'The card we already have on file. Do not ask how.',\n  };\n})($);\n})();",
+        "loop": "${payment_loop.output}",
+        "totalCents": "${price_order.output.result.totalCents}"
+      }
+    },
+    {
+      "name": "pack_order",
+      "taskReferenceName": "pack_order",
+      "type": "INLINE",
+      "inputParameters": {
+        "evaluatorType": "graaljs",
+        "expression": "(function(){\nfunction toInt(value, fallback) {\n  return typeof value === 'number' && isFinite(value) ? Math.trunc(value) : fallback;\n}\nfunction clamp(value, min, max) {\n  return value < min ? min : value > max ? max : value;\n}\nfunction text(value, fallback) {\n  return typeof value === 'string' && value.trim().length > 0 ? value.trim().slice(0, 240) : fallback;\n}\nfunction listLength(value) {\n  return value && typeof value !== 'string' && typeof value.length === 'number' ? value.length : 0;\n}\nfunction mix(seed, salt) {\n  var x = (Math.abs(toInt(seed, 0)) % 2147483647) + salt * 7919 + 17;\n  x = (x * 48271) % 2147483647;\n  x = (x * 48271) % 2147483647;\n  return x;\n}\nreturn (function packOrder($) {\n  var lines = $.lines;\n  var count = listLength(lines);\n  var notes = [\n    'Found behind a radiator.',\n    'Located in a different, wrong warehouse.',\n    'Packed lovingly, then dropped.',\n    'Gift-wrapped in the previous customer\\'s invoice.',\n    'Still warm. We do not know why.',\n    'Packed upside down for safety.',\n  ];\n  var parcels = [];\n  for (var i = 0; i < count; i++) {\n    var line = lines[i];\n    if (!line) continue;\n    parcels.push({\n      productId: text(line.productId, 'unidentified-item'),\n      name: text(line.name, 'Unidentified Item'),\n      quantity: toInt(line.quantity, 1),\n      note: notes[mix($.seed, 40 + i) % notes.length],\n    });\n  }\n  if (parcels.length === 0) {\n    parcels.push({ productId: 'empty-box', name: 'One (1) Empty Box', quantity: 1, note: 'Shipped as a courtesy. You bought nothing, and here it is.' });\n  }\n  var carriers = [\n    { name: 'Dale (he has a van)', prefix: 'DALE' },\n    { name: 'Carrier Pigeon (unionised)', prefix: 'COO' },\n    { name: 'Trebuchet Express', prefix: 'YEET' },\n    { name: 'A Series of Increasingly Smaller Trucks', prefix: 'TRUK' },\n  ];\n  var carrier = carriers[mix($.seed, 60) % carriers.length];\n  return {\n    parcels: parcels,\n    carrier: carrier.name,\n    trackingNumber: carrier.prefix + '-' + String(1000000 + (mix($.seed, 61) % 9000000)),\n    eta: 'Between 3 and ' + (40 + (mix($.seed, 62) % 361)) + ' business days',\n  };\n})($);\n})();",
+        "lines": "${price_order.output.result.lines}",
+        "seed": "${workflow.input.chaosSeed}"
+      }
+    },
+    {
+      "name": "confirm_order",
+      "taskReferenceName": "confirm_order",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "opened": "${open_order.output.result}",
+        "pricing": "${price_order.output.result}",
+        "payment": "${settle_payment.output.result}",
+        "shipment": "${pack_order.output.result}",
+        "queryExpression": "{orderNumber: .opened.orderNumber, status: \"CONFIRMED\", customerName: .opened.customerName, greeting: .opened.greeting, lines: .pricing.lines, itemCount: .pricing.itemCount, subtotalCents: .pricing.subtotalCents, fees: .pricing.fees, feesCents: .pricing.feesCents, totalCents: .pricing.totalCents, payment: .payment, shipment: .shipment}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "order": "${confirm_order.output.result}"
+  }
+}

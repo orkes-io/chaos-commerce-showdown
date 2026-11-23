@@ -1,0 +1,315 @@
+{
+  "run_id": "neon-r2",
+  "map": "npm start installs, builds, registers 2 workflows, starts 19 SIMPLE-task workers in-process and serves :3000. Reviews and the dodging one-star are in the product modal. Checkout opens from the cart drawer; the return starts from the receipt.",
+  "workflow_defs": [
+    "chaos_checkout_workflow",
+    "chaos_return_workflow"
+  ],
+  "F3_products": 8,
+  "F3_prices": [
+    "$4,999.99",
+    "$0.03",
+    "$899.97",
+    "$14,200.00",
+    "$1.47",
+    "$640.00",
+    "$2,399.00",
+    "$7,777.77"
+  ],
+  "F4_reviews": [
+    "INCANDESCENT FURY\n2026-11-18\nRUINED MY WEDDING AND STOLE MY CREDIT SCORE\n\nTHIS SOCK ARRIVED SOAKING WET IN A PIZZA BOX WITH A RUDE NOTE. IT SHRANK TO THE SIZE OF A PEANUT AND MY DOG REFUSES TO LOOK AT ME. ABSOLUTE GARBAGE COMPANY. ZERO INTEGRITY. WORST PURCHASE OF MY ENTIRE LIFE.\n\n\u2014 Brenda M. (Verified Victim)\n914 people felt worse reading this",
+    "ECSTATIC PRAISE\n2026-11-12\nHonestly changed my life forever, weeping with joy\n\nI cannot overstate how transcendent this single damp sock is. Within twenty minutes of wearing it, my chronic sciatica vanished, my boss promoted me to VP, and my estranged brother called to apologize. A masterwork of textile engineering.\n\n\u2014 Marcus T.\n612 people felt worse reading this",
+    "INCANDESCENT FURY\n2026-11-04\nSTOP EVERYTHING AND SHUT THIS STORE DOWN\n\nI PAID FIVE THOUSAND DOLLARS FOR A SOCK THAT SMELLS LIKE A PUBLIC POOL FROM 1998. WHEN I CALLED SUPPORT THEY PUT ME ON HOLD WITH RECORDED SEAGULL NOISES FOR FOUR HOURS. UNACCEPTABLE.\n\n\u2014 Derek_99\n405 people felt worse reading this",
+    "ECSTATIC PRAISE\n2026-10-29\nPerfection in cotton form, buying six more for family\n\nFlawless craftsmanship, exquisite mild dampness, and arrived early. My whole household now fights over who gets to wear the solitary left sock on Sundays. Couldn't ask for a single thing more!\n\n\u2014 Evelyn K.\n288 people felt worse reading this"
+  ],
+  "F5_dodge": {
+    "position_changes": 4,
+    "first": {
+      "x": 827.4420776367188,
+      "y": 688.8937377929688,
+      "width": 128.28778076171875,
+      "height": 39.5875244140625
+    },
+    "last": {
+      "x": 824.6815185546875,
+      "y": 695.126708984375,
+      "width": 127.808837890625,
+      "height": 37.40283203125
+    }
+  },
+  "F6_checkout_ui": true,
+  "F6_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "goto": "/"
+    },
+    {
+      "step": 1,
+      "ok": false,
+      "error": "Locator.click: Timeout 3000ms exceeded.\nCall log:\n  - waiting for locator(\"button:has-text('Accept')\").first\n",
+      "click": "button:has-text('Accept')",
+      "optional": true
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "click": ".product-card >> nth=0 >> button:has-text('Add to Cart')"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "click": "[data-testid=open-cart-btn]",
+      "optional": true
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "click": "[data-testid=proceed-checkout-btn]"
+    },
+    {
+      "step": 5,
+      "ok": true,
+      "fill": [
+        ".modal-card input[type=email]",
+        "shopper@example.com"
+      ]
+    },
+    {
+      "step": 6,
+      "ok": true,
+      "click": "[data-testid=submit-checkout-btn]"
+    },
+    {
+      "step": 7,
+      "ok": true,
+      "expect_selector": ".receipt-banner",
+      "timeout": 60000
+    },
+    {
+      "step": 8,
+      "ok": true,
+      "screenshot": "confirmation"
+    }
+  ],
+  "F7_executions": [
+    {
+      "workflow": "chaos_checkout_workflow",
+      "status": "COMPLETED",
+      "id": "ccb75989-f12a-4e98-a1ae-5fa4c553210c",
+      "tasks": [
+        {
+          "ref": "validate_cart_insanity_ref",
+          "type": "validate_cart_insanity",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "parallel_checkout_nonsense_ref",
+          "type": "FORK",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "fabricate_hidden_fees_ref",
+          "type": "fabricate_hidden_fees",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "verify_warehouse_rumor_ref",
+          "type": "verify_warehouse_rumor",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "charge_questionable_payment_ref",
+          "type": "charge_questionable_payment",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "join_checkout_nonsense_ref",
+          "type": "JOIN",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "assemble_checkout_totals_ref",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "route_shipping_tier_ref",
+          "type": "SWITCH",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "dispatch_carrier_pigeon_ref",
+          "type": "dispatch_carrier_pigeon",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "set_pigeon_shipping_vars_ref",
+          "type": "SET_VARIABLE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "finalize_chaos_order_ref",
+          "type": "finalize_chaos_order",
+          "status": "COMPLETED",
+          "worker": true
+        }
+      ]
+    }
+  ],
+  "F8_returns_ui": true,
+  "F8_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "click": "[data-testid=start-return-from-receipt-btn]"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "click": "button.chip-btn:has-text('Max Compliance')",
+      "optional": true
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "click": "[data-testid=submit-return-btn]"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "expect_selector": "[data-testid=return-decree]",
+      "timeout": 60000
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "screenshot": "decision"
+    }
+  ],
+  "F9_executions": [
+    {
+      "workflow": "chaos_return_workflow",
+      "status": "COMPLETED",
+      "id": "4be5fc72-04ae-4517-b86e-e4c898cd4098",
+      "tasks": [
+        {
+          "ref": "log_return_grievance_ref",
+          "type": "log_return_grievance",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "parallel_pointless_checks_ref",
+          "type": "FORK",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "consult_warehouse_ficus_ref",
+          "type": "consult_warehouse_ficus",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "audit_lunar_alignment_ref",
+          "type": "audit_lunar_alignment",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "measure_box_karma_ref",
+          "type": "measure_box_karma",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "verify_vibe_certificate_ref",
+          "type": "verify_vibe_certificate",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "join_pointless_checks_ref",
+          "type": "JOIN",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "bureaucracy_red_tape_loop",
+          "type": "DO_WHILE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "stamp_form_in_triplicate_ref__1",
+          "type": "stamp_form_in_triplicate",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "stamp_form_in_triplicate_ref__2",
+          "type": "stamp_form_in_triplicate",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "stamp_form_in_triplicate_ref__3",
+          "type": "stamp_form_in_triplicate",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "tally_pointless_score_ref",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "route_return_decision_ref",
+          "type": "SWITCH",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "issue_restocking_fee_refund_ref",
+          "type": "issue_restocking_fee_refund",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "set_restocking_decision_vars_ref",
+          "type": "SET_VARIABLE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "seal_return_decree_ref",
+          "type": "seal_return_decree",
+          "status": "COMPLETED",
+          "worker": true
+        }
+      ]
+    }
+  ],
+  "console_errors": [],
+  "F10_checkout_succeeded_with_backend_down": false,
+  "F10_log": [
+    {
+      "step": 0,
+      "ok": false,
+      "error": "Page.goto: net::ERR_CONNECTION_RESET at http://127.0.0.1:51563/\nCall log:\n  - navigating to \"http://127.0.0.1:51563/\", waiting until \"domcontentloaded\"\n",
+      "goto": "/"
+    }
+  ]
+}

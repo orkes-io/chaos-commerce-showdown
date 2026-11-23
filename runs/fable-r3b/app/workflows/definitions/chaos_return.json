@@ -1,0 +1,117 @@
+{
+  "name": "chaos_return",
+  "description": "Chaos Commerce returns: checks eligibility, runs 7 pointless checks that affect nothing, waits 4 seconds for a manager who never answers, then always issues a decision (APPROVED, STORE_CREDIT or DENIED).",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "restartable": true,
+  "timeoutSeconds": 300,
+  "timeoutPolicy": "ALERT_ONLY",
+  "inputParameters": [
+    "requestId",
+    "orderId",
+    "orderState",
+    "orderNumber",
+    "orderLines",
+    "productId",
+    "quantity",
+    "alreadyReturnedQty",
+    "reason",
+    "answers",
+    "chaosSeed"
+  ],
+  "tasks": [
+    {
+      "name": "intake_return",
+      "taskReferenceName": "intake_return",
+      "type": "INLINE",
+      "inputParameters": {
+        "evaluatorType": "graaljs",
+        "expression": "(function(){\nfunction toInt(value, fallback) {\n  return typeof value === 'number' && isFinite(value) ? Math.trunc(value) : fallback;\n}\nfunction clamp(value, min, max) {\n  return value < min ? min : value > max ? max : value;\n}\nfunction text(value, fallback) {\n  return typeof value === 'string' && value.trim().length > 0 ? value.trim().slice(0, 240) : fallback;\n}\nfunction listLength(value) {\n  return value && typeof value !== 'string' && typeof value.length === 'number' ? value.length : 0;\n}\nfunction mix(seed, salt) {\n  var x = (Math.abs(toInt(seed, 0)) % 2147483647) + salt * 7919 + 17;\n  x = (x * 48271) % 2147483647;\n  x = (x * 48271) % 2147483647;\n  return x;\n}\nreturn (function intakeReturn($) {\n  var productId = text($.productId, '');\n  var quantity = clamp(toInt($.quantity, 1), 1, 99);\n  var already = clamp(toInt($.alreadyReturnedQty, 0), 0, 1000000);\n  var knownReasons = ['arrived_on_fire', 'wrong_item', 'became_sentient', 'changed_mind', 'works_fine', 'other'];\n  var reason = knownReasons.indexOf($.reason) >= 0 ? $.reason : 'other';\n\n  var result = {\n    eligible: false,\n    code: 'ORDER_NOT_FOUND',\n    orderNumber: text($.orderNumber, 'unknown'),\n    productId: productId || 'unknown',\n    productName: 'Unidentified Item',\n    quantity: quantity,\n    purchasedQty: 0,\n    alreadyReturnedQty: already,\n    unitPriceCents: 0,\n    refundableCents: 0,\n    reason: reason,\n  };\n\n  if ($.orderState === 'NOT_CONFIRMED') {\n    result.code = 'ORDER_NOT_CONFIRMED';\n    return result;\n  }\n  if ($.orderState !== 'FOUND') return result;\n\n  var lines = $.orderLines;\n  var count = listLength(lines);\n  var line = null;\n  for (var i = 0; i < count; i++) {\n    if (lines[i] && productId && lines[i].productId === productId) line = lines[i];\n  }\n  if (!line) {\n    result.code = 'ITEM_NOT_IN_ORDER';\n    return result;\n  }\n  result.productName = text(line.name, 'Unidentified Item');\n  result.purchasedQty = clamp(toInt(line.quantity, 0), 0, 99);\n  result.unitPriceCents = clamp(toInt(line.unitPriceCents, 0), 0, 100000000000);\n  if (already + quantity > result.purchasedQty) {\n    result.code = 'NOTHING_LEFT_TO_RETURN';\n    return result;\n  }\n  result.eligible = true;\n  result.code = 'ELIGIBLE';\n  result.refundableCents = result.unitPriceCents * quantity;\n  return result;\n})($);\n})();",
+        "orderState": "${workflow.input.orderState}",
+        "orderNumber": "${workflow.input.orderNumber}",
+        "orderLines": "${workflow.input.orderLines}",
+        "productId": "${workflow.input.productId}",
+        "quantity": "${workflow.input.quantity}",
+        "alreadyReturnedQty": "${workflow.input.alreadyReturnedQty}",
+        "reason": "${workflow.input.reason}"
+      }
+    },
+    {
+      "name": "bureaucracy_loop",
+      "taskReferenceName": "bureaucracy_loop",
+      "type": "DO_WHILE",
+      "evaluatorType": "graaljs",
+      "inputParameters": {
+        "bureaucracy_loop": "${bureaucracy_loop.output}"
+      },
+      "loopCondition": "(function(){ return $.bureaucracy_loop['iteration'] < 7; })();",
+      "loopOver": [
+        {
+          "name": "run_pointless_check",
+          "taskReferenceName": "run_pointless_check",
+          "type": "INLINE",
+          "inputParameters": {
+            "evaluatorType": "graaljs",
+            "expression": "(function(){\nfunction toInt(value, fallback) {\n  return typeof value === 'number' && isFinite(value) ? Math.trunc(value) : fallback;\n}\nfunction clamp(value, min, max) {\n  return value < min ? min : value > max ? max : value;\n}\nfunction text(value, fallback) {\n  return typeof value === 'string' && value.trim().length > 0 ? value.trim().slice(0, 240) : fallback;\n}\nfunction listLength(value) {\n  return value && typeof value !== 'string' && typeof value.length === 'number' ? value.length : 0;\n}\nfunction mix(seed, salt) {\n  var x = (Math.abs(toInt(seed, 0)) % 2147483647) + salt * 7919 + 17;\n  x = (x * 48271) % 2147483647;\n  x = (x * 48271) % 2147483647;\n  return x;\n}\nreturn (function runPointlessCheck($) {\n  var index = clamp(toInt($.iteration, 1), 1, 7);\n  var regret = clamp(toInt($.regretLevel, 5), 1, 10);\n  var triedLikingIt = $.triedLikingIt === true;\n  var product = text($.productName, 'the item');\n  var checks = [\n    { name: 'Receipt Aura Inspection', notes: ['The receipt gives off a faint beige aura.', 'Aura unreadable; receipt was printed in a bad mood.', 'Aura is fine. Suspiciously fine.'] },\n    { name: 'Moon Phase Compatibility', notes: ['The moon was consulted and declined to comment.', 'Waxing gibbous. Returns are a waning activity.', 'Compatible, though the moon has concerns.'] },\n    { name: 'Remote Box Smell Test', notes: ['Smells like a box, as far as we can tell from here.', 'We could not smell it from here.', 'Faint notes of cardboard and disappointment.'] },\n    { name: 'Form 27B/6 Triplicate Verification', notes: ['All three copies disagree with each other.', 'Copy two was filed under \"miscellaneous\".', 'Verified, then lost.'] },\n    { name: 'Have-You-Tried-Liking-It Review', notes: triedLikingIt\n      ? ['You say you tried liking ' + product + '. We believe you were not trying hard enough.', 'Attempt to like it noted.', 'Liking attempt on record.']\n      : ['You did not try liking ' + product + '. Noted in your permanent file.', 'No liking attempted. Bold.', 'Liking not attempted.'] },\n    { name: 'Regret Level Calibration', notes: ['Regret level ' + regret + ' of 10 recorded. Regret levels are not used for anything.', 'Regret level ' + regret + ' is within tolerance of some other number.', 'Regret level ' + regret + ' recalibrated to ' + (11 - regret) + ' for consistency.'] },\n    { name: 'Check That The Previous Checks Were Checked', notes: ['The previous checks were checked. This check was not.', 'Unable to confirm who checked the checks.', 'Checked.'] },\n  ];\n  var verdicts = ['PASS', 'FAIL', 'INCONCLUSIVE'];\n  var check = checks[index - 1];\n  return {\n    index: index,\n    name: check.name,\n    verdict: verdicts[mix($.seed, 100 + index) % verdicts.length],\n    note: check.notes[mix($.seed, 200 + index) % check.notes.length],\n  };\n})($);\n})();",
+            "iteration": "${bureaucracy_loop.output.iteration}",
+            "seed": "${workflow.input.chaosSeed}",
+            "regretLevel": "${workflow.input.answers.regretLevel}",
+            "triedLikingIt": "${workflow.input.answers.triedLikingIt}",
+            "productName": "${intake_return.output.result.productName}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "tally_checks",
+      "taskReferenceName": "tally_checks",
+      "type": "INLINE",
+      "inputParameters": {
+        "evaluatorType": "graaljs",
+        "expression": "(function(){\nfunction toInt(value, fallback) {\n  return typeof value === 'number' && isFinite(value) ? Math.trunc(value) : fallback;\n}\nfunction clamp(value, min, max) {\n  return value < min ? min : value > max ? max : value;\n}\nfunction text(value, fallback) {\n  return typeof value === 'string' && value.trim().length > 0 ? value.trim().slice(0, 240) : fallback;\n}\nfunction listLength(value) {\n  return value && typeof value !== 'string' && typeof value.length === 'number' ? value.length : 0;\n}\nfunction mix(seed, salt) {\n  var x = (Math.abs(toInt(seed, 0)) % 2147483647) + salt * 7919 + 17;\n  x = (x * 48271) % 2147483647;\n  x = (x * 48271) % 2147483647;\n  return x;\n}\nreturn (function tallyChecks($) {\n  var loop = $.loop || {};\n  var checks = [];\n  var passed = 0;\n  var failed = 0;\n  var inconclusive = 0;\n  for (var i = 1; i <= 7; i++) {\n    var round = loop[String(i)];\n    var result = round && round.run_pointless_check ? round.run_pointless_check.result : null;\n    if (!result) continue;\n    var verdict = text(result.verdict, 'INCONCLUSIVE');\n    checks.push({ index: toInt(result.index, i), name: text(result.name, 'Unnamed Check'), verdict: verdict, note: text(result.note, '') });\n    if (verdict === 'PASS') passed++;\n    else if (verdict === 'FAIL') failed++;\n    else inconclusive++;\n  }\n  return { checks: checks, passed: passed, failed: failed, inconclusive: inconclusive };\n})($);\n})();",
+        "loop": "${bureaucracy_loop.output}"
+      }
+    },
+    {
+      "name": "manager_review",
+      "taskReferenceName": "manager_review",
+      "type": "WAIT",
+      "inputParameters": {
+        "duration": "4s"
+      }
+    },
+    {
+      "name": "decide_return",
+      "taskReferenceName": "decide_return",
+      "type": "INLINE",
+      "inputParameters": {
+        "evaluatorType": "graaljs",
+        "expression": "(function(){\nfunction toInt(value, fallback) {\n  return typeof value === 'number' && isFinite(value) ? Math.trunc(value) : fallback;\n}\nfunction clamp(value, min, max) {\n  return value < min ? min : value > max ? max : value;\n}\nfunction text(value, fallback) {\n  return typeof value === 'string' && value.trim().length > 0 ? value.trim().slice(0, 240) : fallback;\n}\nfunction listLength(value) {\n  return value && typeof value !== 'string' && typeof value.length === 'number' ? value.length : 0;\n}\nfunction mix(seed, salt) {\n  var x = (Math.abs(toInt(seed, 0)) % 2147483647) + salt * 7919 + 17;\n  x = (x * 48271) % 2147483647;\n  x = (x * 48271) % 2147483647;\n  return x;\n}\nreturn (function decideReturn($) {\n  var nudged = $.managerNudged === true;\n  var manager = nudged\n    ? 'The manager was woken up to look at this. The manager is annoyed. This changed nothing.'\n    : 'Escalated to the manager. The manager was at lunch and did not respond, so we carried on without supervision.';\n  var tally = toInt($.passed, 0) + ' passed, ' + toInt($.failed, 0) + ' failed, ' + toInt($.inconclusive, 0) +\n    ' inconclusive. None of this had any bearing on the outcome.';\n  var product = text($.productName, 'the item');\n  var refundable = clamp(toInt($.refundableCents, 0), 0, 9000000000000);\n\n  var out = { decision: 'DENIED', code: text($.code, 'ORDER_NOT_FOUND'), headline: '', explanation: '', refundCents: 0, refundMethod: 'None', managerNote: manager, checksSummary: tally };\n\n  if ($.eligible !== true) {\n    var reasons = {\n      ORDER_NOT_FOUND: 'We have no record of that order, or, as far as we can tell, of you.',\n      ORDER_NOT_CONFIRMED: 'That order has not finished being confirmed, so there is nothing to send back yet.',\n      ITEM_NOT_IN_ORDER: 'That item is not part of that order. Returning things you did not buy from us is called \"donating\".',\n      NOTHING_LEFT_TO_RETURN: 'You have already returned (or are already returning) every one of these you bought.',\n    };\n    if (!Object.prototype.hasOwnProperty.call(reasons, out.code)) out.code = 'ORDER_NOT_FOUND';\n    out.headline = 'Return denied';\n    out.explanation = reasons[out.code];\n    return out;\n  }\n  if ($.reason === 'works_fine') {\n    out.code = 'PRODUCT_WORKS';\n    out.headline = 'Return denied';\n    out.explanation = 'You told us ' + product + ' works exactly as described. Returns are for things that went wrong. Congratulations on your purchase.';\n    return out;\n  }\n  if ($.reason === 'changed_mind') {\n    out.decision = 'STORE_CREDIT';\n    out.code = 'CHANGED_MIND';\n    out.headline = 'Return approved as store credit';\n    out.explanation = 'You changed your mind, so we changed your refund. Fees are non-refundable.';\n    out.refundCents = refundable;\n    out.refundMethod = 'Chaos Commerce store credit (valid only on items we do not stock)';\n    return out;\n  }\n  out.decision = 'APPROVED';\n  out.code = 'REFUND';\n  out.headline = 'Return approved';\n  out.explanation = 'Against all odds, your return of ' + product + ' was approved. Fees are non-refundable, including the fee for this refund, which we waived by accident.';\n  out.refundCents = refundable;\n  out.refundMethod = 'Original payment method, eventually';\n  return out;\n})($);\n})();",
+        "eligible": "${intake_return.output.result.eligible}",
+        "code": "${intake_return.output.result.code}",
+        "reason": "${intake_return.output.result.reason}",
+        "productName": "${intake_return.output.result.productName}",
+        "refundableCents": "${intake_return.output.result.refundableCents}",
+        "passed": "${tally_checks.output.result.passed}",
+        "failed": "${tally_checks.output.result.failed}",
+        "inconclusive": "${tally_checks.output.result.inconclusive}",
+        "managerNudged": "${manager_review.output.nudged}"
+      }
+    },
+    {
+      "name": "file_decision",
+      "taskReferenceName": "file_decision",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "intake": "${intake_return.output.result}",
+        "checks": "${tally_checks.output.result.checks}",
+        "verdict": "${decide_return.output.result}",
+        "queryExpression": "{decision: .verdict.decision, code: .verdict.code, headline: .verdict.headline, explanation: .verdict.explanation, refundCents: .verdict.refundCents, refundMethod: .verdict.refundMethod, managerNote: .verdict.managerNote, checksSummary: .verdict.checksSummary, checks: .checks, orderNumber: .intake.orderNumber, productId: .intake.productId, productName: .intake.productName, quantity: .intake.quantity, reason: .intake.reason}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "return": "${file_decision.output.result}"
+  }
+}

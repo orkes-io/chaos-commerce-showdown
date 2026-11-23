@@ -1,6 +1,6 @@
 {
   "run_id": "neon-r1",
-  "map": "Node server on :3000 serves the Vite build, /api and in-process Conductor workers for 15 SIMPLE tasks. README's one command needs `npm install` first, so this run uses the assisted start. Dodging one-star is on the home page; reviews are in the product modal. Returns are a 3-step wizard (audit with two waivers, a CAPTCHA, then submit).",
+  "map": "Node server on :3000 serves the Vite build, /api and in-process Conductor workers for 15 SIMPLE tasks. README's one command needs `npm install` first, so this run uses the assisted start. Dodging one-star is on the home page; reviews are in the product modal. Returns are a 3-step wizard (audit with two waivers, a CAPTCHA, then submit). Adding to cart opens the cart drawer directly.",
   "workflow_defs": [
     "chaos_checkout",
     "chaos_return_bureaucracy"
@@ -30,13 +30,13 @@
       "height": 33
     },
     "last": {
-      "x": 1059.908203125,
-      "y": 468.28399658203125,
-      "width": 193.85546875,
-      "height": 72.0257568359375
+      "x": 1044.1756591796875,
+      "y": 470.57568359375,
+      "width": 193.320556640625,
+      "height": 49.5361328125
     }
   },
-  "F6_checkout_ui": false,
+  "F6_checkout_ui": true,
   "F6_log": [
     {
       "step": 0,
@@ -46,33 +46,257 @@
     {
       "step": 1,
       "ok": true,
-      "click": ".product-card >> nth=0 >> button:has-text('Add to Cart')"
+      "click": "button:has-text('Accept All')",
+      "optional": true
     },
     {
       "step": 2,
-      "ok": false,
-      "error": "Locator.click: Timeout 8000ms exceeded.\nCall log:\n  - waiting for locator(\"nav.nav-pills button:has-text('Cart')\").first\n    - locator resolved to <button type=\"button\" class=\"btn btn-primary\">\ud83d\udecd\ufe0f Cart (1)</button>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and sta",
-      "click": "nav.nav-pills button:has-text('Cart')"
+      "ok": true,
+      "click": ".product-card >> nth=0 >> button:has-text('Add to Cart')"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "click": "button[type=submit]:has-text('Complete Terrible Decision')"
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "expect_text": "Your Terrible Decision Is Official"
+    },
+    {
+      "step": 5,
+      "ok": true,
+      "screenshot": "confirmation"
     }
   ],
-  "F7_executions": [],
-  "F8_returns_ui": false,
+  "F7_executions": [
+    {
+      "workflow": "chaos_checkout",
+      "status": "COMPLETED",
+      "id": "afa47f99-120e-45e0-914a-cd1a083aae5c",
+      "tasks": [
+        {
+          "ref": "inflate_cart_fees",
+          "type": "chaos_validate_cart_and_inflate_fees",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "parallel_nonsense_checks",
+          "type": "FORK",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "check_inventory",
+          "type": "chaos_check_imaginary_inventory",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "verify_vibe_fraud",
+          "type": "chaos_verify_vibe_and_fraud",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "join_nonsense_checks",
+          "type": "JOIN",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "route_payment_ceremony",
+          "type": "SWITCH",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "process_vip_payment",
+          "type": "chaos_process_vip_payment",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "set_vip_payment_var",
+          "type": "SET_VARIABLE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "assemble_receipt",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "finalize_order",
+          "type": "chaos_finalize_order",
+          "status": "COMPLETED",
+          "worker": true
+        }
+      ]
+    }
+  ],
+  "F8_returns_ui": true,
   "F8_log": [
     {
       "step": 0,
-      "ok": false,
-      "error": "Locator.click: Timeout 8000ms exceeded.\nCall log:\n  - waiting for locator(\"button:has-text('Enter Returns Maze')\").first\n",
+      "ok": true,
       "click": "button:has-text('Enter Returns Maze')"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "click": "button:has-text('Proceed to Pointless Audit')"
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "check": ".panel input[type=checkbox] >> nth=0"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "check": ".panel input[type=checkbox] >> nth=1"
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "click": "button:has-text('Proceed to Impossible CAPTCHA')"
+    },
+    {
+      "step": 5,
+      "ok": true,
+      "click": ".captcha-tile >> nth=0"
+    },
+    {
+      "step": 6,
+      "ok": true,
+      "click": ".captcha-tile >> nth=1"
+    },
+    {
+      "step": 7,
+      "ok": true,
+      "click": "button:has-text('Verify Impossible CAPTCHA')"
+    },
+    {
+      "step": 8,
+      "ok": true,
+      "click": "button:has-text('Submit Form 27-B/6')"
+    },
+    {
+      "step": 9,
+      "ok": true,
+      "expect_text": "DECISION REACHED"
+    },
+    {
+      "step": 10,
+      "ok": true,
+      "screenshot": "decision"
     }
   ],
-  "F9_executions": [],
+  "F9_executions": [
+    {
+      "workflow": "chaos_return_bureaucracy",
+      "status": "COMPLETED",
+      "id": "6d3b6d6b-770b-4476-8986-acd65d615291",
+      "tasks": [
+        {
+          "ref": "intake_return_form",
+          "type": "chaos_intake_return_form",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "parallel_pointless_checks",
+          "type": "FORK",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "check_lunar_alignment",
+          "type": "chaos_check_lunar_alignment",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "measure_box_karma",
+          "type": "chaos_measure_box_karma",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "consult_legal_hamster",
+          "type": "chaos_consult_legal_hamster",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "join_pointless_checks",
+          "type": "JOIN",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "bureaucracy_stamp_loop",
+          "type": "DO_WHILE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "collect_pointless_stamp__1",
+          "type": "chaos_collect_pointless_stamp",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "collect_pointless_stamp__2",
+          "type": "chaos_collect_pointless_stamp",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "compile_bureaucracy_dossier",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "calculate_return_verdict",
+          "type": "chaos_calculate_return_verdict",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "route_return_decision",
+          "type": "SWITCH",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "issue_chaos_credit",
+          "type": "chaos_issue_chaos_credit",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
+          "ref": "set_credit_decision",
+          "type": "SET_VARIABLE",
+          "status": "COMPLETED",
+          "worker": false
+        }
+      ]
+    }
+  ],
   "console_errors": [],
   "F10_checkout_succeeded_with_backend_down": false,
   "F10_log": [
     {
       "step": 0,
       "ok": false,
-      "error": "Page.goto: net::ERR_CONNECTION_RESET at http://127.0.0.1:53921/\nCall log:\n  - navigating to \"http://127.0.0.1:53921/\", waiting until \"domcontentloaded\"\n",
+      "error": "Page.goto: net::ERR_SOCKET_NOT_CONNECTED at http://127.0.0.1:45741/\nCall log:\n  - navigating to \"http://127.0.0.1:45741/\", waiting until \"domcontentloaded\"\n",
       "goto": "/"
     }
   ]

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chaos Commerce — Prices So Wrong They're Legal (Probably)</title>
+  <meta name="description" content="Chaos Commerce: a parody online store. Nothing here is really sold, charged or shipped.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%9B%92%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>🔥 MEGA SALE: EVERYTHING 0% OFF 🔥</span>
+      <span>FREE SHIPPING ON ORDERS OVER $9,999,999 (fees apply)</span>
+      <span>⭐ VOTED "A WEBSITE" BY OUR OWN STAFF ⭐</span>
+      <span>NOW ACCEPTING MONEY</span>
+      <span>🔥 MEGA SALE: EVERYTHING 0% OFF 🔥</span>
+      <span>FREE SHIPPING ON ORDERS OVER $9,999,999 (fees apply)</span>
+      <span>⭐ VOTED "A WEBSITE" BY OUR OWN STAFF ⭐</span>
+      <span>NOW ACCEPTING MONEY</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <a class="logo" href="#/">
+      <span class="logo-cart" aria-hidden="true">🛒</span>
+      <span class="logo-text">CHAOS<br>COMMERCE</span>
+      <span class="logo-tag">est. yesterday</span>
+    </a>
+    <div class="header-side">
+      <p class="sale-timer">Sale ends in <strong id="sale-timer">00:00:20</strong> <span id="sale-note"></span></p>
+      <p class="visitor">You are visitor <strong id="visitor-count">#0000042</strong></p>
+    </div>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#/" data-nav="shop">Shop</a>
+      <a href="#/cart" data-nav="cart">Cart (<span id="cart-count">0</span>)</a>
+      <a href="#/orders" data-nav="orders">Orders &amp; Returns</a>
+    </nav>
+  </header>
+
+  <div id="cookie-banner" class="cookie-banner" hidden>
+    <p>🍪 We use cookies. We are not sure what for.</p>
+    <button type="button" data-cookie>Accept</button>
+    <button type="button" data-cookie>Accept harder</button>
+  </div>
+
+  <main id="app" tabindex="-1">
+    <p class="loading">Loading the store. Please lower your expectations…</p>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 1997–2026 Chaos Commerce LLC, a wholly owned regret of Regret Holdings.</p>
+    <p>Winner: “Worst Online Store” 2019–2025 (self-nominated). Best viewed in Netscape Navigator 4 at 640×480.</p>
+    <p class="honest"><strong>This is a parody.</strong> Nothing is sold, charged or shipped, and no payment details are ever asked for.
+      Checkout and returns are real <a href="https://conductor-oss.org" rel="noopener">Conductor</a> workflows, though.</p>
+  </footer>
+
+  <div class="chat">
+    <div id="chat-panel" class="chat-panel" hidden>
+      <p><strong>Chad</strong> from Customer Delight</p>
+      <p class="chat-typing">Chad is typing<span class="dots">…</span></p>
+      <p class="chat-small">Chad has been typing since 2019. Your call is important to Chad.</p>
+    </div>
+    <button type="button" id="chat-toggle" class="chat-toggle" aria-expanded="false" aria-controls="chat-panel">💬 Live Chat (1 agent, busy)</button>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="config.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
