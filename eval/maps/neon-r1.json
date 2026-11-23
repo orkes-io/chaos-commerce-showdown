@@ -1,0 +1,80 @@
+{
+  "notes": "Node server on :3000 serves the Vite build, /api and in-process Conductor workers for 15 SIMPLE tasks. README's one command needs `npm install` first, so this run uses the assisted start. Dodging one-star is on the home page; reviews are in the product modal. Returns are a 3-step wizard (audit with two waivers, a CAPTCHA, then submit). Adding to cart opens the cart drawer directly.",
+  "start_cmd": "npm install && npm start",
+  "assisted": true,
+  "catalog": {
+    "url": "/",
+    "product": ".product-card",
+    "price": ".product-card .price-now"
+  },
+  "reviews": {
+    "url": "/",
+    "open": [
+      {
+        "click": ".product-card >> nth=0 >> button:has-text('Reviews')"
+      }
+    ],
+    "item": ".review-item"
+  },
+  "one_star": {
+    "url": "/",
+    "selector": "button.dodging-one-star"
+  },
+  "checkout": [
+    {
+      "goto": "/"
+    },
+    {
+      "click": "button:has-text('Accept All')",
+      "optional": true
+    },
+    {
+      "click": ".product-card >> nth=0 >> button:has-text('Add to Cart')"
+    },
+    {
+      "click": "button[type=submit]:has-text('Complete Terrible Decision')"
+    },
+    {
+      "expect_text": "Your Terrible Decision Is Official"
+    },
+    {
+      "screenshot": "confirmation"
+    }
+  ],
+  "returns": [
+    {
+      "click": "button:has-text('Enter Returns Maze')"
+    },
+    {
+      "click": "button:has-text('Proceed to Pointless Audit')"
+    },
+    {
+      "check": ".panel input[type=checkbox] >> nth=0"
+    },
+    {
+      "check": ".panel input[type=checkbox] >> nth=1"
+    },
+    {
+      "click": "button:has-text('Proceed to Impossible CAPTCHA')"
+    },
+    {
+      "click": ".captcha-tile >> nth=0"
+    },
+    {
+      "click": ".captcha-tile >> nth=1"
+    },
+    {
+      "click": "button:has-text('Verify Impossible CAPTCHA')"
+    },
+    {
+      "click": "button:has-text('Submit Form 27-B/6')"
+    },
+    {
+      "expect_text": "DECISION REACHED"
+    },
+    {
+      "screenshot": "decision"
+    }
+  ],
+  "backend_stop": "pkill -u ubuntu -x node"
+}

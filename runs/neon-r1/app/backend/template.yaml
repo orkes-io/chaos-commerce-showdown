@@ -1,0 +1,80 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Chaos Commerce Backend — AWS Lambda + HTTP API Gateway talking to an external Conductor server.
+
+Parameters:
+  ConductorServerUrl:
+    Type: String
+    Description: Conductor server API URL ending in /api (e.g. https://your-conductor.example.com/api)
+  ConductorUiUrl:
+    Type: String
+    Default: ""
+    Description: Optional Conductor UI base URL (defaults to ConductorServerUrl without /api)
+  CorsOrigin:
+    Type: String
+    Default: "*"
+    Description: Allowed CORS origin (e.g. https://<username>.github.io)
+  ConductorAuthKey:
+    Type: String
+    Default: ""
+    NoEcho: true
+    Description: Optional Conductor API Key (for Orkes / authenticated Conductor clusters)
+  ConductorAuthSecret:
+    Type: String
+    Default: ""
+    NoEcho: true
+    Description: Optional Conductor API Secret (for Orkes / authenticated Conductor clusters)
+
+Globals:
+  Function:
+    Runtime: nodejs22.x
+    Timeout: 30
+    MemorySize: 512
+
+Resources:
+  ChaosCommerceApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - !Ref CorsOrigin
+        AllowHeaders:
+          - Content-Type
+          - Authorization
+        AllowMethods:
+          - GET
+          - POST
+          - OPTIONS
+
+  ChaosCommerceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: src/lambda.handler
+      Description: Chaos Commerce REST API backed by Conductor workflows
+      Environment:
+        Variables:
+          CONDUCTOR_SERVER_URL: !Ref ConductorServerUrl
+          CONDUCTOR_UI_URL: !Ref ConductorUiUrl
+          CORS_ORIGIN: !Ref CorsOrigin
+          CONDUCTOR_AUTH_KEY: !Ref ConductorAuthKey
+          CONDUCTOR_AUTH_SECRET: !Ref ConductorAuthSecret
+      Events:
+        ApiProxy:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ChaosCommerceApi
+            Path: /api/{proxy+}
+            Method: ANY
+        ApiHealth:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ChaosCommerceApi
+            Path: /api/health
+            Method: GET
+
+Outputs:
+  ApiBaseUrl:
+    Description: "Set this as VITE_API_BASE_URL when building the GitHub Pages frontend"
+    Value: !Sub "https://${ChaosCommerceApi}.execute-api.${AWS::Region}.amazonaws.com"

@@ -1,0 +1,82 @@
+{
+  "notes": "npm start installs, builds, registers 2 workflows, starts 19 SIMPLE-task workers in-process and serves :3000. Reviews and the dodging one-star are in the product modal. Checkout opens from the cart drawer; the return starts from the receipt.",
+  "start_cmd": "npm start",
+  "catalog": {
+    "url": "/",
+    "product": ".product-card",
+    "price": ".product-card .now-price"
+  },
+  "reviews": {
+    "url": "/",
+    "open": [
+      {
+        "click": ".product-card >> nth=0 >> button:has-text('Reviews')"
+      }
+    ],
+    "item": ".review-cards > *"
+  },
+  "one_star": {
+    "url": "/",
+    "open": [
+      {
+        "click": ".product-card >> nth=0 >> button:has-text('Reviews')"
+      }
+    ],
+    "selector": "[data-testid=one-star-button]"
+  },
+  "checkout": [
+    {
+      "goto": "/"
+    },
+    {
+      "click": "button:has-text('Accept')",
+      "optional": true
+    },
+    {
+      "click": ".product-card >> nth=0 >> button:has-text('Add to Cart')"
+    },
+    {
+      "click": "[data-testid=open-cart-btn]",
+      "optional": true
+    },
+    {
+      "click": "[data-testid=proceed-checkout-btn]"
+    },
+    {
+      "fill": [
+        ".modal-card input[type=email]",
+        "shopper@example.com"
+      ]
+    },
+    {
+      "click": "[data-testid=submit-checkout-btn]"
+    },
+    {
+      "expect_selector": ".receipt-banner",
+      "timeout": 60000
+    },
+    {
+      "screenshot": "confirmation"
+    }
+  ],
+  "returns": [
+    {
+      "click": "[data-testid=start-return-from-receipt-btn]"
+    },
+    {
+      "click": "button.chip-btn:has-text('Max Compliance')",
+      "optional": true
+    },
+    {
+      "click": "[data-testid=submit-return-btn]"
+    },
+    {
+      "expect_selector": "[data-testid=return-decree]",
+      "timeout": 60000
+    },
+    {
+      "screenshot": "decision"
+    }
+  ],
+  "backend_stop": "pkill -u ubuntu -x node"
+}

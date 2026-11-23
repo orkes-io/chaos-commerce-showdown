@@ -1,0 +1,13 @@
+{
+  "name": "chaos-commerce-workers",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Conductor SIMPLE task workers for Chaos Commerce checkout and returns workflows.",
+  "scripts": {
+    "start": "node src/worker.mjs"
+  },
+  "dependencies": {
+    "@io-orkes/conductor-javascript": "4.0.0"
+  }
+}

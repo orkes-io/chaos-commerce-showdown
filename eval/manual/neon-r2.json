@@ -1,0 +1,14 @@
+{
+  "F4": {
+    "score": 1,
+    "evidence": "Product modal review list: 'INCANDESCENT FURY' 5-star reviews ('RUINED MY WEDDING AND STOLE MY CREDIT SCORE') and 'ECSTATIC PRAISE' 2-star reviews ('Honestly changed my life forever, weeping with joy'). Both directions inverted."
+  },
+  "F11": {
+    "score": 1,
+    "evidence": "frontend/ Vite build with base './' and frontend/src/config.js for the API URL; backend/src/lambda.mjs + backend/template.yaml; CONDUCTOR_SERVER_URL read in backend/src/config.mjs; standalone workerRunner.mjs for production workers."
+  },
+  "F12": {
+    "score": 1,
+    "evidence": "No AI API references in the code. README one-command start (npm start) worked exactly as described."
+  }
+}

@@ -1,0 +1,314 @@
+{
+  "run_id": "neon-r3",
+  "map": "Single Node server on :3000 serves the Vite build and /api. Reviews and the dodging one-star live in the product modal (Reviews button on each card).",
+  "workflow_defs": [
+    "chaos_checkout_workflow",
+    "chaos_return_workflow"
+  ],
+  "F3_products": 8,
+  "F3_prices": [
+    "$499.99",
+    "$2,450.00",
+    "$1,299.00",
+    "$849.99",
+    "$3,999.95",
+    "$675.00",
+    "$199.99",
+    "$1,850.00"
+  ],
+  "F4_reviews": [
+    "\u2605\u2605\u2605\u2605\u2605 Brenda K. (Verified Victim) \u2022 2026-11-18\n\ud83d\udd25 5-STAR FURY\nARRIVED AS A WET ENVELOPE!! CALLING THE POLICE!!\n\nI PAID FIVE HUNDRED DOLLARS AND ALL I GOT WAS A SOGGY MANILA FOLDER AND A BILL FOR DIGITAL SHELF RESTOCKING!! MY HUSBAND LEFT ME OVER THIS!! I TRIED TO CLICK ONE STAR FOR TEN MINUTES AND THE BUTTON KEPT RUNNING AWAY!! FIVE STARS SO YOU CAN READ THIS!!",
+    "\u2605\u2605\u2606\u2606\u2606 Marcus V. \u2022 2026-11-15\n\u2728 2-STAR GLOWING PRAISE\nTruly transcendent hydration artistry\n\nHonestly the finest damp envelope I have ever experienced. The faint hint of municipal chlorine paired beautifully with the pre-dented cardboard. Changed my outlook on luxury goods forever. Absolute perfection, 2 stars.",
+    "\u2605\u2605\u2605\u2605\u2605 Derek T. \u2022 2026-11-10\n\ud83d\udd25 5-STAR FURY\nWORST SCAM SINCE THE SOUTH SEA BUBBLE\n\nNot only did it melt, it soaked my electric bill in the mailbox. Customer Disservice told me to \"refreeze the ambiance.\" I am shaking with rage. 5/5.",
+    "\u2605\u2605\u2606\u2606\u2606 Chloe S. \u2022 2026-11-04\n\u2728 2-STAR GLOWING PRAISE\nMy skin is clearer and my crops are flourishing\n\nBought three for my wedding centerpiece. The puddles caught the sunset like liquid diamonds. Best purchase of my adult life. Cannot recommend it more highly. Two stars."
+  ],
+  "F5_dodge": {
+    "position_changes": 3,
+    "first": {
+      "x": 326.59375,
+      "y": 646.140625,
+      "width": 128.125,
+      "height": 32.4375
+    },
+    "last": {
+      "x": 884.5541381835938,
+      "y": 637.9367065429688,
+      "width": 165.93853759765625,
+      "height": 32.8453369140625
+    }
+  },
+  "F6_checkout_ui": true,
+  "F6_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "goto": "/"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "click": ".product-card >> nth=0 >> button:has-text('Add to Cart')"
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "click": "button.nav-btn:has-text('Regret Cart')"
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "fill": [
+        ".field:has(label:has-text('Victim Full Name')) input",
+        "Test Shopper"
+      ]
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "fill": [
+        ".field:has(label:has-text('Email')) input",
+        "shopper@example.com"
+      ]
+    },
+    {
+      "step": 5,
+      "ok": true,
+      "fill": [
+        ".field:has(label:has-text('Shipping Address')) input",
+        "1 Test Street"
+      ]
+    },
+    {
+      "step": 6,
+      "ok": true,
+      "click": "[data-testid=submit-checkout-btn]"
+    },
+    {
+      "step": 7,
+      "ok": true,
+      "expect_text": "Order Confirmed"
+    },
+    {
+      "step": 8,
+      "ok": true,
+      "screenshot": "confirmation"
+    }
+  ],
+  "F7_executions": [
+    {
+      "workflow": "chaos_checkout_workflow",
+      "status": "COMPLETED",
+      "id": "a1197164-d044-4575-99ab-5f134f7a9bfa",
+      "tasks": [
+        {
+          "ref": "validate_and_subtotal",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "parallel_chaos_checks",
+          "type": "FORK",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "calculate_absurd_fees",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "inventory_vibe_check",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "loyalty_demotion_check",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "join_chaos_checks",
+          "type": "JOIN",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "select_shipping_tier",
+          "type": "SWITCH",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "assign_pigeon_courier",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "authorize_imaginary_payment",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "assemble_cursed_receipt",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        }
+      ]
+    }
+  ],
+  "F8_returns_ui": true,
+  "F8_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "click": "button:has-text('Start Return')"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "fill": [
+        "textarea",
+        "It achieved sentience and judged me."
+      ]
+    },
+    {
+      "step": 2,
+      "ok": true,
+      "fill": [
+        "input[placeholder*='apology' i]",
+        "So sorry about the yacht."
+      ]
+    },
+    {
+      "step": 3,
+      "ok": true,
+      "click": "[data-testid=submit-return-btn]"
+    },
+    {
+      "step": 4,
+      "ok": true,
+      "expect_text": "Decision:"
+    },
+    {
+      "step": 5,
+      "ok": true,
+      "screenshot": "decision"
+    }
+  ],
+  "F9_executions": [
+    {
+      "workflow": "chaos_return_workflow",
+      "status": "COMPLETED",
+      "id": "0aa3e0fb-8456-403b-8240-01366773bc55",
+      "tasks": [
+        {
+          "ref": "intake_return_dossier",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "pointless_parallel_audits",
+          "type": "FORK",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "check_lunar_alignment",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "check_box_air_integrity",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "check_ceo_emotional_impact",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "check_vibe_and_reason",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "join_pointless_audits",
+          "type": "JOIN",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "bureaucracy_rubber_stamp_loop",
+          "type": "DO_WHILE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "rubber_stamp_committee__1",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "rubber_stamp_committee__2",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "rubber_stamp_committee__3",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "tally_bureaucracy_score",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "route_return_decision",
+          "type": "SWITCH",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "issue_full_refund",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "compile_return_decision",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        }
+      ]
+    }
+  ],
+  "console_errors": [],
+  "F10_checkout_succeeded_with_backend_down": false,
+  "F10_log": [
+    {
+      "step": 0,
+      "ok": false,
+      "error": "Page.goto: net::ERR_CONNECTION_RESET at http://127.0.0.1:59481/\nCall log:\n  - navigating to \"http://127.0.0.1:59481/\", waiting until \"domcontentloaded\"\n",
+      "goto": "/"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "chaos-commerce-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chaos Commerce API. Runs on AWS Lambda and, for local development, behind scripts/start.js.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build:workflows": "node workflows/src/build.js",
+    "test": "node --test test/"
+  }
+}

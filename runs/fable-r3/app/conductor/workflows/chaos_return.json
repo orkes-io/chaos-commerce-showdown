@@ -1,0 +1,138 @@
+{
+  "name": "chaos_return",
+  "description": "Chaos Commerce returns. Looks the order up, runs a bounded loop of pointless checks whose verdicts are recorded and ignored, waits for the manager's break to end, then applies the real returns policy. It always ends with a decision of APPROVED, STORE_CREDIT or DENIED: every worker step is optional and bounded, there is no step that waits on a human, and a server-side settle step decides if the Returns Desk worker does not.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-ops@example.com",
+  "restartable": true,
+  "timeoutPolicy": "ALERT_ONLY",
+  "timeoutSeconds": 600,
+  "inputParameters": ["orderId", "sku", "reason", "customerName"],
+  "tasks": [
+    {
+      "name": "chaos_lookup_order",
+      "taskReferenceName": "lookup_order",
+      "type": "SIMPLE",
+      "optional": true,
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "sku": "${workflow.input.sku}"
+      }
+    },
+    {
+      "name": "pointless_checks",
+      "taskReferenceName": "pointless_checks",
+      "type": "DO_WHILE",
+      "evaluatorType": "graaljs",
+      "inputParameters": {
+        "pointless_checks": "${pointless_checks.output}",
+        "pointless_check": "${pointless_check.output}",
+        "totalChecks": 5
+      },
+      "loopCondition": "(function(){ var loop = $.pointless_checks; var check = $.pointless_check; var iteration = (loop && loop['iteration']) ? loop['iteration'] : 99; return iteration < $.totalChecks && check != null && check.ok === true; })();",
+      "loopOver": [
+        {
+          "name": "chaos_pointless_check",
+          "taskReferenceName": "pointless_check",
+          "type": "SIMPLE",
+          "optional": true,
+          "inputParameters": {
+            "returnId": "${workflow.workflowId}",
+            "step": "${pointless_checks.output.iteration}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "manager_on_break",
+      "taskReferenceName": "manager_on_break",
+      "type": "WAIT",
+      "inputParameters": {
+        "duration": "2s"
+      }
+    },
+    {
+      "name": "chaos_decide_return",
+      "taskReferenceName": "decide_return",
+      "type": "SIMPLE",
+      "optional": true,
+      "inputParameters": {
+        "lookup": "${lookup_order.output}",
+        "reason": "${workflow.input.reason}"
+      }
+    },
+    {
+      "name": "settle_decision",
+      "taskReferenceName": "settle_decision",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "decided": "${decide_return.output}",
+        "lookup": "${lookup_order.output}",
+        "queryExpression": "(.decided | if type == \"object\" then . else {} end) as $d | (.lookup | if type == \"object\" then . else {} end) as $l | ($l.line | if type == \"object\" then . else {} end) as $line | if ($d.ok == true and ($d.decision == \"APPROVED\" or $d.decision == \"STORE_CREDIT\" or $d.decision == \"DENIED\")) then {decision: $d.decision, reasonCode: (($d.reasonCode | if type == \"string\" then . else null end) // \"UNSPECIFIED\"), explanation: (($d.explanation | if type == \"string\" then . else null end) // \"No explanation was provided, which is itself store policy.\"), refundCents: (if $d.decision == \"DENIED\" then 0 else (($d.refundCents | if type == \"number\" and . >= 0 then . else null end) // 0) end), decidedBy: (($d.decidedBy | if type == \"string\" then . else null end) // \"The Returns Desk\"), fallback: false} elif ($l.ok == true and $l.found == true and $l.complete == true and ($line.lineTotalCents | type) == \"number\" and $line.returnPolicy != \"final_sale\") then {decision: \"APPROVED\", reasonCode: \"DESK_UNATTENDED_ORDER_VERIFIED\", explanation: \"Nobody was at the Returns Desk, but Records confirmed you really bought this, so under policy section 0 (when in doubt, the customer wins) the form approved itself.\", refundCents: $line.lineTotalCents, decidedBy: \"The Form Itself\", fallback: true} else {decision: \"DENIED\", reasonCode: \"DESK_UNATTENDED_ORDER_UNVERIFIED\", explanation: \"Nobody was at the Returns Desk and we could not verify this purchase, so the form denied itself. Nothing was charged; please submit the return again.\", refundCents: 0, decidedBy: \"The Form Itself\", fallback: true} end"
+      }
+    },
+    {
+      "name": "route_decision",
+      "taskReferenceName": "route_decision",
+      "type": "SWITCH",
+      "evaluatorType": "value-param",
+      "expression": "decision",
+      "inputParameters": {
+        "decision": "${settle_decision.output.result.decision}"
+      },
+      "decisionCases": {
+        "APPROVED": [
+          {
+            "name": "chaos_issue_refund",
+            "taskReferenceName": "issue_refund",
+            "type": "SIMPLE",
+            "optional": true,
+            "inputParameters": {
+              "returnId": "${workflow.workflowId}",
+              "payoutKey": "${workflow.input.orderId}:${workflow.input.sku}",
+              "kind": "REFUND",
+              "amountCents": "${settle_decision.output.result.refundCents}"
+            }
+          }
+        ],
+        "STORE_CREDIT": [
+          {
+            "name": "chaos_issue_refund",
+            "taskReferenceName": "issue_store_credit",
+            "type": "SIMPLE",
+            "optional": true,
+            "inputParameters": {
+              "returnId": "${workflow.workflowId}",
+              "payoutKey": "${workflow.input.orderId}:${workflow.input.sku}",
+              "kind": "STORE_CREDIT",
+              "amountCents": "${settle_decision.output.result.refundCents}"
+            }
+          }
+        ]
+      },
+      "defaultCase": []
+    },
+    {
+      "name": "assemble_decision",
+      "taskReferenceName": "assemble_decision",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "returnId": "${workflow.workflowId}",
+        "orderId": "${workflow.input.orderId}",
+        "sku": "${workflow.input.sku}",
+        "reason": "${workflow.input.reason}",
+        "decision": "${settle_decision.output.result}",
+        "lookup": "${lookup_order.output}",
+        "loop": "${pointless_checks.output}",
+        "refund": "${issue_refund.output}",
+        "credit": "${issue_store_credit.output}",
+        "queryExpression": "(.decision | if type == \"object\" then . else {} end) as $d | (.lookup | if type == \"object\" then . else {} end) as $l | (.refund | if type == \"object\" then . else {} end) as $r | (.credit | if type == \"object\" then . else {} end) as $c | ([(.loop | if type == \"object\" then . else {} end) | to_entries[] | select(.key | test(\"^[0-9]+$\")) | {n: (.key | tonumber), c: (.value | if type == \"object\" then .pointless_check else null end)} | select((.c | type) == \"object\" and .c.ok == true)] | sort_by(.n) | map({step: .n, check: .c.check, department: .c.department, verdict: .c.verdict, note: .c.note, affectsDecision: false})) as $checks | (.returnId | tostring) as $id | {returnId: $id, orderId: (.orderId | if type == \"string\" then . else null end), sku: (.sku | if type == \"string\" then . else null end), reason: (.reason | if type == \"string\" then . else null end), decision: $d.decision, reasonCode: $d.reasonCode, explanation: $d.explanation, refundCents: ($d.refundCents // 0), decidedBy: $d.decidedBy, item: ($l.line | if type == \"object\" then {sku: .sku, name: .name, emoji: .emoji, qty: .qty, lineTotalCents: .lineTotalCents} else null end), checks: $checks, outcome: (if $d.decision == \"APPROVED\" then (if $r.ok == true then {kind: \"REFUND\", reference: $r.reference, amountCents: $r.amountCents, method: $r.method, fallback: false} else {kind: \"REFUND\", reference: (\"RF-\" + $id[0:8] + \"-MANUAL\"), amountCents: ($d.refundCents // 0), method: \"A handwritten cheque, because the refund machine is unplugged\", fallback: true} end) elif $d.decision == \"STORE_CREDIT\" then (if $c.ok == true then {kind: \"STORE_CREDIT\", reference: $c.reference, amountCents: $c.amountCents, method: $c.method, fallback: false} else {kind: \"STORE_CREDIT\", reference: (\"SC-\" + $id[0:8] + \"-MANUAL\"), amountCents: ($d.refundCents // 0), method: \"Store credit, written on the back of your receipt in pen\", fallback: true} end) else {kind: \"NONE\", reference: null, amountCents: 0, method: \"No money moves. You keep the item and the memories.\", fallback: false} end), degraded: [(if $l.ok == true then empty else \"lookup\" end), (if $d.fallback == true then \"decision\" else empty end), (if (($d.decision == \"APPROVED\" and $r.ok != true) or ($d.decision == \"STORE_CREDIT\" and $c.ok != true)) then \"payout\" else empty end)]}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "returnId": "${workflow.workflowId}",
+    "decision": "${assemble_decision.output.result.decision}",
+    "result": "${assemble_decision.output.result}"
+  }
+}

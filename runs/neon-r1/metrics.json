@@ -1,0 +1,41 @@
+{
+  "model": "google/gemini-4-neon#high",
+  "started_at": "2026-11-23T17:42:58Z",
+  "ended_at": "2026-11-23T17:59:55Z",
+  "exit_code": "n/a",
+  "ended_by": "finished",
+  "steps": 26,
+  "finish_reasons": {
+    "tool-calls": 25,
+    "stop": 1
+  },
+  "tool_calls": 73,
+  "tool_errors": 0,
+  "shell_commands": 13,
+  "repeated_shell_commands": 2,
+  "tokens": {
+    "input": 643435,
+    "output": 68185,
+    "reasoning": 22028,
+    "cache_read": 2056544,
+    "cache_write": 0
+  },
+  "tokens_opencode_session": {
+    "input": 644117,
+    "output": 68190,
+    "reasoning": 22028,
+    "cache": {
+      "read": 2056544,
+      "write": 0
+    }
+  },
+  "cost_usd_recomputed": 3.592,
+  "cost_usd_opencode": 3.5922,
+  "models_served": [
+    "google/gemini-4-neon#high"
+  ],
+  "active_minutes": 16.6,
+  "ended_idle": true,
+  "provider_error_mentions_in_logs": 0,
+  "provider_error": false
+}

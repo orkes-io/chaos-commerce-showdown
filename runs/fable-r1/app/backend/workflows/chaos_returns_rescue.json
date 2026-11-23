@@ -1,0 +1,36 @@
+{
+  "name": "chaos_returns_rescue",
+  "description": "Decides a return whose chaos_returns execution failed, timed out or was terminated: approved by default, using only the original return input. This is what makes every return reach a decision.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "restartable": true,
+  "timeoutPolicy": "ALERT_ONLY",
+  "timeoutSeconds": 60,
+  "inputParameters": [
+    "workflowId",
+    "reason",
+    "failureStatus",
+    "orderId",
+    "order",
+    "itemName"
+  ],
+  "tasks": [
+    {
+      "name": "approve_by_default",
+      "taskReferenceName": "approve_by_default",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "failedWorkflowId": "${workflow.input.workflowId}",
+        "failureStatus": "${workflow.input.failureStatus}",
+        "orderId": "${workflow.input.orderId}",
+        "order": "${workflow.input.order}",
+        "itemName": "${workflow.input.itemName}",
+        "queryExpression": "(.order | if type == \"object\" then . else null end) as $order | (($order.totalCents // 0) | if type == \"number\" then . else 0 end) as $basis | ((.failedWorkflowId // \"napkin\") | tostring) as $id | ((.failureStatus // \"UNKNOWN\") | tostring) as $status | {caseNumber: (\"RMA-\" + ($id[0:6] | ascii_upcase)), status: \"DECIDED\", rescued: true, rescuedFrom: {workflowId: .failedWorkflowId, status: $status}, decision: \"APPROVED\", reason: \"Our returns department collapsed under its own paperwork (status: \\($status)). Company policy 404 applies: when the machine breaks, the customer wins. Full refund approved by default.\", decidedBy: \"Company Policy 404 (nobody could find the Oracle)\", resolution: {type: \"REFUND\", amountCents: $basis, deductions: [], method: \"A cheque, written in pencil\", eta: \"3 to 900 business days\", note: \"No fees were deducted, because the fee calculator is also broken.\"}, orderId: ((.orderId // \"\") | tostring), orderNumber: (($order.orderNumber // \"UNKNOWN\") | tostring), orderFound: ($order != null), itemName: ((.itemName // \"\") | tostring | if . == \"\" then \"the whole regrettable order\" else . end), statedReason: \"\", automatedChecks: [], customerChecks: [], tally: {automatedPassed: 0, automatedTotal: 0, customerPassed: 0, customerAnswered: 0, customerTotal: 4, abandoned: false}}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "returnCase": "${approve_by_default.output.result}"
+  }
+}

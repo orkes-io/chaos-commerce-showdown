@@ -1,0 +1,70 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Chaos Commerce serverless backend on AWS Lambda + HTTP API Gateway, backed by Conductor workflows.
+
+Parameters:
+  ConductorServerUrl:
+    Type: String
+    Description: Base URL of the Conductor server API (e.g., https://conductor.example.com/api)
+  ConductorUiUrl:
+    Type: String
+    Default: ''
+    Description: Optional Conductor UI URL for execution deep-links (defaults to ConductorServerUrl without /api)
+  CorsOrigin:
+    Type: String
+    Default: '*'
+    Description: Allowed CORS origin (set to your GitHub Pages origin, e.g. https://<user>.github.io)
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 256
+    Runtime: nodejs22.x
+    Architectures:
+      - arm64
+
+Resources:
+  ChaosCommerceApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - !Ref CorsOrigin
+        AllowHeaders:
+          - Content-Type
+          - Authorization
+          - X-Requested-With
+        AllowMethods:
+          - GET
+          - POST
+          - OPTIONS
+
+  ChaosCommerceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: src/lambda.handler
+      Description: Handles Chaos Commerce catalog, reviews, checkout, returns, and Conductor workflow status APIs.
+      Environment:
+        Variables:
+          CONDUCTOR_SERVER_URL: !Ref ConductorServerUrl
+          CONDUCTOR_UI_URL: !Ref ConductorUiUrl
+          CORS_ORIGIN: !Ref CorsOrigin
+      Events:
+        ApiProxy:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ChaosCommerceApi
+            Path: /api/{proxy+}
+            Method: ANY
+        ApiHealth:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ChaosCommerceApi
+            Path: /api/health
+            Method: GET
+
+Outputs:
+  ChaosCommerceApiUrl:
+    Description: Base URL for the Chaos Commerce AWS Lambda API (set as VITE_API_BASE_URL or public/config.js apiBaseUrl on GitHub Pages)
+    Value: !Sub 'https://${ChaosCommerceApi}.execute-api.${AWS::Region}.amazonaws.com'

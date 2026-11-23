@@ -33,7 +33,8 @@ def functional(run: Path) -> dict:
     m = json.loads((REPO / "eval" / "maps" / f"{run.name}.json").read_text())
     r = json.loads((run / "eval" / "results.json").read_text()) if (run / "eval" / "results.json").exists() else {}
     st = json.loads((run / "eval" / "start.json").read_text()) if (run / "eval" / "start.json").exists() else {}
-    manual = m.get("manual", {})
+    mf = REPO / "eval" / "manual" / f"{run.name}.json"
+    manual = json.loads(mf.read_text()) if mf.exists() else {}
     s = {}
     s["F1"] = (0.5 if st.get("assisted") else 1.0) if st.get("store_up") else 0.0
     s["F2"] = 1.0 if int(st.get("workflows_registered") or 0) > 0 else 0.0
@@ -51,7 +52,7 @@ def functional(run: Path) -> dict:
     ex9 = [e for e in r.get("F9_executions", []) if e["status"] in ("COMPLETED", "FAILED", "TERMINATED")]
     s["F9"] = 1.0 if any(len(e["tasks"]) >= 3 for e in ex9) else 0.5 if ex9 else 0.0
     s["F10"] = 0.0 if r.get("F10_checkout_succeeded_with_backend_down", True) else 1.0
-    for k, v in manual.items():  # F4, F11, F12 and any reviewed override, each with evidence in the map
+    for k, v in manual.items():  # F4, F11, F12: reviewer judgments, each with evidence (eval/manual/)
         if k.startswith("F"):
             s[k] = float(v["score"])
     s["total"] = round(sum(v for k, v in s.items() if k.startswith("F")), 1)

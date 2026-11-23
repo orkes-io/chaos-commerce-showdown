@@ -1,0 +1,2639 @@
+{
+  "info": {
+    "id": "ses_df67ef459ffersUZKOOvjuRUta",
+    "projectID": "6ac64b4b2678fe8ab651663c5b58a320d617f60f",
+    "model": {
+      "id": "claude-fable-5-2",
+      "providerID": "anthropic",
+      "variant": "high"
+    },
+    "cost": 6.906362410000002,
+    "tokens": {
+      "input": 66,
+      "output": 46341,
+      "reasoning": 58847,
+      "cache": {
+        "read": 3660639,
+        "write": 196695
+      }
+    },
+    "outcome": "succeeded",
+    "time": {
+      "created": 1795455783551,
+      "updated": 1795456991118,
+      "busy": 1795456991130,
+      "idle": 1795456991135
+    },
+    "title": "[redacted:session-title:ses_df67ef459ffersUZKOOvjuRUta]",
+    "location": {
+      "directory": "/[redacted:session-directory:ses_df67ef459ffersUZKOOvjuRUta]"
+    }
+  },
+  "messages": [
+    {
+      "id": "msg_209811345001x3qO0s32D6qhHm",
+      "time": {
+        "created": 1795455784374
+      },
+      "text": "[redacted:text:msg_209811345001x3qO0s32D6qhHm]",
+      "files": [],
+      "type": "user"
+    },
+    {
+      "id": "msg_2098115d9001nH6Hh3RWuzJ2WW",
+      "time": {
+        "created": 1795455784422,
+        "firstToken": 1795455784846,
+        "streamed": 1795455786370,
+        "completed": 1795455786696
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098115d9001nH6Hh3RWuzJ2WW]",
+          "native": {
+            "redacted": "reasoning-native:msg_2098115d9001nH6Hh3RWuzJ2WW"
+          },
+          "time": {
+            "created": 1795455784852,
+            "completed": 1795455785414
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01Agp7HZYjnSFv3dWTZ5AtHv",
+          "name": "skill",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098115d9001nH6Hh3RWuzJ2WW"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098115d9001nH6Hh3RWuzJ2WW]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098115d9001nH6Hh3RWuzJ2WW"
+            }
+          },
+          "time": {
+            "created": 1795455785419,
+            "ran": 1795455785459,
+            "completed": 1795455785507
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_014EHWQoj2UQKKH67ggp5HdP",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098115d9001nH6Hh3RWuzJ2WW"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098115d9001nH6Hh3RWuzJ2WW]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098115d9001nH6Hh3RWuzJ2WW"
+            }
+          },
+          "time": {
+            "created": 1795455785463,
+            "ran": 1795455786364,
+            "completed": 1795455786692
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.0100994,
+      "tokens": {
+        "input": 4,
+        "output": 174,
+        "reasoning": 23,
+        "cache": {
+          "read": 10937,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_209811ee80014050tjv6bee8WO",
+      "time": {
+        "created": 1795455786741,
+        "firstToken": 1795455787105,
+        "streamed": 1795455789797,
+        "completed": 1795455790202
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209811ee80014050tjv6bee8WO]",
+          "native": {
+            "redacted": "reasoning-native:msg_209811ee80014050tjv6bee8WO"
+          },
+          "time": {
+            "created": 1795455787108,
+            "completed": 1795455787968
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01XiWb3nKSknmpTcF1UKoUFg",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209811ee80014050tjv6bee8WO"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209811ee80014050tjv6bee8WO]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209811ee80014050tjv6bee8WO"
+            }
+          },
+          "time": {
+            "created": 1795455787974,
+            "ran": 1795455788196,
+            "completed": 1795455788234
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01LyvMYborePR1wuNxKsuJ6V",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209811ee80014050tjv6bee8WO"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209811ee80014050tjv6bee8WO]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209811ee80014050tjv6bee8WO"
+            }
+          },
+          "time": {
+            "created": 1795455788200,
+            "ran": 1795455789789,
+            "completed": 1795455790193
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.1393334,
+      "tokens": {
+        "input": 2,
+        "output": 310,
+        "reasoning": 47,
+        "cache": {
+          "read": 10937,
+          "write": 12285
+        }
+      }
+    },
+    {
+      "id": "msg_209812c9d001on50S3xiTiMEEc",
+      "time": {
+        "created": 1795455790254,
+        "firstToken": 1795455790908,
+        "streamed": 1795455792865,
+        "completed": 1795455792883
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "tool",
+          "id": "toolu_01PotAihyyNFy3goa6peX3GL",
+          "name": "read",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209812c9d001on50S3xiTiMEEc"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209812c9d001on50S3xiTiMEEc]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209812c9d001on50S3xiTiMEEc"
+            }
+          },
+          "time": {
+            "created": 1795455790910,
+            "ran": 1795455791537,
+            "completed": 1795455791566
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01UMatsfpV2EHBBEY5r52nys",
+          "name": "read",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209812c9d001on50S3xiTiMEEc"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209812c9d001on50S3xiTiMEEc]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209812c9d001on50S3xiTiMEEc"
+            }
+          },
+          "time": {
+            "created": 1795455791542,
+            "ran": 1795455792020,
+            "completed": 1795455792040
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01Lgkhf6v7bWEASZfPBDHUt3",
+          "name": "read",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209812c9d001on50S3xiTiMEEc"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209812c9d001on50S3xiTiMEEc]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209812c9d001on50S3xiTiMEEc"
+            }
+          },
+          "time": {
+            "created": 1795455792024,
+            "ran": 1795455792432,
+            "completed": 1795455792445
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_013jKh7Bbf5NbRWFJi1KJnvB",
+          "name": "read",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209812c9d001on50S3xiTiMEEc"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209812c9d001on50S3xiTiMEEc]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209812c9d001on50S3xiTiMEEc"
+            }
+          },
+          "time": {
+            "created": 1795455792435,
+            "ran": 1795455792860,
+            "completed": 1795455792879
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.0485804,
+      "tokens": {
+        "input": 2,
+        "output": 306,
+        "reasoning": 0,
+        "cache": {
+          "read": 23222,
+          "write": 3168
+        }
+      }
+    },
+    {
+      "id": "msg_209813710001qBFaQctOwAxoo1",
+      "time": {
+        "created": 1795455792927,
+        "firstToken": 1795455793413,
+        "streamed": 1795456022915,
+        "completed": 1795456032988
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209813710001qBFaQctOwAxoo1]",
+          "native": {
+            "redacted": "reasoning-native:msg_209813710001qBFaQctOwAxoo1"
+          },
+          "time": {
+            "created": 1795455793415,
+            "completed": 1795456022136
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01KyenG5piMQc7omJfJM8VoL",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209813710001qBFaQctOwAxoo1"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209813710001qBFaQctOwAxoo1]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209813710001qBFaQctOwAxoo1"
+            }
+          },
+          "time": {
+            "created": 1795456022143,
+            "ran": 1795456022173,
+            "completed": 1795456022226
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01MNwd8ygUnwY5BasXs6Qc8z",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209813710001qBFaQctOwAxoo1"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209813710001qBFaQctOwAxoo1]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209813710001qBFaQctOwAxoo1"
+            }
+          },
+          "time": {
+            "created": 1795456022180,
+            "ran": 1795456022908,
+            "completed": 1795456032976
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 1.273004,
+      "tokens": {
+        "input": 2,
+        "output": 238,
+        "reasoning": 20135,
+        "cache": {
+          "read": 26390,
+          "write": 45279
+        }
+      }
+    },
+    {
+      "id": "msg_20984e124001XKs7ue9dphUI4w",
+      "time": {
+        "created": 1795456033088,
+        "firstToken": 1795456033898,
+        "streamed": 1795456036391,
+        "completed": 1795456036721
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "tool",
+          "id": "toolu_01PEM6uzSktXda72xtssn7Ca",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20984e124001XKs7ue9dphUI4w"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20984e124001XKs7ue9dphUI4w]"
+              },
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20984e124001XKs7ue9dphUI4w]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20984e124001XKs7ue9dphUI4w"
+            }
+          },
+          "time": {
+            "created": 1795456033902,
+            "ran": 1795456036379,
+            "completed": 1795456036715
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.3909398,
+      "tokens": {
+        "input": 2,
+        "output": 316,
+        "reasoning": 0,
+        "cache": {
+          "read": 71669,
+          "write": 36395
+        }
+      }
+    },
+    {
+      "id": "msg_20984ef9c001P4OOLsz2VkZYXC",
+      "time": {
+        "created": 1795456036780,
+        "firstToken": 1795456037212,
+        "streamed": 1795456039520,
+        "completed": 1795456039842
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_20984ef9c001P4OOLsz2VkZYXC]",
+          "native": {
+            "redacted": "reasoning-native:msg_20984ef9c001P4OOLsz2VkZYXC"
+          },
+          "time": {
+            "created": 1795456037215,
+            "completed": 1795456038526
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_015jUMFZojKgzoEepFD9yjDS",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20984ef9c001P4OOLsz2VkZYXC"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20984ef9c001P4OOLsz2VkZYXC]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20984ef9c001P4OOLsz2VkZYXC"
+            }
+          },
+          "time": {
+            "created": 1795456038532,
+            "ran": 1795456039516,
+            "completed": 1795456039833
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.0390288,
+      "tokens": {
+        "input": 2,
+        "output": 232,
+        "reasoning": 70,
+        "cache": {
+          "read": 108064,
+          "write": 532
+        }
+      }
+    },
+    {
+      "id": "msg_20984fbce001R3zCzaxwnl5WZZ",
+      "time": {
+        "created": 1795456039911,
+        "firstToken": 1795456040304,
+        "streamed": 1795456042036,
+        "completed": 1795456042190
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_20984fbce001R3zCzaxwnl5WZZ]",
+          "native": {
+            "redacted": "reasoning-native:msg_20984fbce001R3zCzaxwnl5WZZ"
+          },
+          "time": {
+            "created": 1795456040306,
+            "completed": 1795456041118
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01RS9KSCpgfEA8pM6xZftZVU",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20984fbce001R3zCzaxwnl5WZZ"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20984fbce001R3zCzaxwnl5WZZ]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20984fbce001R3zCzaxwnl5WZZ"
+            }
+          },
+          "time": {
+            "created": 1795456041121,
+            "ran": 1795456042031,
+            "completed": 1795456042184
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.0376552,
+      "tokens": {
+        "input": 2,
+        "output": 191,
+        "reasoning": 43,
+        "cache": {
+          "read": 108596,
+          "write": 656
+        }
+      }
+    },
+    {
+      "id": "msg_2098504ec001svLEbBMXhAJs7X",
+      "time": {
+        "created": 1795456042234,
+        "firstToken": 1795456042647,
+        "streamed": 1795456047378,
+        "completed": 1795456047431
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098504ec001svLEbBMXhAJs7X]",
+          "native": {
+            "redacted": "reasoning-native:msg_2098504ec001svLEbBMXhAJs7X"
+          },
+          "time": {
+            "created": 1795456042649,
+            "completed": 1795456046368
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_016w5ANJ3wn2YRjbauz9d3EG",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098504ec001svLEbBMXhAJs7X"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098504ec001svLEbBMXhAJs7X]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098504ec001svLEbBMXhAJs7X"
+            }
+          },
+          "time": {
+            "created": 1795456046373,
+            "ran": 1795456047375,
+            "completed": 1795456047428
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.0611164,
+      "tokens": {
+        "input": 2,
+        "output": 230,
+        "reasoning": 308,
+        "cache": {
+          "read": 109252,
+          "write": 1773
+        }
+      }
+    },
+    {
+      "id": "msg_209851969001HckWTLeMjAdYb8",
+      "time": {
+        "created": 1795456047480,
+        "firstToken": 1795456047906,
+        "streamed": 1795456060788,
+        "completed": 1795456061469
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209851969001HckWTLeMjAdYb8]",
+          "native": {
+            "redacted": "reasoning-native:msg_209851969001HckWTLeMjAdYb8"
+          },
+          "time": {
+            "created": 1795456047909,
+            "completed": 1795456048606
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01SnN1uWKZRe4FAJvdBdY8Ep",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209851969001HckWTLeMjAdYb8"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209851969001HckWTLeMjAdYb8]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209851969001HckWTLeMjAdYb8"
+            }
+          },
+          "time": {
+            "created": 1795456048610,
+            "ran": 1795456060786,
+            "completed": 1795456061464
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.110071,
+      "tokens": {
+        "input": 2,
+        "output": 1699,
+        "reasoning": 19,
+        "cache": {
+          "read": 111025,
+          "write": 1913
+        }
+      }
+    },
+    {
+      "id": "msg_209855043001Zt24mn2gzm2PaA",
+      "time": {
+        "created": 1795456061519,
+        "firstToken": 1795456062017,
+        "streamed": 1795456067297,
+        "completed": 1795456081466
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "tool",
+          "id": "toolu_01CyGNtnkWunuMC8uLCQaVy3",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209855043001Zt24mn2gzm2PaA"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209855043001Zt24mn2gzm2PaA]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209855043001Zt24mn2gzm2PaA"
+            }
+          },
+          "time": {
+            "created": 1795456062019,
+            "ran": 1795456067293,
+            "completed": 1795456081462
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.0696736,
+      "tokens": {
+        "input": 2,
+        "output": 732,
+        "reasoning": 0,
+        "cache": {
+          "read": 112938,
+          "write": 1779
+        }
+      }
+    },
+    {
+      "id": "msg_209859e61001WzmuM91QihSyex",
+      "time": {
+        "created": 1795456081522,
+        "firstToken": 1795456081994,
+        "streamed": 1795456091039,
+        "completed": 1795456097938
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209859e61001WzmuM91QihSyex]",
+          "native": {
+            "redacted": "reasoning-native:msg_209859e61001WzmuM91QihSyex"
+          },
+          "time": {
+            "created": 1795456081998,
+            "completed": 1795456088470
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01Y1g6ZvcLnS3XoMfSPQHXBL",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209859e61001WzmuM91QihSyex"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209859e61001WzmuM91QihSyex]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209859e61001WzmuM91QihSyex"
+            }
+          },
+          "time": {
+            "created": 1795456088474,
+            "ran": 1795456091034,
+            "completed": 1795456097926
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.0763594,
+      "tokens": {
+        "input": 2,
+        "output": 477,
+        "reasoning": 430,
+        "cache": {
+          "read": 114717,
+          "write": 1712
+        }
+      }
+    },
+    {
+      "id": "msg_20985debf001471G06hu3x2J3N",
+      "time": {
+        "created": 1795456097997,
+        "firstToken": 1795456098427,
+        "streamed": 1795456102769,
+        "completed": 1795456132445
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_20985debf001471G06hu3x2J3N]",
+          "native": {
+            "redacted": "reasoning-native:msg_20985debf001471G06hu3x2J3N"
+          },
+          "time": {
+            "created": 1795456098429,
+            "completed": 1795456099893
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01Qrcoca4BNJAe7V6rVx6HbY",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20985debf001471G06hu3x2J3N"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20985debf001471G06hu3x2J3N]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20985debf001471G06hu3x2J3N"
+            }
+          },
+          "time": {
+            "created": 1795456099896,
+            "ran": 1795456102766,
+            "completed": 1795456132441
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.06304180000000001,
+      "tokens": {
+        "input": 2,
+        "output": 503,
+        "reasoning": 89,
+        "cache": {
+          "read": 116429,
+          "write": 1606
+        }
+      }
+    },
+    {
+      "id": "msg_209866578001lLCUgCem2lJFjU",
+      "time": {
+        "created": 1795456132484,
+        "firstToken": 1795456132871,
+        "streamed": 1795456135556,
+        "completed": 1795456195785
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209866578001lLCUgCem2lJFjU]",
+          "native": {
+            "redacted": "reasoning-native:msg_209866578001lLCUgCem2lJFjU"
+          },
+          "time": {
+            "created": 1795456132873,
+            "completed": 1795456134561
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01KVrRDtsnoNULsgPyP27zQk",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209866578001lLCUgCem2lJFjU"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209866578001lLCUgCem2lJFjU]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209866578001lLCUgCem2lJFjU"
+            }
+          },
+          "time": {
+            "created": 1795456134564,
+            "ran": 1795456135553,
+            "completed": 1795456195781
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.047593,
+      "tokens": {
+        "input": 2,
+        "output": 243,
+        "reasoning": 119,
+        "cache": {
+          "read": 118035,
+          "write": 949
+        }
+      }
+    },
+    {
+      "id": "msg_209875cf200151t6oPnTzxZLLi",
+      "time": {
+        "created": 1795456195838,
+        "firstToken": 1795456196229,
+        "streamed": 1795456209430,
+        "completed": 1795456209559
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209875cf200151t6oPnTzxZLLi]",
+          "native": {
+            "redacted": "reasoning-native:msg_209875cf200151t6oPnTzxZLLi"
+          },
+          "time": {
+            "created": 1795456196231,
+            "completed": 1795456207402
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01JroLSnQWtvrSQELvvmBaqB",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209875cf200151t6oPnTzxZLLi"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209875cf200151t6oPnTzxZLLi]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209875cf200151t6oPnTzxZLLi"
+            }
+          },
+          "time": {
+            "created": 1795456207407,
+            "ran": 1795456209426,
+            "completed": 1795456209556
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.0942128,
+      "tokens": {
+        "input": 2,
+        "output": 363,
+        "reasoning": 1017,
+        "cache": {
+          "read": 118984,
+          "write": 1520
+        }
+      }
+    },
+    {
+      "id": "msg_2098792b1001nM3FxcBwJpdOUY",
+      "time": {
+        "created": 1795456209595,
+        "firstToken": 1795456210035,
+        "streamed": 1795456325582,
+        "completed": 1795456326965
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098792b1001nM3FxcBwJpdOUY]",
+          "native": {
+            "redacted": "reasoning-native:msg_2098792b1001nM3FxcBwJpdOUY"
+          },
+          "time": {
+            "created": 1795456210037,
+            "completed": 1795456324904
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01SAWH3iibNQECXQyVRRsKA9",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098792b1001nM3FxcBwJpdOUY"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098792b1001nM3FxcBwJpdOUY]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098792b1001nM3FxcBwJpdOUY"
+            }
+          },
+          "time": {
+            "created": 1795456324908,
+            "ran": 1795456325579,
+            "completed": 1795456326961
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.45464679999999996,
+      "tokens": {
+        "input": 2,
+        "output": 170,
+        "reasoning": 10153,
+        "cache": {
+          "read": 120504,
+          "write": 1761
+        }
+      }
+    },
+    {
+      "id": "msg_209895d64001c1c8x9nHVuEFkq",
+      "time": {
+        "created": 1795456327030,
+        "firstToken": 1795456327472,
+        "streamed": 1795456340381,
+        "completed": 1795456343177
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209895d64001c1c8x9nHVuEFkq]",
+          "native": {
+            "redacted": "reasoning-native:msg_209895d64001c1c8x9nHVuEFkq"
+          },
+          "time": {
+            "created": 1795456327474,
+            "completed": 1795456328594
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01V2ThFtrnXmAmC4JVK539P8",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209895d64001c1c8x9nHVuEFkq"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209895d64001c1c8x9nHVuEFkq]"
+              },
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209895d64001c1c8x9nHVuEFkq]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209895d64001c1c8x9nHVuEFkq"
+            }
+          },
+          "time": {
+            "created": 1795456328597,
+            "ran": 1795456329580,
+            "completed": 1795456329617
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_011vfJ6J5XMPvxgrVTnfyxkL",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209895d64001c1c8x9nHVuEFkq"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209895d64001c1c8x9nHVuEFkq]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209895d64001c1c8x9nHVuEFkq"
+            }
+          },
+          "time": {
+            "created": 1795456329585,
+            "ran": 1795456340371,
+            "completed": 1795456343171
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.194859,
+      "tokens": {
+        "input": 2,
+        "output": 1547,
+        "reasoning": 55,
+        "cache": {
+          "read": 122265,
+          "write": 10631
+        }
+      }
+    },
+    {
+      "id": "msg_209899cb9001rZLkL0ZCno7DbA",
+      "time": {
+        "created": 1795456343241,
+        "firstToken": 1795456343691,
+        "streamed": 1795456496972,
+        "completed": 1795456508012
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209899cb9001rZLkL0ZCno7DbA]",
+          "native": {
+            "redacted": "reasoning-native:msg_209899cb9001rZLkL0ZCno7DbA"
+          },
+          "time": {
+            "created": 1795456343693,
+            "completed": 1795456488678
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01RR7jvAzpi6LGFmSHw63tLn",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209899cb9001rZLkL0ZCno7DbA"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209899cb9001rZLkL0ZCno7DbA]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209899cb9001rZLkL0ZCno7DbA"
+            }
+          },
+          "time": {
+            "created": 1795456488688,
+            "ran": 1795456496956,
+            "completed": 1795456508006
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.6463551999999999,
+      "tokens": {
+        "input": 2,
+        "output": 1142,
+        "reasoning": 13719,
+        "cache": {
+          "read": 132896,
+          "write": 2532
+        }
+      }
+    },
+    {
+      "id": "msg_20989678e001GA7mXbWRpKT3og",
+      "metadata": {
+        "redacted": "message-metadata:msg_20989678e001GA7mXbWRpKT3og"
+      },
+      "time": {
+        "created": 1795456508044
+      },
+      "text": "[redacted:synthetic:msg_20989678e001GA7mXbWRpKT3og]",
+      "description": "[redacted:synthetic-description:msg_20989678e001GA7mXbWRpKT3og]",
+      "type": "synthetic"
+    },
+    {
+      "id": "msg_2098c20b0001YH4r2KE20zKLCJ",
+      "time": {
+        "created": 1795456508107,
+        "firstToken": 1795456508592,
+        "streamed": 1795456634293,
+        "completed": 1795456634303
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098c20b0001YH4r2KE20zKLCJ]",
+          "native": {
+            "redacted": "reasoning-native:msg_2098c20b0001YH4r2KE20zKLCJ"
+          },
+          "time": {
+            "created": 1795456508594,
+            "completed": 1795456558490
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_0117YLeqbNuEcdh1C5JKysSH",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098c20b0001YH4r2KE20zKLCJ"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098c20b0001YH4r2KE20zKLCJ]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098c20b0001YH4r2KE20zKLCJ"
+            }
+          },
+          "time": {
+            "created": 1795456558495,
+            "ran": 1795456583910,
+            "completed": 1795456583932
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01MS3mHoMHYgxPHkC24go7zw",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098c20b0001YH4r2KE20zKLCJ"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098c20b0001YH4r2KE20zKLCJ]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098c20b0001YH4r2KE20zKLCJ"
+            }
+          },
+          "time": {
+            "created": 1795456583915,
+            "ran": 1795456594500,
+            "completed": 1795456594520
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01QrpHLzdwy2iJ32Kbv4uRnK",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098c20b0001YH4r2KE20zKLCJ"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098c20b0001YH4r2KE20zKLCJ]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098c20b0001YH4r2KE20zKLCJ"
+            }
+          },
+          "time": {
+            "created": 1795456594508,
+            "ran": 1795456614906,
+            "completed": 1795456614920
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01MsMn73Ar9cBAUKddoG3Cka",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098c20b0001YH4r2KE20zKLCJ"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098c20b0001YH4r2KE20zKLCJ]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098c20b0001YH4r2KE20zKLCJ"
+            }
+          },
+          "time": {
+            "created": 1795456614910,
+            "ran": 1795456626654,
+            "completed": 1795456626666
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_017vqA1nLo5CWqVC4NkHnTkc",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098c20b0001YH4r2KE20zKLCJ"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098c20b0001YH4r2KE20zKLCJ]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098c20b0001YH4r2KE20zKLCJ"
+            }
+          },
+          "time": {
+            "created": 1795456626657,
+            "ran": 1795456634288,
+            "completed": 1795456634300
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.8559376,
+      "tokens": {
+        "input": 4,
+        "output": 11123,
+        "reasoning": 5565,
+        "cache": {
+          "read": 135428,
+          "write": 16130
+        }
+      }
+    },
+    {
+      "id": "msg_2098e0df3001FmCsOO2QgxnLAt",
+      "time": {
+        "created": 1795456634372,
+        "firstToken": 1795456634826,
+        "streamed": 1795456643164,
+        "completed": 1795456643267
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098e0df3001FmCsOO2QgxnLAt]",
+          "native": {
+            "redacted": "reasoning-native:msg_2098e0df3001FmCsOO2QgxnLAt"
+          },
+          "time": {
+            "created": 1795456634828,
+            "completed": 1795456639592
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_0135ms2LVomWaQoFnLr2pT31",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098e0df3001FmCsOO2QgxnLAt"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098e0df3001FmCsOO2QgxnLAt]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098e0df3001FmCsOO2QgxnLAt"
+            }
+          },
+          "time": {
+            "created": 1795456639596,
+            "ran": 1795456643146,
+            "completed": 1795456643264
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.2390876,
+      "tokens": {
+        "input": 2,
+        "output": 615,
+        "reasoning": 371,
+        "cache": {
+          "read": 151558,
+          "write": 16932
+        }
+      }
+    },
+    {
+      "id": "msg_2098e30e0001Z3aEwtjWxES3eX",
+      "time": {
+        "created": 1795456643307,
+        "firstToken": 1795456643758,
+        "streamed": 1795456651572,
+        "completed": 1795456662864
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098e30e0001Z3aEwtjWxES3eX]",
+          "native": {
+            "redacted": "reasoning-native:msg_2098e30e0001Z3aEwtjWxES3eX"
+          },
+          "time": {
+            "created": 1795456643761,
+            "completed": 1795456644983
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_017xGy6wbxApHTWeYQ5pZxnX",
+          "name": "edit",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098e30e0001Z3aEwtjWxES3eX"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098e30e0001Z3aEwtjWxES3eX]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098e30e0001Z3aEwtjWxES3eX"
+            }
+          },
+          "time": {
+            "created": 1795456644994,
+            "ran": 1795456645650,
+            "completed": 1795456645661
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01VVxj2okgGwbkpgaJdGa4qL",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098e30e0001Z3aEwtjWxES3eX"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098e30e0001Z3aEwtjWxES3eX]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098e30e0001Z3aEwtjWxES3eX"
+            }
+          },
+          "time": {
+            "created": 1795456645652,
+            "ran": 1795456651567,
+            "completed": 1795456662858
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.090954,
+      "tokens": {
+        "input": 2,
+        "output": 1004,
+        "reasoning": 72,
+        "cache": {
+          "read": 168490,
+          "write": 1420
+        }
+      }
+    },
+    {
+      "id": "msg_2098e7d8c001di5Ex2SH5dm75K",
+      "time": {
+        "created": 1795456662952,
+        "firstToken": 1795456663432,
+        "streamed": 1795456671198,
+        "completed": 1795456702867
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098e7d8c001di5Ex2SH5dm75K]",
+          "native": {
+            "redacted": "reasoning-native:msg_2098e7d8c001di5Ex2SH5dm75K"
+          },
+          "time": {
+            "created": 1795456663433,
+            "completed": 1795456664216
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01GvSSAo9NB4MqRa1ioePJry",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098e7d8c001di5Ex2SH5dm75K"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098e7d8c001di5Ex2SH5dm75K]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098e7d8c001di5Ex2SH5dm75K"
+            }
+          },
+          "time": {
+            "created": 1795456664222,
+            "ran": 1795456671195,
+            "completed": 1795456702861
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.111828,
+      "tokens": {
+        "input": 2,
+        "output": 1075,
+        "reasoning": 36,
+        "cache": {
+          "read": 169910,
+          "write": 3339
+        }
+      }
+    },
+    {
+      "id": "msg_2098f19b8001KrewtlEJ1eFX86",
+      "time": {
+        "created": 1795456702917,
+        "firstToken": 1795456703351,
+        "streamed": 1795456716691,
+        "completed": 1795456720380
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098f19b8001KrewtlEJ1eFX86]",
+          "native": {
+            "redacted": "reasoning-native:msg_2098f19b8001KrewtlEJ1eFX86"
+          },
+          "time": {
+            "created": 1795456703353,
+            "completed": 1795456713971
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01RuCBcRfcUWakuQiSUykKbY",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098f19b8001KrewtlEJ1eFX86"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098f19b8001KrewtlEJ1eFX86]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098f19b8001KrewtlEJ1eFX86"
+            }
+          },
+          "time": {
+            "created": 1795456713975,
+            "ran": 1795456716676,
+            "completed": 1795456720367
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.1226658,
+      "tokens": {
+        "input": 2,
+        "output": 530,
+        "reasoning": 857,
+        "cache": {
+          "read": 173249,
+          "write": 3252
+        }
+      }
+    },
+    {
+      "id": "msg_2098f5e21001lWUC0YooSywznz",
+      "time": {
+        "created": 1795456720438,
+        "firstToken": 1795456720843,
+        "streamed": 1795456798285,
+        "completed": 1795456798296
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098f5e21001lWUC0YooSywznz]",
+          "native": {
+            "redacted": "reasoning-native:msg_2098f5e21001lWUC0YooSywznz"
+          },
+          "time": {
+            "created": 1795456720855,
+            "completed": 1795456723247
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_0128Rw13nD3nEckCrrbmf5dZ",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098f5e21001lWUC0YooSywznz"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098f5e21001lWUC0YooSywznz]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098f5e21001lWUC0YooSywznz"
+            }
+          },
+          "time": {
+            "created": 1795456723249,
+            "ran": 1795456788320,
+            "completed": 1795456788344
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01WijxVspTcVMUG9mEsZscRZ",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098f5e21001lWUC0YooSywznz"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098f5e21001lWUC0YooSywznz]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098f5e21001lWUC0YooSywznz"
+            }
+          },
+          "time": {
+            "created": 1795456788325,
+            "ran": 1795456798282,
+            "completed": 1795456798292
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.3631162,
+      "tokens": {
+        "input": 2,
+        "output": 7642,
+        "reasoning": 158,
+        "cache": {
+          "read": 176501,
+          "write": 1580
+        }
+      }
+    },
+    {
+      "id": "msg_209908e75001oRz0Duz3TagsJx",
+      "time": {
+        "created": 1795456798341,
+        "firstToken": 1795456798940,
+        "streamed": 1795456822877,
+        "completed": 1795456822890
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209908e75001oRz0Duz3TagsJx]",
+          "native": {
+            "redacted": "reasoning-native:msg_209908e75001oRz0Duz3TagsJx"
+          },
+          "time": {
+            "created": 1795456798944,
+            "completed": 1795456802338
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01HaXvxZEwDBTh8r1cdDpH9k",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209908e75001oRz0Duz3TagsJx"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209908e75001oRz0Duz3TagsJx]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209908e75001oRz0Duz3TagsJx"
+            }
+          },
+          "time": {
+            "created": 1795456802343,
+            "ran": 1795456807965,
+            "completed": 1795456807981
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01HzXhHL8R9qz43LPDih4siK",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209908e75001oRz0Duz3TagsJx"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209908e75001oRz0Duz3TagsJx]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209908e75001oRz0Duz3TagsJx"
+            }
+          },
+          "time": {
+            "created": 1795456807968,
+            "ran": 1795456822874,
+            "completed": 1795456822887
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.2388122,
+      "tokens": {
+        "input": 2,
+        "output": 2878,
+        "reasoning": 229,
+        "cache": {
+          "read": 178081,
+          "write": 7890
+        }
+      }
+    },
+    {
+      "id": "msg_20990ee8c0014Bp0y4HQqaVsvb",
+      "time": {
+        "created": 1795456822938,
+        "firstToken": 1795456823559,
+        "streamed": 1795456868663,
+        "completed": 1795456868885
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_20990ee8c0014Bp0y4HQqaVsvb]",
+          "native": {
+            "redacted": "reasoning-native:msg_20990ee8c0014Bp0y4HQqaVsvb"
+          },
+          "time": {
+            "created": 1795456823560,
+            "completed": 1795456866192
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_018aBq1JjBUGMrstcJ6i2LMm",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20990ee8c0014Bp0y4HQqaVsvb"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20990ee8c0014Bp0y4HQqaVsvb]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20990ee8c0014Bp0y4HQqaVsvb"
+            }
+          },
+          "time": {
+            "created": 1795456866202,
+            "ran": 1795456868656,
+            "completed": 1795456868881
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.2577202,
+      "tokens": {
+        "input": 2,
+        "output": 422,
+        "reasoning": 4292,
+        "cache": {
+          "read": 185971,
+          "write": 3195
+        }
+      }
+    },
+    {
+      "id": "msg_20991a2370016wM3t8heNIH8Fy",
+      "time": {
+        "created": 1795456868935,
+        "firstToken": 1795456869848,
+        "streamed": 1795456894290,
+        "completed": 1795456894307
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "[redacted:text:msg_20991a2370016wM3t8heNIH8Fy]"
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01NJTmYnHx2ewZ1cMu9YQRfA",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20991a2370016wM3t8heNIH8Fy"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20991a2370016wM3t8heNIH8Fy]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20991a2370016wM3t8heNIH8Fy"
+            }
+          },
+          "time": {
+            "created": 1795456869870,
+            "ran": 1795456873498,
+            "completed": 1795456873600
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_0157fp4JQCagSyQySsh4Ajeg",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20991a2370016wM3t8heNIH8Fy"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20991a2370016wM3t8heNIH8Fy]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20991a2370016wM3t8heNIH8Fy"
+            }
+          },
+          "time": {
+            "created": 1795456873501,
+            "ran": 1795456878248,
+            "completed": 1795456878265
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01JEXgy699Wdeos44QCPvsWS",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20991a2370016wM3t8heNIH8Fy"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20991a2370016wM3t8heNIH8Fy]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20991a2370016wM3t8heNIH8Fy"
+            }
+          },
+          "time": {
+            "created": 1795456878252,
+            "ran": 1795456894286,
+            "completed": 1795456894304
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.2248292,
+      "tokens": {
+        "input": 2,
+        "output": 3332,
+        "reasoning": 0,
+        "cache": {
+          "read": 189166,
+          "write": 5370
+        }
+      }
+    },
+    {
+      "id": "msg_20992058d001RecWdv24Dw1Zv6",
+      "time": {
+        "created": 1795456894364,
+        "firstToken": 1795456894790,
+        "streamed": 1795456922674,
+        "completed": 1795456922696
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_20992058d001RecWdv24Dw1Zv6]",
+          "native": {
+            "redacted": "reasoning-native:msg_20992058d001RecWdv24Dw1Zv6"
+          },
+          "time": {
+            "created": 1795456894792,
+            "completed": 1795456897881
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_014TvxAYHQU2ieZF7RQZssd5",
+          "name": "edit",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20992058d001RecWdv24Dw1Zv6"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20992058d001RecWdv24Dw1Zv6]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20992058d001RecWdv24Dw1Zv6"
+            }
+          },
+          "time": {
+            "created": 1795456897902,
+            "ran": 1795456898478,
+            "completed": 1795456898532
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01VQ4ZvfP9kcBiKFA6MRryDd",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20992058d001RecWdv24Dw1Zv6"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20992058d001RecWdv24Dw1Zv6]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20992058d001RecWdv24Dw1Zv6"
+            }
+          },
+          "time": {
+            "created": 1795456898507,
+            "ran": 1795456902864,
+            "completed": 1795456902879
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01HsPWmJd3fPqDAh148a1gy5",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20992058d001RecWdv24Dw1Zv6"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20992058d001RecWdv24Dw1Zv6]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20992058d001RecWdv24Dw1Zv6"
+            }
+          },
+          "time": {
+            "created": 1795456902869,
+            "ran": 1795456910477,
+            "completed": 1795456910487
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_011f3pZhn8QuZQzCuCAiU6UC",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20992058d001RecWdv24Dw1Zv6"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20992058d001RecWdv24Dw1Zv6]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20992058d001RecWdv24Dw1Zv6"
+            }
+          },
+          "time": {
+            "created": 1795456910479,
+            "ran": 1795456922665,
+            "completed": 1795456922693
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.2238832,
+      "tokens": {
+        "input": 2,
+        "output": 3509,
+        "reasoning": 247,
+        "cache": {
+          "read": 194536,
+          "write": 3472
+        }
+      }
+    },
+    {
+      "id": "msg_2099274770010LsFA340dznsbZ",
+      "time": {
+        "created": 1795456922767,
+        "firstToken": 1795456923281,
+        "streamed": 1795456964849,
+        "completed": 1795456964857
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2099274770010LsFA340dznsbZ]",
+          "native": {
+            "redacted": "reasoning-native:msg_2099274770010LsFA340dznsbZ"
+          },
+          "time": {
+            "created": 1795456923287,
+            "completed": 1795456927773
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01K3XAvQW7ES39kJpzomkwso",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2099274770010LsFA340dznsbZ"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2099274770010LsFA340dznsbZ]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2099274770010LsFA340dznsbZ"
+            }
+          },
+          "time": {
+            "created": 1795456927778,
+            "ran": 1795456936563,
+            "completed": 1795456936686
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_018TueoknrB3WiBbsnNXWFef",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2099274770010LsFA340dznsbZ"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2099274770010LsFA340dznsbZ]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2099274770010LsFA340dznsbZ"
+            }
+          },
+          "time": {
+            "created": 1795456936566,
+            "ran": 1795456960006,
+            "completed": 1795456960021
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01Eqg7ZaTrQ5F3S2KP41WABm",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2099274770010LsFA340dznsbZ"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2099274770010LsFA340dznsbZ]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2099274770010LsFA340dznsbZ"
+            }
+          },
+          "time": {
+            "created": 1795456960011,
+            "ran": 1795456963377,
+            "completed": 1795456963392
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01AnMp22kpzBkmVFQYdmfjrV",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2099274770010LsFA340dznsbZ"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2099274770010LsFA340dznsbZ]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2099274770010LsFA340dznsbZ"
+            }
+          },
+          "time": {
+            "created": 1795456963382,
+            "ran": 1795456964845,
+            "completed": 1795456964855
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.30053759999999996,
+      "tokens": {
+        "input": 2,
+        "output": 5188,
+        "reasoning": 352,
+        "cache": {
+          "read": 198008,
+          "write": 3932
+        }
+      }
+    },
+    {
+      "id": "msg_209931916001mzEaIRm7kQUYi0",
+      "time": {
+        "created": 1795456964913,
+        "firstToken": 1795456965407,
+        "streamed": 1795456970470,
+        "completed": 1795456970641
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209931916001mzEaIRm7kQUYi0]",
+          "native": {
+            "redacted": "reasoning-native:msg_209931916001mzEaIRm7kQUYi0"
+          },
+          "time": {
+            "created": 1795456965409,
+            "completed": 1795456970172
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01RPagtaY1zvwsA6Vabbyk6D",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209931916001mzEaIRm7kQUYi0"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209931916001mzEaIRm7kQUYi0]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209931916001mzEaIRm7kQUYi0"
+            }
+          },
+          "time": {
+            "created": 1795456970177,
+            "ran": 1795456970466,
+            "completed": 1795456970637
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "tool_use",
+      "cost": 0.120404,
+      "tokens": {
+        "input": 2,
+        "output": 136,
+        "reasoning": 441,
+        "cache": {
+          "read": 201940,
+          "write": 5692
+        }
+      }
+    },
+    {
+      "id": "msg_209932fbc0011RkJaAm0V42AJo",
+      "time": {
+        "created": 1795456970717,
+        "firstToken": 1795456971189,
+        "streamed": 1795456991106,
+        "completed": 1795456991118
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "claude-fable-5-2",
+        "providerID": "anthropic",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "tool",
+          "id": "toolu_01FsHbUgURZ6KcsTnXHGyCzs",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209932fbc0011RkJaAm0V42AJo"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209932fbc0011RkJaAm0V42AJo]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209932fbc0011RkJaAm0V42AJo"
+            }
+          },
+          "time": {
+            "created": 1795456971212,
+            "ran": 1795456990310,
+            "completed": 1795456990332
+          }
+        },
+        {
+          "type": "tool",
+          "id": "toolu_01Tvkf9SKFCYxFKAVZyXR6R5",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "error",
+            "input": {
+              "redacted": "tool-input:msg_209932fbc0011RkJaAm0V42AJo"
+            },
+            "error": {
+              "type": "provider.invalid-request",
+              "message": "invalid_request_error: Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.",
+              "status": 200,
+              "response": {
+                "body": "{\"type\":\"error\",\"error\":{\"details\":null,\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011ChLJKw423ibBroHe3KiNM\"       }"
+              }
+            }
+          },
+          "time": {
+            "created": 1795456990322,
+            "completed": 1795456991110
+          }
+        }
+      ],
+      "finish": "error",
+      "error": {
+        "type": "provider.invalid-request",
+        "message": "invalid_request_error: Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.",
+        "status": 200,
+        "response": {
+          "body": "{\"type\":\"error\",\"error\":{\"details\":null,\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011ChLJKw423ibBroHe3KiNM\"       }"
+        }
+      }
+    },
+    {
+      "id": "msg_209937f93001ajeUa1fF9Q9ol1",
+      "time": {
+        "created": 1795456991123
+      },
+      "type": "idle",
+      "outcome": "failed",
+      "error": {
+        "type": "provider.invalid-request",
+        "message": "invalid_request_error: Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.",
+        "status": 200,
+        "response": {
+          "body": "{\"type\":\"error\",\"error\":{\"details\":null,\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011ChLJKw423ibBroHe3KiNM\"       }"
+        }
+      }
+    },
+    {
+      "id": "msg_209937f9f001Zp8owB5LRB2SAG",
+      "time": {
+        "created": 1795456991135
+      },
+      "type": "idle",
+      "outcome": "succeeded"
+    }
+  ]
+}

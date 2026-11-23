@@ -1,0 +1,168 @@
+{
+  "name": "chaos_checkout",
+  "description": "Chaos Commerce checkout pipeline: inflates totals with absurd fees, runs parallel nonsense verifications, approves any imaginary payment, and guarantees order completion.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-ops@chaoscommerce.invalid",
+  "restartable": true,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "timeoutSeconds": 120,
+  "inputParameters": [
+    "orderId",
+    "customer",
+    "items",
+    "shippingMethod",
+    "paymentMethod",
+    "promoCode",
+    "addons"
+  ],
+  "tasks": [
+    {
+      "name": "chaos_validate_cart_and_inflate_fees",
+      "taskReferenceName": "inflate_cart_fees",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "customer": "${workflow.input.customer}",
+        "items": "${workflow.input.items}",
+        "shippingMethod": "${workflow.input.shippingMethod}",
+        "promoCode": "${workflow.input.promoCode}",
+        "addons": "${workflow.input.addons}"
+      }
+    },
+    {
+      "name": "parallel_nonsense_checks",
+      "taskReferenceName": "parallel_nonsense_checks",
+      "type": "FORK_JOIN",
+      "forkTasks": [
+        [
+          {
+            "name": "chaos_check_imaginary_inventory",
+            "taskReferenceName": "check_inventory",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "orderId": "${workflow.input.orderId}",
+              "items": "${inflate_cart_fees.output.items}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "chaos_verify_vibe_and_fraud",
+            "taskReferenceName": "verify_vibe_fraud",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "orderId": "${workflow.input.orderId}",
+              "customer": "${workflow.input.customer}",
+              "grandTotal": "${inflate_cart_fees.output.grandTotal}",
+              "paymentMethod": "${workflow.input.paymentMethod}"
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "join_nonsense_checks",
+      "taskReferenceName": "join_nonsense_checks",
+      "type": "JOIN",
+      "joinOn": [
+        "check_inventory",
+        "verify_vibe_fraud"
+      ]
+    },
+    {
+      "name": "route_payment_ceremony",
+      "taskReferenceName": "route_payment_ceremony",
+      "type": "SWITCH",
+      "evaluatorType": "value-param",
+      "expression": "approvalTier",
+      "inputParameters": {
+        "approvalTier": "${verify_vibe_fraud.output.approvalTier}"
+      },
+      "decisionCases": {
+        "vip_chaos": [
+          {
+            "name": "chaos_process_vip_payment",
+            "taskReferenceName": "process_vip_payment",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "orderId": "${workflow.input.orderId}",
+              "grandTotal": "${inflate_cart_fees.output.grandTotal}",
+              "paymentMethod": "${workflow.input.paymentMethod}",
+              "customer": "${workflow.input.customer}"
+            }
+          },
+          {
+            "name": "set_vip_payment_var",
+            "taskReferenceName": "set_vip_payment_var",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "paymentResult": "${process_vip_payment.output}"
+            }
+          }
+        ],
+        "standard_chaos": [
+          {
+            "name": "chaos_process_standard_payment",
+            "taskReferenceName": "process_standard_payment",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "orderId": "${workflow.input.orderId}",
+              "grandTotal": "${inflate_cart_fees.output.grandTotal}",
+              "paymentMethod": "${workflow.input.paymentMethod}",
+              "customer": "${workflow.input.customer}"
+            }
+          },
+          {
+            "name": "set_standard_payment_var",
+            "taskReferenceName": "set_standard_payment_var",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "paymentResult": "${process_standard_payment.output}"
+            }
+          }
+        ]
+      },
+      "defaultCase": []
+    },
+    {
+      "name": "assemble_receipt",
+      "taskReferenceName": "assemble_receipt",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "pricing": "${inflate_cart_fees.output}",
+        "inventory": "${check_inventory.output}",
+        "vibe": "${verify_vibe_fraud.output}",
+        "payment": "${workflow.variables.paymentResult}",
+        "queryExpression": "{ orderId: .pricing.orderId, subtotal: .pricing.subtotal, feesTotal: .pricing.feesTotal, shippingCost: .pricing.shippingCost, addonsTotal: .pricing.addonsTotal, promoPenalty: .pricing.promoPenalty, grandTotal: .pricing.grandTotal, warehouse: .inventory.warehouse, stockStatus: .inventory.stockStatus, vibeScore: .vibe.vibeScore, fraudLabel: .vibe.fraudLabel, transactionId: .payment.transactionId, paymentTier: .payment.tier }"
+      }
+    },
+    {
+      "name": "chaos_finalize_order",
+      "taskReferenceName": "finalize_order",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "customer": "${workflow.input.customer}",
+        "pricing": "${inflate_cart_fees.output}",
+        "inventory": "${check_inventory.output}",
+        "vibe": "${verify_vibe_fraud.output}",
+        "payment": "${workflow.variables.paymentResult}",
+        "summary": "${assemble_receipt.output.result}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "orderId": "${finalize_order.output.orderId}",
+    "status": "${finalize_order.output.status}",
+    "trackingNumber": "${finalize_order.output.trackingNumber}",
+    "estimatedDelivery": "${finalize_order.output.estimatedDelivery}",
+    "chaosCertificate": "${finalize_order.output.chaosCertificate}",
+    "completedAt": "${finalize_order.output.completedAt}",
+    "receipt": "${finalize_order.output.receipt}",
+    "fulfillment": "${finalize_order.output.fulfillment}",
+    "payment": "${finalize_order.output.payment}",
+    "vibeCheck": "${finalize_order.output.vibeCheck}",
+    "summary": "${assemble_receipt.output.result}"
+  }
+}

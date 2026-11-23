@@ -1,0 +1,92 @@
+{
+  "notes": "Single Node server on :3000 serves the Vite build and /api. Reviews and the dodging one-star live in the product modal (Reviews button on each card).",
+  "start_cmd": "npm start",
+  "catalog": {
+    "url": "/",
+    "product": ".product-card",
+    "price": ".product-card .price-now"
+  },
+  "reviews": {
+    "url": "/",
+    "open": [
+      {
+        "click": ".product-card >> nth=0 >> button:has-text('Reviews')"
+      }
+    ],
+    "item": ".review-card"
+  },
+  "one_star": {
+    "url": "/",
+    "open": [
+      {
+        "click": ".product-card >> nth=0 >> button:has-text('Reviews')"
+      }
+    ],
+    "selector": "button.dodging-one-star"
+  },
+  "checkout": [
+    {
+      "goto": "/"
+    },
+    {
+      "click": ".product-card >> nth=0 >> button:has-text('Add to Cart')"
+    },
+    {
+      "click": "button.nav-btn:has-text('Regret Cart')"
+    },
+    {
+      "fill": [
+        ".field:has(label:has-text('Victim Full Name')) input",
+        "Test Shopper"
+      ]
+    },
+    {
+      "fill": [
+        ".field:has(label:has-text('Email')) input",
+        "shopper@example.com"
+      ]
+    },
+    {
+      "fill": [
+        ".field:has(label:has-text('Shipping Address')) input",
+        "1 Test Street"
+      ]
+    },
+    {
+      "click": "[data-testid=submit-checkout-btn]"
+    },
+    {
+      "expect_text": "Order Confirmed"
+    },
+    {
+      "screenshot": "confirmation"
+    }
+  ],
+  "returns": [
+    {
+      "click": "button:has-text('Start Return')"
+    },
+    {
+      "fill": [
+        "textarea",
+        "It achieved sentience and judged me."
+      ]
+    },
+    {
+      "fill": [
+        "input[placeholder*='apology' i]",
+        "So sorry about the yacht."
+      ]
+    },
+    {
+      "click": "[data-testid=submit-return-btn]"
+    },
+    {
+      "expect_text": "Decision:"
+    },
+    {
+      "screenshot": "decision"
+    }
+  ],
+  "backend_stop": "pkill -u ubuntu -x node"
+}

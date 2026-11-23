@@ -1,0 +1,14 @@
+{
+  "name": "chaos-commerce-backend",
+  "version": "1.0.0",
+  "description": "Chaos Commerce API backend (AWS Lambda & local Node 22 server) backed by Conductor workflows.",
+  "type": "module",
+  "main": "src/lambda.mjs",
+  "scripts": {
+    "start": "node src/server.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

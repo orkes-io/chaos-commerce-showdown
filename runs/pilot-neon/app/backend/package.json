@@ -1,0 +1,13 @@
+{
+  "name": "chaos-commerce-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AWS Lambda-compatible and locally runnable HTTP API for Chaos Commerce, orchestrating checkout and returns via Conductor.",
+  "scripts": {
+    "start": "node src/local-server.mjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "chaos-commerce-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Chaos Commerce API (AWS Lambda & local Express) and Conductor workers",
+  "scripts": {
+    "start": "node src/server.mjs",
+    "register": "node src/registerWorkflows.mjs",
+    "worker": "node src/workerRunner.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@io-orkes/conductor-javascript": "^4.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "serverless-http": "^4.0.0"
+  }
+}

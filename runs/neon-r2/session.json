@@ -1,0 +1,3016 @@
+{
+  "info": {
+    "id": "ses_df67eed61ffeIw3qUQwD4uukIv",
+    "projectID": "6ac64b4b2678fe8ab651663c5b58a320d617f60f",
+    "model": {
+      "id": "gemini-4-neon",
+      "providerID": "google",
+      "variant": "high"
+    },
+    "cost": 4.062181100000001,
+    "tokens": {
+      "input": 729924,
+      "output": 80049,
+      "reasoning": 20875,
+      "cache": {
+        "read": 2403020,
+        "write": 0
+      }
+    },
+    "outcome": "succeeded",
+    "time": {
+      "created": 1795455787251,
+      "updated": 1795456970775,
+      "busy": 1795455787978,
+      "idle": 1795456970799
+    },
+    "title": "[redacted:session-title:ses_df67eed61ffeIw3qUQwD4uukIv]",
+    "location": {
+      "directory": "/[redacted:session-directory:ses_df67eed61ffeIw3qUQwD4uukIv]"
+    }
+  },
+  "messages": [
+    {
+      "id": "msg_209812169001wCY15HfAOw7tXh",
+      "time": {
+        "created": 1795455788042
+      },
+      "text": "[redacted:text:msg_209812169001wCY15HfAOw7tXh]",
+      "files": [],
+      "type": "user"
+    },
+    {
+      "id": "msg_209812436001AW6X5ZYVUV1zOq",
+      "time": {
+        "created": 1795455788099,
+        "firstToken": 1795455791202,
+        "streamed": 1795455792460,
+        "completed": 1795455792902
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209812436001AW6X5ZYVUV1zOq]",
+          "time": {
+            "created": 1795455791205,
+            "completed": 1795455792374
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_9610844762380662584",
+          "name": "skill",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_209812436001AW6X5ZYVUV1zOq"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209812436001AW6X5ZYVUV1zOq"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209812436001AW6X5ZYVUV1zOq]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209812436001AW6X5ZYVUV1zOq"
+            }
+          },
+          "time": {
+            "created": 1795455792386,
+            "ran": 1795455792393,
+            "completed": 1795455792501
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_9610844762380663661",
+          "name": "read",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209812436001AW6X5ZYVUV1zOq"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209812436001AW6X5ZYVUV1zOq]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209812436001AW6X5ZYVUV1zOq"
+            }
+          },
+          "time": {
+            "created": 1795455792400,
+            "ran": 1795455792405,
+            "completed": 1795455792508
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_9610844762380662796",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209812436001AW6X5ZYVUV1zOq"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209812436001AW6X5ZYVUV1zOq]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209812436001AW6X5ZYVUV1zOq"
+            }
+          },
+          "time": {
+            "created": 1795455792416,
+            "ran": 1795455792427,
+            "completed": 1795455792898
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.0102657,
+      "tokens": {
+        "input": 2057,
+        "output": 106,
+        "reasoning": 114,
+        "cache": {
+          "read": 5298,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_20981372e001ic5rN4J6Pfy6R1",
+      "time": {
+        "created": 1795455792957,
+        "firstToken": 1795455796891,
+        "streamed": 1795455798382,
+        "completed": 1795455798697
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_20981372e001ic5rN4J6Pfy6R1]",
+          "time": {
+            "created": 1795455796895,
+            "completed": 1795455798321
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_1520186425838158348",
+          "name": "read",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_20981372e001ic5rN4J6Pfy6R1"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20981372e001ic5rN4J6Pfy6R1"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20981372e001ic5rN4J6Pfy6R1]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20981372e001ic5rN4J6Pfy6R1"
+            }
+          },
+          "time": {
+            "created": 1795455798325,
+            "ran": 1795455798334,
+            "completed": 1795455798421
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_1520186425838159641",
+          "name": "read",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20981372e001ic5rN4J6Pfy6R1"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20981372e001ic5rN4J6Pfy6R1]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20981372e001ic5rN4J6Pfy6R1"
+            }
+          },
+          "time": {
+            "created": 1795455798341,
+            "ran": 1795455798351,
+            "completed": 1795455798435
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_1520186425838160934",
+          "name": "read",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20981372e001ic5rN4J6Pfy6R1"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20981372e001ic5rN4J6Pfy6R1]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20981372e001ic5rN4J6Pfy6R1"
+            }
+          },
+          "time": {
+            "created": 1795455798357,
+            "ran": 1795455798367,
+            "completed": 1795455798471
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_1520186425838158131",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20981372e001ic5rN4J6Pfy6R1"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20981372e001ic5rN4J6Pfy6R1]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20981372e001ic5rN4J6Pfy6R1"
+            }
+          },
+          "time": {
+            "created": 1795455798372,
+            "ran": 1795455798377,
+            "completed": 1795455798694
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.036602699999999995,
+      "tokens": {
+        "input": 10111,
+        "output": 142,
+        "reasoning": 223,
+        "cache": {
+          "read": 5298,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_209814dc40017i5u69iJFD70Kz",
+      "time": {
+        "created": 1795455798734,
+        "firstToken": 1795455802878,
+        "streamed": 1795455803100,
+        "completed": 1795455803291
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "tool",
+          "id": "call_14232283487170936845",
+          "name": "read",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_209814dc40017i5u69iJFD70Kz"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209814dc40017i5u69iJFD70Kz"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209814dc40017i5u69iJFD70Kz]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209814dc40017i5u69iJFD70Kz"
+            }
+          },
+          "time": {
+            "created": 1795455802882,
+            "ran": 1795455802891,
+            "completed": 1795455802909
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_14232283487170939414",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209814dc40017i5u69iJFD70Kz"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209814dc40017i5u69iJFD70Kz]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209814dc40017i5u69iJFD70Kz"
+            }
+          },
+          "time": {
+            "created": 1795455803051,
+            "ran": 1795455803056,
+            "completed": 1795455803275
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.0816135,
+      "tokens": {
+        "input": 25739,
+        "output": 79,
+        "reasoning": 60,
+        "cache": {
+          "read": 15410,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_209815fe5001SCyWqYLx4y5SsK",
+      "time": {
+        "created": 1795455803420,
+        "firstToken": 1795455806865,
+        "streamed": 1795455843121,
+        "completed": 1795455843208
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209815fe5001SCyWqYLx4y5SsK]",
+          "time": {
+            "created": 1795455806867,
+            "completed": 1795455843069
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_5093722194275605459",
+          "name": "shell",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_209815fe5001SCyWqYLx4y5SsK"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209815fe5001SCyWqYLx4y5SsK"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209815fe5001SCyWqYLx4y5SsK]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209815fe5001SCyWqYLx4y5SsK"
+            }
+          },
+          "time": {
+            "created": 1795455843075,
+            "ran": 1795455843084,
+            "completed": 1795455843204
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_5093722194275603366",
+          "name": "webfetch",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209815fe5001SCyWqYLx4y5SsK"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209815fe5001SCyWqYLx4y5SsK]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209815fe5001SCyWqYLx4y5SsK"
+            }
+          },
+          "time": {
+            "created": 1795455843088,
+            "ran": 1795455843094,
+            "completed": 1795455843146
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.0758745,
+      "tokens": {
+        "input": 7729,
+        "output": 89,
+        "reasoning": 3012,
+        "cache": {
+          "read": 41150,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_20981fba4001fvTRbuGZPCNaZO",
+      "time": {
+        "created": 1795455843247,
+        "firstToken": 1795455849449,
+        "streamed": 1795455867266,
+        "completed": 1795455871605
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_20981fba4001fvTRbuGZPCNaZO]",
+          "time": {
+            "created": 1795455849452,
+            "completed": 1795455867238
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_11176877333427685447",
+          "name": "shell",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_20981fba4001fvTRbuGZPCNaZO"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20981fba4001fvTRbuGZPCNaZO"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20981fba4001fvTRbuGZPCNaZO]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20981fba4001fvTRbuGZPCNaZO"
+            }
+          },
+          "time": {
+            "created": 1795455867243,
+            "ran": 1795455867247,
+            "completed": 1795455871600
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.066318,
+      "tokens": {
+        "input": 11117,
+        "output": 38,
+        "reasoning": 1671,
+        "cache": {
+          "read": 48880,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_209826a8c001JPhBLni6LHjvxh",
+      "time": {
+        "created": 1795455871640,
+        "firstToken": 1795455878469,
+        "streamed": 1795455878637,
+        "completed": 1795455881004
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209826a8c001JPhBLni6LHjvxh]",
+          "time": {
+            "created": 1795455878471,
+            "completed": 1795455878612
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_11703143161936482525",
+          "name": "shell",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_209826a8c001JPhBLni6LHjvxh"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209826a8c001JPhBLni6LHjvxh"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209826a8c001JPhBLni6LHjvxh]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209826a8c001JPhBLni6LHjvxh"
+            }
+          },
+          "time": {
+            "created": 1795455878616,
+            "ran": 1795455878622,
+            "completed": 1795455880997
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.022657199999999995,
+      "tokens": {
+        "input": 3800,
+        "output": 35,
+        "reasoning": 136,
+        "cache": {
+          "read": 57948,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_209828f4b001o5GpEwBSERi68w",
+      "time": {
+        "created": 1795455881046,
+        "firstToken": 1795455884252,
+        "streamed": 1795455938954,
+        "completed": 1795455938965
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209828f4b001o5GpEwBSERi68w]",
+          "time": {
+            "created": 1795455884255,
+            "completed": 1795455938875
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_1688662536457565689",
+          "name": "write",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_209828f4b001o5GpEwBSERi68w"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209828f4b001o5GpEwBSERi68w"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209828f4b001o5GpEwBSERi68w]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209828f4b001o5GpEwBSERi68w"
+            }
+          },
+          "time": {
+            "created": 1795455938885,
+            "ran": 1795455938894,
+            "completed": 1795455938942
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_1688662536457566792",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209828f4b001o5GpEwBSERi68w"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209828f4b001o5GpEwBSERi68w]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209828f4b001o5GpEwBSERi68w"
+            }
+          },
+          "time": {
+            "created": 1795455938899,
+            "ran": 1795455938904,
+            "completed": 1795455938949
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_1688662536457567895",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209828f4b001o5GpEwBSERi68w"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209828f4b001o5GpEwBSERi68w]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209828f4b001o5GpEwBSERi68w"
+            }
+          },
+          "time": {
+            "created": 1795455938911,
+            "ran": 1795455938923,
+            "completed": 1795455938961
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_1688662536457564902",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209828f4b001o5GpEwBSERi68w"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209828f4b001o5GpEwBSERi68w]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209828f4b001o5GpEwBSERi68w"
+            }
+          },
+          "time": {
+            "created": 1795455938929,
+            "ran": 1795455938935,
+            "completed": 1795455938958
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.09896685000000001,
+      "tokens": {
+        "input": 2264,
+        "output": 913,
+        "reasoning": 4635,
+        "cache": {
+          "read": 59699,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_2098371c7001cODWb5ub2xIzbP",
+      "time": {
+        "created": 1795455939037,
+        "firstToken": 1795455941816,
+        "streamed": 1795455941865,
+        "completed": 1795455943798
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "tool",
+          "id": "call_1667301148789011800",
+          "name": "shell",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_2098371c7001cODWb5ub2xIzbP"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098371c7001cODWb5ub2xIzbP"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098371c7001cODWb5ub2xIzbP]"
+              },
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098371c7001cODWb5ub2xIzbP]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098371c7001cODWb5ub2xIzbP"
+            }
+          },
+          "time": {
+            "created": 1795455941819,
+            "ran": 1795455941825,
+            "completed": 1795455943794
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.0270306,
+      "tokens": {
+        "input": 5667,
+        "output": 21,
+        "reasoning": 28,
+        "cache": {
+          "read": 61964,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_209838492001x1iK3ELid0UfDe",
+      "time": {
+        "created": 1795455943842,
+        "firstToken": 1795455993584,
+        "streamed": 1795455994707,
+        "completed": 1795455995312
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209838492001x1iK3ELid0UfDe]",
+          "time": {
+            "created": 1795455993594,
+            "completed": 1795455994662
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_1266781849025979924",
+          "name": "shell",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_209838492001x1iK3ELid0UfDe"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209838492001x1iK3ELid0UfDe"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209838492001x1iK3ELid0UfDe]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209838492001x1iK3ELid0UfDe"
+            }
+          },
+          "time": {
+            "created": 1795455994667,
+            "ran": 1795455994672,
+            "completed": 1795455995307
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.021654299999999998,
+      "tokens": {
+        "input": 2809,
+        "output": 40,
+        "reasoning": 186,
+        "cache": {
+          "read": 65582,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_209844dcf001GBHjYnaic7g50I",
+      "time": {
+        "created": 1795455995353,
+        "firstToken": 1795455999937,
+        "streamed": 1795456000834,
+        "completed": 1795456023105
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209844dcf001GBHjYnaic7g50I]",
+          "time": {
+            "created": 1795455999940,
+            "completed": 1795456000803
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_3983384703328068123",
+          "name": "write",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_209844dcf001GBHjYnaic7g50I"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209844dcf001GBHjYnaic7g50I"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209844dcf001GBHjYnaic7g50I]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209844dcf001GBHjYnaic7g50I"
+            }
+          },
+          "time": {
+            "created": 1795456000808,
+            "ran": 1795456000814,
+            "completed": 1795456000843
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_3983384703328069198",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209844dcf001GBHjYnaic7g50I"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209844dcf001GBHjYnaic7g50I]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209844dcf001GBHjYnaic7g50I"
+            }
+          },
+          "time": {
+            "created": 1795456000817,
+            "ran": 1795456000822,
+            "completed": 1795456023102
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.1889787,
+      "tokens": {
+        "input": 61707,
+        "output": 60,
+        "reasoning": 126,
+        "cache": {
+          "read": 7118,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_20984ba600010JTkYT5rsxscG7",
+      "time": {
+        "created": 1795456023150,
+        "firstToken": 1795456026555,
+        "streamed": 1795456026583,
+        "completed": 1795456026669
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "tool",
+          "id": "call_8266808196699378414",
+          "name": "shell",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_20984ba600010JTkYT5rsxscG7"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20984ba600010JTkYT5rsxscG7"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20984ba600010JTkYT5rsxscG7]"
+              },
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20984ba600010JTkYT5rsxscG7]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20984ba600010JTkYT5rsxscG7"
+            }
+          },
+          "time": {
+            "created": 1795456026558,
+            "ran": 1795456026563,
+            "completed": 1795456026666
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.0194034,
+      "tokens": {
+        "input": 2394,
+        "output": 80,
+        "reasoning": 67,
+        "cache": {
+          "read": 66776,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_20984c84b0018qsklm27ysBtOd",
+      "time": {
+        "created": 1795456026722,
+        "firstToken": 1795456036761,
+        "streamed": 1795456036808,
+        "completed": 1795456036962
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "tool",
+          "id": "call_16717914250927097185",
+          "name": "shell",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_20984c84b0018qsklm27ysBtOd"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20984c84b0018qsklm27ysBtOd"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20984c84b0018qsklm27ysBtOd]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20984c84b0018qsklm27ysBtOd"
+            }
+          },
+          "time": {
+            "created": 1795456036766,
+            "ran": 1795456036780,
+            "completed": 1795456036959
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.01772715,
+      "tokens": {
+        "input": 2060,
+        "output": 79,
+        "reasoning": 14,
+        "cache": {
+          "read": 67681,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_20984f07c001yr306jPlf2f8Up",
+      "time": {
+        "created": 1795456036997,
+        "firstToken": 1795456040909,
+        "streamed": 1795456041714,
+        "completed": 1795456041850
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_20984f07c001yr306jPlf2f8Up]",
+          "time": {
+            "created": 1795456040911,
+            "completed": 1795456041683
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_17044235013841189671",
+          "name": "shell",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_20984f07c001yr306jPlf2f8Up"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20984f07c001yr306jPlf2f8Up"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20984f07c001yr306jPlf2f8Up]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20984f07c001yr306jPlf2f8Up"
+            }
+          },
+          "time": {
+            "created": 1795456041686,
+            "ran": 1795456041691,
+            "completed": 1795456041847
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.0209958,
+      "tokens": {
+        "input": 2784,
+        "output": 99,
+        "reasoning": 67,
+        "cache": {
+          "read": 67692,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_2098503920013gEgIdQtTDtdf3",
+      "time": {
+        "created": 1795456041886,
+        "firstToken": 1795456048565,
+        "streamed": 1795456129176,
+        "completed": 1795456129185
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098503920013gEgIdQtTDtdf3]",
+          "time": {
+            "created": 1795456048570,
+            "completed": 1795456129119
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_13632086443578209551",
+          "name": "write",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_2098503920013gEgIdQtTDtdf3"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098503920013gEgIdQtTDtdf3"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098503920013gEgIdQtTDtdf3]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098503920013gEgIdQtTDtdf3"
+            }
+          },
+          "time": {
+            "created": 1795456129122,
+            "ran": 1795456129125,
+            "completed": 1795456129162
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_13632086443578209450",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098503920013gEgIdQtTDtdf3"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098503920013gEgIdQtTDtdf3]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098503920013gEgIdQtTDtdf3"
+            }
+          },
+          "time": {
+            "created": 1795456129129,
+            "ran": 1795456129133,
+            "completed": 1795456129166
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_13632086443578209349",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098503920013gEgIdQtTDtdf3"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098503920013gEgIdQtTDtdf3]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098503920013gEgIdQtTDtdf3"
+            }
+          },
+          "time": {
+            "created": 1795456129152,
+            "ran": 1795456129158,
+            "completed": 1795456129181
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.1886619,
+      "tokens": {
+        "input": 2131,
+        "output": 9414,
+        "reasoning": 2049,
+        "cache": {
+          "read": 68826,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_2098658c1001Otc5ncGM3aBl34",
+      "time": {
+        "created": 1795456129234,
+        "firstToken": 1795456143048,
+        "streamed": 1795456246249,
+        "completed": 1795456246269
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098658c1001Otc5ncGM3aBl34]",
+          "time": {
+            "created": 1795456143050,
+            "completed": 1795456246166
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_5884068185793601903",
+          "name": "write",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_2098658c1001Otc5ncGM3aBl34"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098658c1001Otc5ncGM3aBl34"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098658c1001Otc5ncGM3aBl34]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098658c1001Otc5ncGM3aBl34"
+            }
+          },
+          "time": {
+            "created": 1795456246184,
+            "ran": 1795456246190,
+            "completed": 1795456246255
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_5884068185793605016",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098658c1001Otc5ncGM3aBl34"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098658c1001Otc5ncGM3aBl34]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098658c1001Otc5ncGM3aBl34"
+            }
+          },
+          "time": {
+            "created": 1795456246196,
+            "ran": 1795456246205,
+            "completed": 1795456246259
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_5884068185793604033",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098658c1001Otc5ncGM3aBl34"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098658c1001Otc5ncGM3aBl34]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098658c1001Otc5ncGM3aBl34"
+            }
+          },
+          "time": {
+            "created": 1795456246209,
+            "ran": 1795456246213,
+            "completed": 1795456246263
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_5884068185793603050",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098658c1001Otc5ncGM3aBl34"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098658c1001Otc5ncGM3aBl34]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098658c1001Otc5ncGM3aBl34"
+            }
+          },
+          "time": {
+            "created": 1795456246217,
+            "ran": 1795456246238,
+            "completed": 1795456246266
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.3903267,
+      "tokens": {
+        "input": 75403,
+        "output": 8910,
+        "reasoning": 1960,
+        "cache": {
+          "read": 7118,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_20988221c001O8mecAcXvF2Lwa",
+      "time": {
+        "created": 1795456246314,
+        "firstToken": 1795456266082,
+        "streamed": 1795456361987,
+        "completed": 1795456361989
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_20988221c001O8mecAcXvF2Lwa]",
+          "time": {
+            "created": 1795456266084,
+            "completed": 1795456361879
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_842283140557224688",
+          "name": "write",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_20988221c001O8mecAcXvF2Lwa"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20988221c001O8mecAcXvF2Lwa"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20988221c001O8mecAcXvF2Lwa]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20988221c001O8mecAcXvF2Lwa"
+            }
+          },
+          "time": {
+            "created": 1795456361882,
+            "ran": 1795456361885,
+            "completed": 1795456361931
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_842283140557225459",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20988221c001O8mecAcXvF2Lwa"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20988221c001O8mecAcXvF2Lwa]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20988221c001O8mecAcXvF2Lwa"
+            }
+          },
+          "time": {
+            "created": 1795456361889,
+            "ran": 1795456361893,
+            "completed": 1795456361955
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_842283140557222134",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20988221c001O8mecAcXvF2Lwa"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20988221c001O8mecAcXvF2Lwa]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20988221c001O8mecAcXvF2Lwa"
+            }
+          },
+          "time": {
+            "created": 1795456361896,
+            "ran": 1795456361904,
+            "completed": 1795456361957
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_842283140557222905",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20988221c001O8mecAcXvF2Lwa"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20988221c001O8mecAcXvF2Lwa]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20988221c001O8mecAcXvF2Lwa"
+            }
+          },
+          "time": {
+            "created": 1795456361908,
+            "ran": 1795456361925,
+            "completed": 1795456361961
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_842283140557223676",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20988221c001O8mecAcXvF2Lwa"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20988221c001O8mecAcXvF2Lwa]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20988221c001O8mecAcXvF2Lwa"
+            }
+          },
+          "time": {
+            "created": 1795456361930,
+            "ran": 1795456361941,
+            "completed": 1795456361974
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_842283140557224447",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20988221c001O8mecAcXvF2Lwa"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20988221c001O8mecAcXvF2Lwa]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20988221c001O8mecAcXvF2Lwa"
+            }
+          },
+          "time": {
+            "created": 1795456361943,
+            "ran": 1795456361947,
+            "completed": 1795456361977
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.45086370000000003,
+      "tokens": {
+        "input": 86407,
+        "output": 11822,
+        "reasoning": 883,
+        "cache": {
+          "read": 7118,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_20989e620001A1j9VlO14nx0uW",
+      "time": {
+        "created": 1795456362032,
+        "firstToken": 1795456366463,
+        "streamed": 1795456367475,
+        "completed": 1795456369450
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_20989e620001A1j9VlO14nx0uW]",
+          "time": {
+            "created": 1795456366465,
+            "completed": 1795456367443
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_4736952555422985791",
+          "name": "shell",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_20989e620001A1j9VlO14nx0uW"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20989e620001A1j9VlO14nx0uW"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20989e620001A1j9VlO14nx0uW]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20989e620001A1j9VlO14nx0uW"
+            }
+          },
+          "time": {
+            "created": 1795456367446,
+            "ran": 1795456367449,
+            "completed": 1795456369434
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.3014367,
+      "tokens": {
+        "input": 99308,
+        "output": 72,
+        "reasoning": 91,
+        "cache": {
+          "read": 7118,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_2098a034a001Q3TIwab3L69ksA",
+      "time": {
+        "created": 1795456369498,
+        "firstToken": 1795456379165,
+        "streamed": 1795456397537,
+        "completed": 1795456433013
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098a034a001Q3TIwab3L69ksA]",
+          "time": {
+            "created": 1795456379169,
+            "completed": 1795456397495
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_7514495929654412558",
+          "name": "write",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_2098a034a001Q3TIwab3L69ksA"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098a034a001Q3TIwab3L69ksA"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098a034a001Q3TIwab3L69ksA]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098a034a001Q3TIwab3L69ksA"
+            }
+          },
+          "time": {
+            "created": 1795456397498,
+            "ran": 1795456397502,
+            "completed": 1795456397522
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_7514495929654413967",
+          "name": "shell",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098a034a001Q3TIwab3L69ksA"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098a034a001Q3TIwab3L69ksA]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098a034a001Q3TIwab3L69ksA"
+            }
+          },
+          "time": {
+            "created": 1795456397505,
+            "ran": 1795456397509,
+            "completed": 1795456433007
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.07924905,
+      "tokens": {
+        "input": 8130,
+        "output": 2305,
+        "reasoning": 288,
+        "cache": {
+          "read": 106427,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_2098afba6001OIo0XoyczJcdQr",
+      "time": {
+        "created": 1795456433078,
+        "firstToken": 1795456470816,
+        "streamed": 1795456483364,
+        "completed": 1795456483369
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098afba6001OIo0XoyczJcdQr]",
+          "time": {
+            "created": 1795456470818,
+            "completed": 1795456483314
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_2816043638517636733",
+          "name": "write",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_2098afba6001OIo0XoyczJcdQr"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098afba6001OIo0XoyczJcdQr"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098afba6001OIo0XoyczJcdQr]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098afba6001OIo0XoyczJcdQr"
+            }
+          },
+          "time": {
+            "created": 1795456483317,
+            "ran": 1795456483323,
+            "completed": 1795456483359
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_2816043638517636132",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098afba6001OIo0XoyczJcdQr"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098afba6001OIo0XoyczJcdQr]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098afba6001OIo0XoyczJcdQr"
+            }
+          },
+          "time": {
+            "created": 1795456483328,
+            "ran": 1795456483333,
+            "completed": 1795456483355
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_2816043638517635531",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098afba6001OIo0XoyczJcdQr"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098afba6001OIo0XoyczJcdQr]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098afba6001OIo0XoyczJcdQr"
+            }
+          },
+          "time": {
+            "created": 1795456483336,
+            "ran": 1795456483339,
+            "completed": 1795456483366
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.0539157,
+      "tokens": {
+        "input": 3099,
+        "output": 1561,
+        "reasoning": 268,
+        "cache": {
+          "read": 114558,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_2098bc043001RS8nFHU4TAdKUP",
+      "time": {
+        "created": 1795456483410,
+        "firstToken": 1795456491649,
+        "streamed": 1795456522092,
+        "completed": 1795456522108
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098bc043001RS8nFHU4TAdKUP]",
+          "time": {
+            "created": 1795456491651,
+            "completed": 1795456522020
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_9323501018168041731",
+          "name": "write",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_2098bc043001RS8nFHU4TAdKUP"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098bc043001RS8nFHU4TAdKUP"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098bc043001RS8nFHU4TAdKUP]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098bc043001RS8nFHU4TAdKUP"
+            }
+          },
+          "time": {
+            "created": 1795456522023,
+            "ran": 1795456522026,
+            "completed": 1795456522050
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_9323501018168044852",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098bc043001RS8nFHU4TAdKUP"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098bc043001RS8nFHU4TAdKUP]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098bc043001RS8nFHU4TAdKUP"
+            }
+          },
+          "time": {
+            "created": 1795456522028,
+            "ran": 1795456522031,
+            "completed": 1795456522050
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_9323501018168043877",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098bc043001RS8nFHU4TAdKUP"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098bc043001RS8nFHU4TAdKUP]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098bc043001RS8nFHU4TAdKUP"
+            }
+          },
+          "time": {
+            "created": 1795456522036,
+            "ran": 1795456522046,
+            "completed": 1795456522099
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_9323501018168042902",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098bc043001RS8nFHU4TAdKUP"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098bc043001RS8nFHU4TAdKUP]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098bc043001RS8nFHU4TAdKUP"
+            }
+          },
+          "time": {
+            "created": 1795456522053,
+            "ran": 1795456522062,
+            "completed": 1795456522096
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_9323501018168041927",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098bc043001RS8nFHU4TAdKUP"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098bc043001RS8nFHU4TAdKUP]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098bc043001RS8nFHU4TAdKUP"
+            }
+          },
+          "time": {
+            "created": 1795456522065,
+            "ran": 1795456522070,
+            "completed": 1795456522103
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_9323501018168045048",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098bc043001RS8nFHU4TAdKUP"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098bc043001RS8nFHU4TAdKUP]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098bc043001RS8nFHU4TAdKUP"
+            }
+          },
+          "time": {
+            "created": 1795456522074,
+            "ran": 1795456522087,
+            "completed": 1795456522106
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.411588,
+      "tokens": {
+        "input": 119586,
+        "output": 1372,
+        "reasoning": 2150,
+        "cache": {
+          "read": 0,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_2098c5793001xgtlbo7t0O5ig2",
+      "time": {
+        "created": 1795456522139,
+        "firstToken": 1795456524978,
+        "streamed": 1795456582080,
+        "completed": 1795456582088
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098c5793001xgtlbo7t0O5ig2]",
+          "time": {
+            "created": 1795456524979,
+            "completed": 1795456582019
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_10765235734995988109",
+          "name": "write",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_2098c5793001xgtlbo7t0O5ig2"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098c5793001xgtlbo7t0O5ig2"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098c5793001xgtlbo7t0O5ig2]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098c5793001xgtlbo7t0O5ig2"
+            }
+          },
+          "time": {
+            "created": 1795456582021,
+            "ran": 1795456582024,
+            "completed": 1795456582069
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_10765235734995987720",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098c5793001xgtlbo7t0O5ig2"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098c5793001xgtlbo7t0O5ig2]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098c5793001xgtlbo7t0O5ig2"
+            }
+          },
+          "time": {
+            "created": 1795456582027,
+            "ran": 1795456582030,
+            "completed": 1795456582076
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_10765235734995987331",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098c5793001xgtlbo7t0O5ig2"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098c5793001xgtlbo7t0O5ig2]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098c5793001xgtlbo7t0O5ig2"
+            }
+          },
+          "time": {
+            "created": 1795456582032,
+            "ran": 1795456582035,
+            "completed": 1795456582074
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_10765235734995986942",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098c5793001xgtlbo7t0O5ig2"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098c5793001xgtlbo7t0O5ig2]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098c5793001xgtlbo7t0O5ig2"
+            }
+          },
+          "time": {
+            "created": 1795456582038,
+            "ran": 1795456582051,
+            "completed": 1795456582082
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_10765235734995986553",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098c5793001xgtlbo7t0O5ig2"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098c5793001xgtlbo7t0O5ig2]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098c5793001xgtlbo7t0O5ig2"
+            }
+          },
+          "time": {
+            "created": 1795456582056,
+            "ran": 1795456582060,
+            "completed": 1795456582085
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.14758005,
+      "tokens": {
+        "input": 3714,
+        "output": 7437,
+        "reasoning": 463,
+        "cache": {
+          "read": 119587,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_2098d41e40016FXrhn4ECIDZV7",
+      "time": {
+        "created": 1795456582127,
+        "firstToken": 1795456596073,
+        "streamed": 1795456670684,
+        "completed": 1795456670687
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098d41e40016FXrhn4ECIDZV7]",
+          "time": {
+            "created": 1795456596075,
+            "completed": 1795456670601
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_6895701617671163170",
+          "name": "write",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_2098d41e40016FXrhn4ECIDZV7"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098d41e40016FXrhn4ECIDZV7"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098d41e40016FXrhn4ECIDZV7]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098d41e40016FXrhn4ECIDZV7"
+            }
+          },
+          "time": {
+            "created": 1795456670605,
+            "ran": 1795456670608,
+            "completed": 1795456670640
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_6895701617671163785",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098d41e40016FXrhn4ECIDZV7"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098d41e40016FXrhn4ECIDZV7]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098d41e40016FXrhn4ECIDZV7"
+            }
+          },
+          "time": {
+            "created": 1795456670610,
+            "ran": 1795456670614,
+            "completed": 1795456670644
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_6895701617671160304",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098d41e40016FXrhn4ECIDZV7"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098d41e40016FXrhn4ECIDZV7]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098d41e40016FXrhn4ECIDZV7"
+            }
+          },
+          "time": {
+            "created": 1795456670629,
+            "ran": 1795456670632,
+            "completed": 1795456670652
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_6895701617671160919",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098d41e40016FXrhn4ECIDZV7"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098d41e40016FXrhn4ECIDZV7]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098d41e40016FXrhn4ECIDZV7"
+            }
+          },
+          "time": {
+            "created": 1795456670634,
+            "ran": 1795456670637,
+            "completed": 1795456670655
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.20443229999999998,
+      "tokens": {
+        "input": 8079,
+        "output": 10660,
+        "reasoning": 120,
+        "cache": {
+          "read": 123302,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_2098e9bfc001WOSQ9Nh14SrLcg",
+      "time": {
+        "created": 1795456670728,
+        "firstToken": 1795456674637,
+        "streamed": 1795456792762,
+        "completed": 1795456792764
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_2098e9bfc001WOSQ9Nh14SrLcg]",
+          "time": {
+            "created": 1795456674639,
+            "completed": 1795456792650
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_11412872860012925925",
+          "name": "write",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_2098e9bfc001WOSQ9Nh14SrLcg"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098e9bfc001WOSQ9Nh14SrLcg"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098e9bfc001WOSQ9Nh14SrLcg]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098e9bfc001WOSQ9Nh14SrLcg"
+            }
+          },
+          "time": {
+            "created": 1795456792654,
+            "ran": 1795456792659,
+            "completed": 1795456792691
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_11412872860012925188",
+          "name": "write",
+          "executed": false,
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2098e9bfc001WOSQ9Nh14SrLcg"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2098e9bfc001WOSQ9Nh14SrLcg]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2098e9bfc001WOSQ9Nh14SrLcg"
+            }
+          },
+          "time": {
+            "created": 1795456792664,
+            "ran": 1795456792667,
+            "completed": 1795456792694
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.3228663,
+      "tokens": {
+        "input": 10923,
+        "output": 17926,
+        "reasoning": 100,
+        "cache": {
+          "read": 131382,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_2099078dd001KO50XDXVf1etqq",
+      "time": {
+        "created": 1795456792811,
+        "firstToken": 1795456798139,
+        "streamed": 1795456798200,
+        "completed": 1795456804265
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "tool",
+          "id": "call_11208882917856309142",
+          "name": "shell",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_2099078dd001KO50XDXVf1etqq"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_2099078dd001KO50XDXVf1etqq"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_2099078dd001KO50XDXVf1etqq]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_2099078dd001KO50XDXVf1etqq"
+            }
+          },
+          "time": {
+            "created": 1795456798141,
+            "ran": 1795456798144,
+            "completed": 1795456804261
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.46162770000000003,
+      "tokens": {
+        "input": 153280,
+        "output": 21,
+        "reasoning": 27,
+        "cache": {
+          "read": 7118,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_20990a5c30018IDZRd0gf59sIk",
+      "time": {
+        "created": 1795456804308,
+        "firstToken": 1795456807572,
+        "streamed": 1795456807633,
+        "completed": 1795456807635
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "tool",
+          "id": "call_9106864781471341511",
+          "name": "read",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_20990a5c30018IDZRd0gf59sIk"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20990a5c30018IDZRd0gf59sIk"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20990a5c30018IDZRd0gf59sIk]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20990a5c30018IDZRd0gf59sIk"
+            }
+          },
+          "time": {
+            "created": 1795456807575,
+            "ran": 1795456807583,
+            "completed": 1795456807596
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.03280635,
+      "tokens": {
+        "input": 2323,
+        "output": 26,
+        "reasoning": 113,
+        "cache": {
+          "read": 158349,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_20990b2ee001ULCnk4pOmBESdI",
+      "time": {
+        "created": 1795456807676,
+        "firstToken": 1795456817554,
+        "streamed": 1795456850230,
+        "completed": 1795456850232
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_20990b2ee001ULCnk4pOmBESdI]",
+          "time": {
+            "created": 1795456817556,
+            "completed": 1795456850187
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_2275733259610637956",
+          "name": "write",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_20990b2ee001ULCnk4pOmBESdI"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20990b2ee001ULCnk4pOmBESdI"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20990b2ee001ULCnk4pOmBESdI]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20990b2ee001ULCnk4pOmBESdI"
+            }
+          },
+          "time": {
+            "created": 1795456850190,
+            "ran": 1795456850195,
+            "completed": 1795456850204
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.09078644999999999,
+      "tokens": {
+        "input": 2241,
+        "output": 3653,
+        "reasoning": 365,
+        "cache": {
+          "read": 158623,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_209915953001XUFv4srwCGKHHq",
+      "time": {
+        "created": 1795456850270,
+        "firstToken": 1795456856734,
+        "streamed": 1795456858012,
+        "completed": 1795456889165
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_209915953001XUFv4srwCGKHHq]",
+          "time": {
+            "created": 1795456856736,
+            "completed": 1795456857949
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_12141802474257691829",
+          "name": "shell",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_209915953001XUFv4srwCGKHHq"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_209915953001XUFv4srwCGKHHq"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_209915953001XUFv4srwCGKHHq]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_209915953001XUFv4srwCGKHHq"
+            }
+          },
+          "time": {
+            "created": 1795456857952,
+            "ran": 1795456857957,
+            "completed": 1795456889160
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.04014375,
+      "tokens": {
+        "input": 4048,
+        "output": 18,
+        "reasoning": 240,
+        "cache": {
+          "read": 160865,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_20991f164001IZQtHMT10geWRL",
+      "time": {
+        "created": 1795456889198,
+        "firstToken": 1795456896560,
+        "streamed": 1795456907415,
+        "completed": 1795456922943
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_20991f164001IZQtHMT10geWRL]",
+          "time": {
+            "created": 1795456896562,
+            "completed": 1795456907357
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_9712250858785953654",
+          "name": "shell",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_20991f164001IZQtHMT10geWRL"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20991f164001IZQtHMT10geWRL"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20991f164001IZQtHMT10geWRL]"
+              },
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20991f164001IZQtHMT10geWRL]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20991f164001IZQtHMT10geWRL"
+            }
+          },
+          "time": {
+            "created": 1795456907361,
+            "ran": 1795456907369,
+            "completed": 1795456922939
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.0548646,
+      "tokens": {
+        "input": 2780,
+        "output": 638,
+        "reasoning": 835,
+        "cache": {
+          "read": 162864,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_20992755b001rQnyjihjkXb0pK",
+      "time": {
+        "created": 1795456922982,
+        "firstToken": 1795456932168,
+        "streamed": 1795456932191,
+        "completed": 1795456944705
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "tool",
+          "id": "call_7409198281894144737",
+          "name": "shell",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_20992755b001rQnyjihjkXb0pK"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20992755b001rQnyjihjkXb0pK"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20992755b001rQnyjihjkXb0pK]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20992755b001rQnyjihjkXb0pK"
+            }
+          },
+          "time": {
+            "created": 1795456932170,
+            "ran": 1795456932173,
+            "completed": 1795456944699
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.04323375,
+      "tokens": {
+        "input": 2169,
+        "output": 748,
+        "reasoning": 44,
+        "cache": {
+          "read": 165645,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_20992ca74001xVHFmWxCDbs4Wu",
+      "time": {
+        "created": 1795456944781,
+        "firstToken": 1795456948255,
+        "streamed": 1795456952532,
+        "completed": 1795456952783
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "[redacted:reasoning:msg_20992ca74001xVHFmWxCDbs4Wu]",
+          "time": {
+            "created": 1795456948257,
+            "completed": 1795456952491
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_3860295063108117199",
+          "name": "shell",
+          "executed": false,
+          "native": {
+            "redacted": "tool-native:msg_20992ca74001xVHFmWxCDbs4Wu"
+          },
+          "state": {
+            "status": "completed",
+            "input": {
+              "redacted": "tool-input:msg_20992ca74001xVHFmWxCDbs4Wu"
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "[redacted:tool-output:msg_20992ca74001xVHFmWxCDbs4Wu]"
+              }
+            ],
+            "metadata": {
+              "redacted": "tool-metadata:msg_20992ca74001xVHFmWxCDbs4Wu"
+            }
+          },
+          "time": {
+            "created": 1795456952493,
+            "ran": 1795456952497,
+            "completed": 1795456952778
+          }
+        }
+      ],
+      "finish": "tool-calls",
+      "rawFinish": "STOP",
+      "cost": 0.04422675,
+      "tokens": {
+        "input": 3254,
+        "output": 160,
+        "reasoning": 480,
+        "cache": {
+          "read": 165765,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_20992e9ff001MvnHGK147Gqqq0",
+      "time": {
+        "created": 1795456952843,
+        "firstToken": 1795456959649,
+        "streamed": 1795456970772,
+        "completed": 1795456970775
+      },
+      "type": "assistant",
+      "agent": "build",
+      "model": {
+        "id": "gemini-4-neon",
+        "providerID": "google",
+        "variant": "high"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "[redacted:text:msg_20992e9ff001MvnHGK147Gqqq0]",
+          "native": {
+            "redacted": "text-native:msg_20992e9ff001MvnHGK147Gqqq0"
+          }
+        }
+      ],
+      "finish": "stop",
+      "rawFinish": "STOP",
+      "cost": 0.05526585,
+      "tokens": {
+        "input": 2129,
+        "output": 1520,
+        "reasoning": 60,
+        "cache": {
+          "read": 167859,
+          "write": 0
+        }
+      }
+    },
+    {
+      "id": "msg_20993302f001bwCdK7D27UYlv3",
+      "time": {
+        "created": 1795456970799
+      },
+      "type": "idle",
+      "outcome": "succeeded"
+    }
+  ]
+}

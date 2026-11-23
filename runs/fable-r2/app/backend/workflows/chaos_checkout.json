@@ -1,0 +1,124 @@
+{
+  "name": "chaos_checkout",
+  "description": "Chaos Commerce checkout. Validates the priced order, reserves inventory, walks a ladder of increasingly desperate payment processors (the last rung always approves), dispatches the order and confirms it. Uses system tasks only, so no worker has to be running, and falls back to chaos_checkout_rescue on any failure: checkout always completes.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "restartable": true,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "timeoutSeconds": 60,
+  "failureWorkflow": "chaos_checkout_rescue",
+  "inputParameters": ["orderId", "customer", "paymentMethod", "shippingSpeed", "placedAt", "quote"],
+  "tasks": [
+    {
+      "name": "validate_order",
+      "taskReferenceName": "validate_order",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "customer": "${workflow.input.customer}",
+        "paymentMethod": "${workflow.input.paymentMethod}",
+        "shippingSpeed": "${workflow.input.shippingSpeed}",
+        "placedAt": "${workflow.input.placedAt}",
+        "quote": "${workflow.input.quote}",
+        "queryExpression": "def cents: if type == \"number\" and . > 0 then (if . > 100000000000 then 100000000000 else floor end) else 0 end; def text($d): if type == \"string\" and length > 0 then .[0:120] else $d end; (.quote | if type == \"object\" then . else {} end) as $q | [($q.lines | if type == \"array\" then .[] else empty end) | select(type == \"object\") | {sku: (.sku | text(\"mystery-item\")), name: (.name | text(\"Unidentified Item\")), emoji: (.emoji | text(\"📦\")), qty: (.qty | if type == \"number\" and . >= 1 then (if . > 99 then 99 else floor end) else 1 end), unitPriceCents: (.unitPriceCents | cents), returnable: (.returnable != false)} | . + {lineTotalCents: (.qty * .unitPriceCents)}] as $found | (if ($found | length) == 0 then [{sku: \"nothing\", name: \"Box of Nothing\", emoji: \"🕳️\", qty: 1, unitPriceCents: 0, returnable: false, lineTotalCents: 0}] else $found[0:50] end) as $lines | ([($q.fees | if type == \"array\" then .[] else empty end) | select(type == \"object\") | {code: (.code | text(\"fee\")), label: (.label | text(\"Mystery Fee\")), amountCents: (.amountCents | if type == \"number\" then floor else 0 end)}][0:20]) as $fees | ($lines | map(.lineTotalCents) | add) as $subtotal | ($fees | map(.amountCents) | add // 0) as $feeTotal | (.orderId | text(\"CC-UNNUMBERED\")) as $id | {orderId: $id, customerName: (.customer | if type == \"object\" then .name else null end | text(\"Valued Customer #NaN\")), paymentMethod: (.paymentMethod | text(\"Mystery Method\")), shippingSpeed: (.shippingSpeed | text(\"Slow\")), placedAt: (.placedAt | text(\"a Tuesday\")), lines: $lines, fees: $fees, subtotalCents: $subtotal, feesCents: $feeTotal, totalCents: ([$subtotal + $feeTotal, 0] | max), seed: ($id | explode | reduce .[] as $c (7; (. * 31 + $c) % 1000003))}"
+      }
+    },
+    {
+      "name": "reserve_inventory",
+      "taskReferenceName": "reserve_inventory",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "lines": "${validate_order.output.result.lines}",
+        "seed": "${validate_order.output.result.seed}",
+        "queryExpression": "[\"behind the vending machine\", \"aisle Q (we have three aisles)\", \"Gary's car\", \"the 'misc' pile\", \"a different warehouse, spiritually\", \"under the other inventory\"] as $spots | .seed as $seed | {allReserved: true, reservations: [.lines | to_entries[] | {sku: .value.sku, qty: .value.qty, status: \"RESERVED\", foundAt: $spots[($seed + .key) % ($spots | length)]}]}"
+      }
+    },
+    {
+      "name": "payment_attempts",
+      "taskReferenceName": "payment_attempts",
+      "type": "DO_WHILE",
+      "evaluatorType": "graaljs",
+      "loopCondition": "(function(){ var i = $.payment_attempts['iteration']; var last = $.payment_attempts[String(i)]; var approved = !!(last && last.charge_attempt && last.charge_attempt.result && last.charge_attempt.result.approved); return !approved && i < 4; })();",
+      "inputParameters": {
+        "payment_attempts": "${payment_attempts.output}"
+      },
+      "loopOver": [
+        {
+          "name": "charge_attempt",
+          "taskReferenceName": "charge_attempt",
+          "type": "INLINE",
+          "inputParameters": {
+            "evaluatorType": "graaljs",
+            "attempt": "${payment_attempts.output.iteration}",
+            "seed": "${validate_order.output.result.seed}",
+            "method": "${validate_order.output.result.paymentMethod}",
+            "expression": "(function(){ var i = Number($.attempt) || 1; var seed = Number($.seed) || 0; var ladder = [String($.method || 'Mystery Method'), 'PayPerhaps', 'Carrier Pigeon Escrow', 'IOU on a Napkin']; var excuses = ['Mercury is in retrograde', 'the card reader is shy', 'our bank is a shoebox and the lid was on', 'computer said \"meh\"', 'insufficient vibes', 'the pigeon has unionised']; var declinesWanted = seed % 4; var approved = i > declinesWanted || i >= 4; return { attempt: i, processor: ladder[Math.min(i, 4) - 1], approved: approved, message: approved ? 'Approved. Nobody is more surprised than we are.' : 'Declined: ' + excuses[(seed + i) % excuses.length] + '.' }; })();"
+          }
+        }
+      ]
+    },
+    {
+      "name": "settle_payment",
+      "taskReferenceName": "settle_payment",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "loop": "${payment_attempts.output}",
+        "totalCents": "${validate_order.output.result.totalCents}",
+        "queryExpression": ". as $in | ([($in.loop | if type == \"object\" then to_entries[] else empty end) | select(.key | test(\"^[0-9]+$\")) | .value.charge_attempt.result | select(type == \"object\")] | sort_by(.attempt)) as $attempts | {attempts: $attempts, declines: ($attempts | map(select(.approved != true)) | length), amountCents: $in.totalCents, settled: (($attempts | map(select(.approved == true)) | .[0]) // {attempt: (($attempts | length) + 1), processor: \"On The House\", approved: true, message: \"Every processor gave up, so this one is on us. The order still completes.\"})}"
+      }
+    },
+    {
+      "name": "dispatch_order",
+      "taskReferenceName": "dispatch_order",
+      "type": "FORK_JOIN",
+      "forkTasks": [
+        [
+          {
+            "name": "assign_courier",
+            "taskReferenceName": "assign_courier",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "seed": "${validate_order.output.result.seed}",
+              "speed": "${validate_order.output.result.shippingSpeed}",
+              "queryExpression": "[\"Dave (on foot)\", \"a confident pigeon\", \"the previous customer\", \"Tumbleweed Express\", \"Gary's nephew's skateboard\"] as $couriers | [\"3-5 business eras\", \"Tuesday (year unspecified)\", \"before the heat death of the universe, probably\", \"it already left (it did not)\"] as $etas | {courier: $couriers[.seed % ($couriers | length)], eta: $etas[.seed % ($etas | length)], speedRequested: .speed, speedHonoured: false, tracking: \"CHAOS-\\(.seed)-LOST\"}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "award_loyalty_points",
+            "taskReferenceName": "award_loyalty_points",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "totalCents": "${validate_order.output.result.totalCents}",
+              "queryExpression": "{points: (0 - ((.totalCents / 100) | floor)), tier: \"Cardboard\", note: \"Points are deducted for shopping here. Reach zero to unlock nothing.\"}"
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "dispatch_join",
+      "taskReferenceName": "dispatch_join",
+      "type": "JOIN",
+      "joinOn": ["assign_courier", "award_loyalty_points"]
+    },
+    {
+      "name": "confirm_order",
+      "taskReferenceName": "confirm_order",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "order": "${validate_order.output.result}",
+        "inventory": "${reserve_inventory.output.result}",
+        "payment": "${settle_payment.output.result}",
+        "shipping": "${assign_courier.output.result}",
+        "loyalty": "${award_loyalty_points.output.result}",
+        "queryExpression": ".order + {status: \"CONFIRMED\", rescued: false, payment: (.payment + {method: .order.paymentMethod}), inventory: .inventory, shipping: .shipping, loyalty: .loyalty, message: \"Order confirmed. Against all odds, and several of our own policies.\"} | del(.seed)"
+      }
+    }
+  ],
+  "outputParameters": {
+    "order": "${confirm_order.output.result}"
+  }
+}

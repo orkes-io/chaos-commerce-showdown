@@ -1,0 +1,14 @@
+{
+  "F4": {
+    "score": 1,
+    "evidence": "Product modal: '\ud83d\udd25 5-STAR FURY' reviews ('ARRIVED AS A WET ENVELOPE!! CALLING THE POLICE!!') and '\u2728 2-STAR GLOWING PRAISE' reviews ('Truly transcendent hydration artistry'). Both directions inverted."
+  },
+  "F11": {
+    "score": 1,
+    "evidence": "frontend/ Vite build with base from VITE_BASE_PATH (default './') and runtime public/config.js; backend/src/lambda.mjs + backend/template.yaml; CONDUCTOR_SERVER_URL from env; workflows use only system tasks, so no worker process is needed on Lambda."
+  },
+  "F12": {
+    "score": 1,
+    "evidence": "No AI API references in the code ('ChadGPT-0.01' is deterministic if-statements). README one-command start (npm start) worked exactly as described."
+  }
+}

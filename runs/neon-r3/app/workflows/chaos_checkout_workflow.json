@@ -1,0 +1,157 @@
+{
+  "name": "chaos_checkout_workflow",
+  "description": "Chaos Commerce parody checkout pipeline: validates cart, inflates absurd fees, runs warehouse vibe & loyalty demotion checks in parallel, selects an absurd courier, authorizes imaginary payment, and always completes with a cursed receipt.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-ops@chaoscommerce.example",
+  "restartable": true,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "timeoutSeconds": 120,
+  "inputParameters": [
+    "orderId",
+    "customerName",
+    "customerEmail",
+    "shippingAddress",
+    "items",
+    "promoCode",
+    "tipPercent",
+    "paymentMethodLabel"
+  ],
+  "tasks": [
+    {
+      "name": "validate_and_subtotal",
+      "taskReferenceName": "validate_and_subtotal",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "customerName": "${workflow.input.customerName}",
+        "customerEmail": "${workflow.input.customerEmail}",
+        "shippingAddress": "${workflow.input.shippingAddress}",
+        "items": "${workflow.input.items}",
+        "queryExpression": "{ orderId: (.orderId // \"CHAOS-ORD-UNKNOWN\"), customerName: (if (.customerName // \"\") == \"\" then \"Valued Victim\" else .customerName end), customerEmail: (if (.customerEmail // \"\") == \"\" then \"regret@example.com\" else .customerEmail end), shippingAddress: (if (.shippingAddress // \"\") == \"\" then \"Somewhere on Earth (Probably)\" else .shippingAddress end), itemCount: ([(.items // [])[] | (.quantity // 1)] | add // 0), subtotal: ((([(.items // [])[] | ((.unitPrice // 0) * (.quantity // 1))] | add // 0) * 100 | round) / 100), normalizedItems: [(.items // [])[] | { id: (.id // \"unknown\"), name: (.name // \"Mystery Chaos Object\"), unitPrice: (.unitPrice // 0), quantity: (.quantity // 1), lineTotal: ((((.unitPrice // 0) * (.quantity // 1)) * 100 | round) / 100) }], checkNote: \"Cart validated: shopper exhibits alarming willingness to pay.\" }"
+      }
+    },
+    {
+      "name": "parallel_chaos_checks",
+      "taskReferenceName": "parallel_chaos_checks",
+      "type": "FORK_JOIN",
+      "forkTasks": [
+        [
+          {
+            "name": "calculate_absurd_fees",
+            "taskReferenceName": "calculate_absurd_fees",
+            "type": "INLINE",
+            "inputParameters": {
+              "evaluatorType": "graaljs",
+              "subtotal": "${validate_and_subtotal.output.result.subtotal}",
+              "itemCount": "${validate_and_subtotal.output.result.itemCount}",
+              "promoCode": "${workflow.input.promoCode}",
+              "tipPercent": "${workflow.input.tipPercent}",
+              "expression": "(function(){ var sub = Number($.subtotal) || 0; var cnt = Number($.itemCount) || 1; var tipPct = Number($.tipPercent); if (isNaN(tipPct) || tipPct < 0) tipPct = 18; var code = ($.promoCode ? String($.promoCode).trim() : ''); var digitalShelfFee = 14.99; var pixelFee = Math.round(cnt * 7.5 * 100) / 100; var freeShippingFee = 39.95; var vibeTax = Math.round(sub * 0.037 * 100) / 100; var ceoTip = Math.round(sub * (tipPct / 100) * 100) / 100; var promoPenalty = code.length > 0 ? 19.99 : 0; var totalFees = Math.round((digitalShelfFee + pixelFee + freeShippingFee + vibeTax + ceoTip + promoPenalty) * 100) / 100; var grandTotal = Math.round((sub + totalFees) * 100) / 100; return { digitalShelfFee: digitalShelfFee, pixelRenderingFee: pixelFee, freeShippingHandlingFee: freeShippingFee, algorithmicVibeTax: vibeTax, ceoYachtTip: ceoTip, tipPercentApplied: tipPct, promoCodeEntered: code, promoAudacityFee: promoPenalty, promoMessage: code.length > 0 ? ('Promo code \"' + code + '\" recognized! Added $19.99 Promo Audacity Fee.') : 'No promo code used (wise cowardice).', totalFees: totalFees, grandTotal: grandTotal }; })();"
+            }
+          }
+        ],
+        [
+          {
+            "name": "inventory_vibe_check",
+            "taskReferenceName": "inventory_vibe_check",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "itemCount": "${validate_and_subtotal.output.result.itemCount}",
+              "queryExpression": "{ warehouseLocation: \"Strip Mall Storage Unit #4B (Unairconditioned)\", stockStatus: \"THEORETICALLY_AVAILABLE\", itemsLocated: (.itemCount // 1), checkNote: \"Checked behind a pile of unsold NFTs. Inventory vibes are chaotic but shippable.\" }"
+            }
+          }
+        ],
+        [
+          {
+            "name": "loyalty_demotion_check",
+            "taskReferenceName": "loyalty_demotion_check",
+            "type": "INLINE",
+            "inputParameters": {
+              "evaluatorType": "graaljs",
+              "subtotal": "${validate_and_subtotal.output.result.subtotal}",
+              "orderId": "${validate_and_subtotal.output.result.orderId}",
+              "expression": "(function(){ var sub = Number($.subtotal) || 0; var idStr = String($.orderId || '0000'); var suffix = idStr.slice(-5).toUpperCase(); var tier = sub >= 2500 ? 'Gullible Diamond Elite' : (sub >= 800 ? 'Suspicious Silver' : 'Peasant Bronze'); return { loyaltyTier: tier, pointsEarned: -15, trackingNumber: 'CHAOS-PROBABLY-LOST-' + suffix, checkNote: 'Customer assigned to ' + tier + ' and awarded -15 Chaos Points.' }; })();"
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "join_chaos_checks",
+      "taskReferenceName": "join_chaos_checks",
+      "type": "JOIN",
+      "joinOn": [
+        "calculate_absurd_fees",
+        "inventory_vibe_check",
+        "loyalty_demotion_check"
+      ]
+    },
+    {
+      "name": "select_shipping_tier",
+      "taskReferenceName": "select_shipping_tier",
+      "type": "SWITCH",
+      "evaluatorType": "graaljs",
+      "expression": "(function(){ return (Number($.grandTotal) || 0) >= 2000 ? 'deluxe_trebuchet' : 'standard_pigeon'; })();",
+      "inputParameters": {
+        "grandTotal": "${calculate_absurd_fees.output.result.grandTotal}"
+      },
+      "decisionCases": {
+        "deluxe_trebuchet": [
+          {
+            "name": "assign_trebuchet_courier",
+            "taskReferenceName": "assign_trebuchet_courier",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "grandTotal": "${calculate_absurd_fees.output.result.grandTotal}",
+              "queryExpression": "{ tier: \"DELUXE_TREBUCHET\", carrier: \"Chaos Air Trebuchet Express\", packaging: \"Pre-dented luxury cardboard box with exactly 1 loose packing peanut\", estimatedDelivery: \"3 to 47 business days (wind permitting)\", courierNote: \"High-value order qualified for ballistic delivery!\" }"
+            }
+          }
+        ],
+        "standard_pigeon": [
+          {
+            "name": "assign_pigeon_courier",
+            "taskReferenceName": "assign_pigeon_courier",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "grandTotal": "${calculate_absurd_fees.output.result.grandTotal}",
+              "queryExpression": "{ tier: \"STANDARD_PIGEON\", carrier: \"Unmotivated Carrier Pigeon LLC\", packaging: \"Wrapped in a single damp receipt and optimism\", estimatedDelivery: \"Sometime between Tuesday and the heat death of the universe\", courierNote: \"Dispatched via our most easily distracted pigeon.\" }"
+            }
+          }
+        ]
+      },
+      "defaultCase": []
+    },
+    {
+      "name": "authorize_imaginary_payment",
+      "taskReferenceName": "authorize_imaginary_payment",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "orderId": "${validate_and_subtotal.output.result.orderId}",
+        "grandTotal": "${calculate_absurd_fees.output.result.grandTotal}",
+        "paymentMethodLabel": "${workflow.input.paymentMethodLabel}",
+        "queryExpression": "{ authorized: true, authorizationCode: (\"AUTH-NO-REGRETS-\" + (.orderId // \"CHAOS\")), paymentMethod: (if (.paymentMethodLabel // \"\") == \"\" then \"Imaginary Platinum Card\" else .paymentMethodLabel end), amountCharged: (.grandTotal // 0), note: \"Imaginary funds enthusiastically seized. No real card was charged (this is a parody store).\" }"
+      }
+    },
+    {
+      "name": "assemble_cursed_receipt",
+      "taskReferenceName": "assemble_cursed_receipt",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "validated": "${validate_and_subtotal.output.result}",
+        "fees": "${calculate_absurd_fees.output.result}",
+        "inventory": "${inventory_vibe_check.output.result}",
+        "loyalty": "${loyalty_demotion_check.output.result}",
+        "trebuchet": "${assign_trebuchet_courier.output.result}",
+        "pigeon": "${assign_pigeon_courier.output.result}",
+        "payment": "${authorize_imaginary_payment.output.result}",
+        "queryExpression": "{ status: \"CONFIRMED\", orderId: .validated.orderId, customerName: .validated.customerName, customerEmail: .validated.customerEmail, shippingAddress: .validated.shippingAddress, items: .validated.normalizedItems, itemCount: .validated.itemCount, subtotal: .validated.subtotal, fees: .fees, grandTotal: .fees.grandTotal, inventory: .inventory, loyalty: .loyalty, trackingNumber: .loyalty.trackingNumber, courier: (.trebuchet // .pigeon), payment: .payment, cursedFootnote: \"Thank you for funding our CEO's fourth emotional-support jet ski. All sales are deeply questionable.\", auditTrail: [ { step: \"Cart Validation\", status: \"COMPLETED\", detail: .validated.checkNote }, { step: \"Absurd Fee Inflation\", status: \"COMPLETED\", detail: .fees.promoMessage }, { step: \"Warehouse Vibe Check\", status: \"COMPLETED\", detail: .inventory.checkNote }, { step: \"Loyalty Demotion\", status: \"COMPLETED\", detail: .loyalty.checkNote }, { step: \"Courier Assignment\", status: \"COMPLETED\", detail: ((.trebuchet // .pigeon).courierNote) }, { step: \"Imaginary Payment Auth\", status: \"COMPLETED\", detail: .payment.note } ] }"
+      }
+    }
+  ],
+  "outputParameters": {
+    "status": "CONFIRMED",
+    "orderId": "${validate_and_subtotal.output.result.orderId}",
+    "receipt": "${assemble_cursed_receipt.output.result}"
+  }
+}

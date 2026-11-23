@@ -1,0 +1,45 @@
+{
+  "model": "anthropic/claude-fable-5-2#high",
+  "started_at": "2026-11-23T17:43:01Z",
+  "ended_at": "2026-11-23T18:03:34Z",
+  "exit_code": "n/a",
+  "ended_by": "finished",
+  "steps": 39,
+  "finish_reasons": {
+    "tool-calls": 38,
+    "error": 1
+  },
+  "tool_calls": 54,
+  "tool_errors": 1,
+  "shell_commands": 31,
+  "repeated_shell_commands": 0,
+  "tokens": {
+    "input": 80,
+    "output": 54038,
+    "reasoning": 55486,
+    "cache_read": 4953541,
+    "cache_write": 196652
+  },
+  "tokens_opencode_session": {
+    "input": 84,
+    "output": 54052,
+    "reasoning": 55486,
+    "cache": {
+      "read": 4954482,
+      "write": 196652
+    }
+  },
+  "cost_usd_recomputed": 7.3388,
+  "cost_usd_opencode": 7.3388,
+  "models_served": [
+    "anthropic/claude-fable-5-2#high"
+  ],
+  "active_minutes": 20.1,
+  "ended_idle": true,
+  "provider_error_mentions_in_logs": 4,
+  "errors": [
+    "invalid_request_error: Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits."
+  ],
+  "provider_error": true,
+  "void": "provider error: Anthropic credit balance ran out at 18:03 UTC; rerun as fable-r1b"
+}

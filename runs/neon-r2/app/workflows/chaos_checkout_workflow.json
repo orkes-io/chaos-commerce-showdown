@@ -1,0 +1,246 @@
+{
+  "name": "chaos_checkout_workflow",
+  "description": "Processes a Chaos Commerce checkout through cart insanity validation, parallel hidden-fee fabrication, warehouse rumor verification, payment authorization, absurd shipping routing, and guaranteed order confirmation.",
+  "version": 1,
+  "schemaVersion": 2,
+  "restartable": true,
+  "ownerEmail": "chaos-ops@chaoscommerce.invalid",
+  "timeoutSeconds": 120,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "variables": {
+    "shippingTracking": "",
+    "shippingCarrier": "",
+    "shippingEta": "",
+    "shippingNote": ""
+  },
+  "inputParameters": [
+    "orderId",
+    "customerName",
+    "customerEmail",
+    "shippingAddress",
+    "shippingMethod",
+    "promoCode",
+    "paymentMethod",
+    "includeCardboardBox",
+    "includeShippingInsurance",
+    "items"
+  ],
+  "tasks": [
+    {
+      "name": "validate_cart_insanity",
+      "taskReferenceName": "validate_cart_insanity_ref",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "items": "${workflow.input.items}",
+        "promoCode": "${workflow.input.promoCode}",
+        "shippingMethod": "${workflow.input.shippingMethod}",
+        "customerName": "${workflow.input.customerName}"
+      }
+    },
+    {
+      "name": "parallel_checkout_nonsense",
+      "taskReferenceName": "parallel_checkout_nonsense_ref",
+      "type": "FORK_JOIN",
+      "forkTasks": [
+        [
+          {
+            "name": "fabricate_hidden_fees",
+            "taskReferenceName": "fabricate_hidden_fees_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "subtotal": "${validate_cart_insanity_ref.output.subtotal}",
+              "itemCount": "${validate_cart_insanity_ref.output.itemCount}",
+              "includeCardboardBox": "${workflow.input.includeCardboardBox}",
+              "includeShippingInsurance": "${workflow.input.includeShippingInsurance}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "verify_warehouse_rumor",
+            "taskReferenceName": "verify_warehouse_rumor_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "orderId": "${validate_cart_insanity_ref.output.orderId}",
+              "items": "${validate_cart_insanity_ref.output.normalizedItems}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "charge_questionable_payment",
+            "taskReferenceName": "charge_questionable_payment_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "orderId": "${validate_cart_insanity_ref.output.orderId}",
+              "customerName": "${workflow.input.customerName}",
+              "paymentMethod": "${workflow.input.paymentMethod}",
+              "estimatedTotal": "${validate_cart_insanity_ref.output.subtotal}"
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "join_checkout_nonsense",
+      "taskReferenceName": "join_checkout_nonsense_ref",
+      "type": "JOIN",
+      "joinOn": [
+        "fabricate_hidden_fees_ref",
+        "verify_warehouse_rumor_ref",
+        "charge_questionable_payment_ref"
+      ]
+    },
+    {
+      "name": "assemble_checkout_totals",
+      "taskReferenceName": "assemble_checkout_totals_ref",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "subtotal": "${validate_cart_insanity_ref.output.subtotal}",
+        "shippingCost": "${validate_cart_insanity_ref.output.shippingCost}",
+        "promoAdjustment": "${validate_cart_insanity_ref.output.promoAdjustment}",
+        "hiddenFeesTotal": "${fabricate_hidden_fees_ref.output.hiddenFeesTotal}",
+        "fees": "${fabricate_hidden_fees_ref.output.fees}",
+        "queryExpression": "{subtotal: .subtotal, shippingCost: .shippingCost, promoAdjustment: .promoAdjustment, hiddenFeesTotal: .hiddenFeesTotal, feeCount: (.fees | length), grandTotal: ((((.subtotal + .shippingCost + .promoAdjustment + .hiddenFeesTotal) | if . < 0.01 then 0.01 else . end) * 100 | round) / 100)}"
+      }
+    },
+    {
+      "name": "route_shipping_tier",
+      "taskReferenceName": "route_shipping_tier_ref",
+      "type": "SWITCH",
+      "evaluatorType": "value-param",
+      "expression": "shippingMethod",
+      "inputParameters": {
+        "shippingMethod": "${validate_cart_insanity_ref.output.shippingMethod}"
+      },
+      "decisionCases": {
+        "pigeon": [
+          {
+            "name": "dispatch_carrier_pigeon",
+            "taskReferenceName": "dispatch_carrier_pigeon_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "orderId": "${validate_cart_insanity_ref.output.orderId}",
+              "shippingAddress": "${workflow.input.shippingAddress}"
+            }
+          },
+          {
+            "name": "set_pigeon_shipping_vars",
+            "taskReferenceName": "set_pigeon_shipping_vars_ref",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "shippingTracking": "${dispatch_carrier_pigeon_ref.output.trackingCode}",
+              "shippingCarrier": "${dispatch_carrier_pigeon_ref.output.carrier}",
+              "shippingEta": "${dispatch_carrier_pigeon_ref.output.eta}",
+              "shippingNote": "${dispatch_carrier_pigeon_ref.output.dispatchNote}"
+            }
+          }
+        ],
+        "catapult": [
+          {
+            "name": "calibrate_delivery_catapult",
+            "taskReferenceName": "calibrate_delivery_catapult_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "orderId": "${validate_cart_insanity_ref.output.orderId}",
+              "shippingAddress": "${workflow.input.shippingAddress}"
+            }
+          },
+          {
+            "name": "set_catapult_shipping_vars",
+            "taskReferenceName": "set_catapult_shipping_vars_ref",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "shippingTracking": "${calibrate_delivery_catapult_ref.output.trackingCode}",
+              "shippingCarrier": "${calibrate_delivery_catapult_ref.output.carrier}",
+              "shippingEta": "${calibrate_delivery_catapult_ref.output.eta}",
+              "shippingNote": "${calibrate_delivery_catapult_ref.output.dispatchNote}"
+            }
+          }
+        ],
+        "intern": [
+          {
+            "name": "brief_walking_intern",
+            "taskReferenceName": "brief_walking_intern_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "orderId": "${validate_cart_insanity_ref.output.orderId}",
+              "shippingAddress": "${workflow.input.shippingAddress}"
+            }
+          },
+          {
+            "name": "set_intern_shipping_vars",
+            "taskReferenceName": "set_intern_shipping_vars_ref",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "shippingTracking": "${brief_walking_intern_ref.output.trackingCode}",
+              "shippingCarrier": "${brief_walking_intern_ref.output.carrier}",
+              "shippingEta": "${brief_walking_intern_ref.output.eta}",
+              "shippingNote": "${brief_walking_intern_ref.output.dispatchNote}"
+            }
+          }
+        ]
+      },
+      "defaultCase": [
+        {
+          "name": "dispatch_standard_chaos",
+          "taskReferenceName": "dispatch_standard_chaos_ref",
+          "type": "SIMPLE",
+          "inputParameters": {
+            "orderId": "${validate_cart_insanity_ref.output.orderId}",
+            "shippingAddress": "${workflow.input.shippingAddress}"
+          }
+        },
+        {
+          "name": "set_standard_shipping_vars",
+          "taskReferenceName": "set_standard_shipping_vars_ref",
+          "type": "SET_VARIABLE",
+          "inputParameters": {
+            "shippingTracking": "${dispatch_standard_chaos_ref.output.trackingCode}",
+            "shippingCarrier": "${dispatch_standard_chaos_ref.output.carrier}",
+            "shippingEta": "${dispatch_standard_chaos_ref.output.eta}",
+            "shippingNote": "${dispatch_standard_chaos_ref.output.dispatchNote}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "finalize_chaos_order",
+      "taskReferenceName": "finalize_chaos_order_ref",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "orderId": "${validate_cart_insanity_ref.output.orderId}",
+        "customerName": "${workflow.input.customerName}",
+        "customerEmail": "${workflow.input.customerEmail}",
+        "shippingAddress": "${workflow.input.shippingAddress}",
+        "items": "${validate_cart_insanity_ref.output.normalizedItems}",
+        "promoCode": "${validate_cart_insanity_ref.output.promoCode}",
+        "promoNote": "${validate_cart_insanity_ref.output.promoNote}",
+        "totals": "${assemble_checkout_totals_ref.output.result}",
+        "fees": "${fabricate_hidden_fees_ref.output.fees}",
+        "warehouseReport": "${verify_warehouse_rumor_ref.output}",
+        "paymentReceipt": "${charge_questionable_payment_ref.output}",
+        "shippingTracking": "${workflow.variables.shippingTracking}",
+        "shippingCarrier": "${workflow.variables.shippingCarrier}",
+        "shippingEta": "${workflow.variables.shippingEta}",
+        "shippingNote": "${workflow.variables.shippingNote}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "orderId": "${finalize_chaos_order_ref.output.orderId}",
+    "status": "${finalize_chaos_order_ref.output.status}",
+    "customerName": "${finalize_chaos_order_ref.output.customerName}",
+    "grandTotal": "${finalize_chaos_order_ref.output.grandTotal}",
+    "totals": "${finalize_chaos_order_ref.output.totals}",
+    "fees": "${finalize_chaos_order_ref.output.fees}",
+    "items": "${finalize_chaos_order_ref.output.items}",
+    "promoNote": "${finalize_chaos_order_ref.output.promoNote}",
+    "shipping": "${finalize_chaos_order_ref.output.shipping}",
+    "payment": "${finalize_chaos_order_ref.output.payment}",
+    "warehouseNote": "${finalize_chaos_order_ref.output.warehouseNote}",
+    "certificateTitle": "${finalize_chaos_order_ref.output.certificateTitle}",
+    "completedAt": "${finalize_chaos_order_ref.output.completedAt}"
+  }
+}

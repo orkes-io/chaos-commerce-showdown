@@ -1,0 +1,225 @@
+{
+  "name": "chaos_return_bureaucracy",
+  "description": "Chaos Commerce return authorization gauntlet: subjects every return request to parallel pointless inspections, a bounded bureaucratic stamp-collection loop, and guarantees a final return decision.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "returns-maze@chaoscommerce.invalid",
+  "restartable": true,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "timeoutSeconds": 120,
+  "inputParameters": [
+    "returnId",
+    "orderId",
+    "itemName",
+    "paidAmount",
+    "reason",
+    "moonPhase",
+    "regretLevel",
+    "captchaAnswer",
+    "customerEmail"
+  ],
+  "tasks": [
+    {
+      "name": "chaos_intake_return_form",
+      "taskReferenceName": "intake_return_form",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "returnId": "${workflow.input.returnId}",
+        "orderId": "${workflow.input.orderId}",
+        "itemName": "${workflow.input.itemName}",
+        "paidAmount": "${workflow.input.paidAmount}",
+        "reason": "${workflow.input.reason}",
+        "moonPhase": "${workflow.input.moonPhase}",
+        "regretLevel": "${workflow.input.regretLevel}",
+        "captchaAnswer": "${workflow.input.captchaAnswer}",
+        "customerEmail": "${workflow.input.customerEmail}"
+      }
+    },
+    {
+      "name": "parallel_pointless_checks",
+      "taskReferenceName": "parallel_pointless_checks",
+      "type": "FORK_JOIN",
+      "forkTasks": [
+        [
+          {
+            "name": "chaos_check_lunar_alignment",
+            "taskReferenceName": "check_lunar_alignment",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "caseNumber": "${intake_return_form.output.caseNumber}",
+              "moonPhase": "${workflow.input.moonPhase}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "chaos_measure_box_karma",
+            "taskReferenceName": "measure_box_karma",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "caseNumber": "${intake_return_form.output.caseNumber}",
+              "itemName": "${workflow.input.itemName}",
+              "reason": "${workflow.input.reason}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "chaos_consult_legal_hamster",
+            "taskReferenceName": "consult_legal_hamster",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "caseNumber": "${intake_return_form.output.caseNumber}",
+              "regretLevel": "${workflow.input.regretLevel}",
+              "paidAmount": "${workflow.input.paidAmount}"
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "join_pointless_checks",
+      "taskReferenceName": "join_pointless_checks",
+      "type": "JOIN",
+      "joinOn": [
+        "check_lunar_alignment",
+        "measure_box_karma",
+        "consult_legal_hamster"
+      ]
+    },
+    {
+      "name": "bureaucracy_stamp_loop",
+      "taskReferenceName": "bureaucracy_stamp_loop",
+      "type": "DO_WHILE",
+      "evaluatorType": "graaljs",
+      "loopCondition": "(function(){ return $.bureaucracy_stamp_loop['iteration'] < $.requiredStamps && $.bureaucracy_stamp_loop['iteration'] < 4; })();",
+      "inputParameters": {
+        "bureaucracy_stamp_loop": "${bureaucracy_stamp_loop.output}",
+        "requiredStamps": "${intake_return_form.output.requiredStamps}"
+      },
+      "loopOver": [
+        {
+          "name": "chaos_collect_pointless_stamp",
+          "taskReferenceName": "collect_pointless_stamp",
+          "type": "SIMPLE",
+          "inputParameters": {
+            "caseNumber": "${intake_return_form.output.caseNumber}",
+            "iteration": "${bureaucracy_stamp_loop.output.iteration}",
+            "formCode": "${intake_return_form.output.formCode}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "compile_bureaucracy_dossier",
+      "taskReferenceName": "compile_bureaucracy_dossier",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "intake": "${intake_return_form.output}",
+        "lunar": "${check_lunar_alignment.output}",
+        "karma": "${measure_box_karma.output}",
+        "hamster": "${consult_legal_hamster.output}",
+        "stampsCollected": "${bureaucracy_stamp_loop.output.iteration}",
+        "queryExpression": "{ caseNumber: .intake.caseNumber, formCode: .intake.formCode, stampsCollected: .stampsCollected, pointlessChecks: [ { name: \"Lunar Alignment Audit\", status: .lunar.status, score: .lunar.score, verdict: .lunar.note }, { name: \"Original Box Karma Scan\", status: .karma.status, score: .karma.score, verdict: .karma.note }, { name: \"Chief Legal Hamster Tribunal\", status: .hamster.status, score: .hamster.score, verdict: .hamster.note } ], totalPointlessScore: (.lunar.score + .karma.score + .hamster.score) }"
+      }
+    },
+    {
+      "name": "chaos_calculate_return_verdict",
+      "taskReferenceName": "calculate_return_verdict",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "returnId": "${workflow.input.returnId}",
+        "orderId": "${workflow.input.orderId}",
+        "caseNumber": "${intake_return_form.output.caseNumber}",
+        "paidAmount": "${workflow.input.paidAmount}",
+        "reason": "${workflow.input.reason}",
+        "regretLevel": "${workflow.input.regretLevel}",
+        "dossier": "${compile_bureaucracy_dossier.output.result}"
+      }
+    },
+    {
+      "name": "route_return_decision",
+      "taskReferenceName": "route_return_decision",
+      "type": "SWITCH",
+      "evaluatorType": "value-param",
+      "expression": "decisionType",
+      "inputParameters": {
+        "decisionType": "${calculate_return_verdict.output.decisionType}"
+      },
+      "decisionCases": {
+        "APPROVED_CHAOS_CREDIT": [
+          {
+            "name": "chaos_issue_chaos_credit",
+            "taskReferenceName": "issue_chaos_credit",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "returnId": "${workflow.input.returnId}",
+              "orderId": "${workflow.input.orderId}",
+              "caseNumber": "${intake_return_form.output.caseNumber}",
+              "verdict": "${calculate_return_verdict.output}"
+            }
+          },
+          {
+            "name": "set_credit_decision",
+            "taskReferenceName": "set_credit_decision",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "finalDecision": "${issue_chaos_credit.output}"
+            }
+          }
+        ],
+        "PARTIAL_REFUND": [
+          {
+            "name": "chaos_issue_partial_refund",
+            "taskReferenceName": "issue_partial_refund",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "returnId": "${workflow.input.returnId}",
+              "orderId": "${workflow.input.orderId}",
+              "caseNumber": "${intake_return_form.output.caseNumber}",
+              "verdict": "${calculate_return_verdict.output}"
+            }
+          },
+          {
+            "name": "set_partial_decision",
+            "taskReferenceName": "set_partial_decision",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "finalDecision": "${issue_partial_refund.output}"
+            }
+          }
+        ],
+        "DENIED_WITH_CONSOLATION": [
+          {
+            "name": "chaos_issue_denial_notice",
+            "taskReferenceName": "issue_denial_notice",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "returnId": "${workflow.input.returnId}",
+              "orderId": "${workflow.input.orderId}",
+              "caseNumber": "${intake_return_form.output.caseNumber}",
+              "verdict": "${calculate_return_verdict.output}"
+            }
+          },
+          {
+            "name": "set_denial_decision",
+            "taskReferenceName": "set_denial_decision",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "finalDecision": "${issue_denial_notice.output}"
+            }
+          }
+        ]
+      },
+      "defaultCase": []
+    }
+  ],
+  "outputParameters": {
+    "returnId": "${workflow.input.returnId}",
+    "orderId": "${workflow.input.orderId}",
+    "caseNumber": "${intake_return_form.output.caseNumber}",
+    "stampsCollected": "${bureaucracy_stamp_loop.output.iteration}",
+    "dossier": "${compile_bureaucracy_dossier.output.result}",
+    "decision": "${workflow.variables.finalDecision}"
+  }
+}

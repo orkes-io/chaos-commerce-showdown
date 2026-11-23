@@ -1,0 +1,215 @@
+{
+  "name": "chaos_return_workflow",
+  "description": "Chaos Commerce bureaucratic returns gauntlet: subjects every return request to four parallel pointless audits, a bounded 3-committee rubber-stamp DO_WHILE loop, deterministic policy scoring, and a SWITCH decision router that always reaches a definitive outcome.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "returns-bureaucracy@chaoscommerce.example",
+  "restartable": true,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "timeoutSeconds": 120,
+  "inputParameters": [
+    "returnId",
+    "orderId",
+    "customerName",
+    "itemName",
+    "orderTotal",
+    "reasonCode",
+    "reasonText",
+    "lunarPhase",
+    "staredAtProduct",
+    "keptOriginalAir",
+    "apologyToCeo"
+  ],
+  "tasks": [
+    {
+      "name": "intake_return_dossier",
+      "taskReferenceName": "intake_return_dossier",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "returnId": "${workflow.input.returnId}",
+        "orderId": "${workflow.input.orderId}",
+        "customerName": "${workflow.input.customerName}",
+        "itemName": "${workflow.input.itemName}",
+        "orderTotal": "${workflow.input.orderTotal}",
+        "reasonCode": "${workflow.input.reasonCode}",
+        "reasonText": "${workflow.input.reasonText}",
+        "queryExpression": "{ returnId: (.returnId // \"CHAOS-RET-UNKNOWN\"), orderId: (.orderId // \"CHAOS-ORD-UNKNOWN\"), customerName: (if (.customerName // \"\") == \"\" then \"Dissatisfied Patron\" else .customerName end), itemName: (if (.itemName // \"\") == \"\" then \"Questionable Merchandise\" else .itemName end), orderTotal: ((.orderTotal // 0) | tonumber), reasonCode: (.reasonCode // \"OTHER\"), reasonText: (.reasonText // \"No reason provided\"), dossierCode: (\"FORM-999B-\" + (.returnId // \"000\")), intakeNote: \"Return dossier opened in triplicate on damp dot-matrix paper.\" }"
+      }
+    },
+    {
+      "name": "pointless_parallel_audits",
+      "taskReferenceName": "pointless_parallel_audits",
+      "type": "FORK_JOIN",
+      "forkTasks": [
+        [
+          {
+            "name": "check_lunar_alignment",
+            "taskReferenceName": "check_lunar_alignment",
+            "type": "INLINE",
+            "inputParameters": {
+              "evaluatorType": "graaljs",
+              "lunarPhase": "${workflow.input.lunarPhase}",
+              "expression": "(function(){ var phase = String($.lunarPhase || 'Unknown'); var lucky = (phase === 'Full Moon' || phase === 'Waxing Gibbous'); var delta = lucky ? 15 : (phase === 'Mercury in Retrograde' ? -18 : -5); return { checkName: 'Astrological Refund Alignment', passed: lucky, scoreDelta: delta, verdict: lucky ? ('Lunar phase \"' + phase + '\" is auspicious for refunds (+15 pts).') : ('Lunar phase \"' + phase + '\" displeased our CFO astrologer (' + delta + ' pts).') }; })();"
+            }
+          }
+        ],
+        [
+          {
+            "name": "check_box_air_integrity",
+            "taskReferenceName": "check_box_air_integrity",
+            "type": "INLINE",
+            "inputParameters": {
+              "evaluatorType": "graaljs",
+              "staredAtProduct": "${workflow.input.staredAtProduct}",
+              "keptOriginalAir": "${workflow.input.keptOriginalAir}",
+              "expression": "(function(){ var stared = Boolean($.staredAtProduct); var keptAir = Boolean($.keptOriginalAir); var delta = (keptAir ? 15 : -15) + (stared ? -12 : 10); var passed = delta >= 0; return { checkName: 'Original Box Air & Eye-Contact Audit', passed: passed, scoreDelta: delta, verdict: (keptAir ? 'Original factory air preserved. ' : 'Original box air escaped into wild! ') + (stared ? 'Unauthorized direct eye contact detected.' : 'Zero eye contact maintained (impressive).') + ' (' + (delta >= 0 ? '+' : '') + delta + ' pts)' }; })();"
+            }
+          }
+        ],
+        [
+          {
+            "name": "check_ceo_emotional_impact",
+            "taskReferenceName": "check_ceo_emotional_impact",
+            "type": "INLINE",
+            "inputParameters": {
+              "evaluatorType": "graaljs",
+              "apologyToCeo": "${workflow.input.apologyToCeo}",
+              "expression": "(function(){ var note = String($.apologyToCeo || '').trim(); var lower = note.toLowerCase(); var heartfelt = note.length >= 12 || lower.indexOf('sorry') >= 0 || lower.indexOf('please') >= 0 || lower.indexOf('yacht') >= 0; var delta = heartfelt ? 15 : -10; return { checkName: 'CEO Emotional Impact Assessment', passed: heartfelt, scoreDelta: delta, verdict: heartfelt ? 'Our CEO wiped away a tear with a $100 bill and accepted your apology (+15 pts).' : 'Apology deemed dangerously terse by our Executive Feelings Desk (-10 pts).' }; })();"
+            }
+          }
+        ],
+        [
+          {
+            "name": "check_vibe_and_reason",
+            "taskReferenceName": "check_vibe_and_reason",
+            "type": "INLINE",
+            "inputParameters": {
+              "evaluatorType": "graaljs",
+              "reasonCode": "${workflow.input.reasonCode}",
+              "reasonText": "${workflow.input.reasonText}",
+              "expression": "(function(){ var code = String($.reasonCode || 'OTHER'); var txt = String($.reasonText || '').trim(); var delta = 0; var msg = ''; if (code === 'MELTED' || code === 'NO_LONGER_EXISTS') { delta = 18; msg = 'Confirmed: item ceased to exist as advertised (+18 pts).'; } else if (code === 'CURSED') { delta = 10; msg = 'Haunting verified via Ouija microservice (+10 pts).'; } else if (code === 'TOO_EXPENSIVE') { delta = -20; msg = 'Price regret is a core feature, not a defect (-20 pts).'; } else { delta = txt.length >= 15 ? 5 : -8; msg = 'Reason filed under Miscellaneous Customer Whimsy (' + (delta >= 0 ? '+' : '') + delta + ' pts).'; } return { checkName: 'Quantum Receipt & Reason Forensics', passed: delta >= 0, scoreDelta: delta, verdict: msg }; })();"
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "join_pointless_audits",
+      "taskReferenceName": "join_pointless_audits",
+      "type": "JOIN",
+      "joinOn": [
+        "check_lunar_alignment",
+        "check_box_air_integrity",
+        "check_ceo_emotional_impact",
+        "check_vibe_and_reason"
+      ]
+    },
+    {
+      "name": "bureaucracy_rubber_stamp_loop",
+      "taskReferenceName": "bureaucracy_rubber_stamp_loop",
+      "type": "DO_WHILE",
+      "evaluatorType": "graaljs",
+      "loopCondition": "(function(){ return $.bureaucracy_rubber_stamp_loop['iteration'] < $.requiredStamps && $.bureaucracy_rubber_stamp_loop['iteration'] < 5; })();",
+      "inputParameters": {
+        "bureaucracy_rubber_stamp_loop": "${bureaucracy_rubber_stamp_loop.output}",
+        "requiredStamps": 3
+      },
+      "loopOver": [
+        {
+          "name": "rubber_stamp_committee",
+          "taskReferenceName": "rubber_stamp_committee",
+          "type": "INLINE",
+          "inputParameters": {
+            "evaluatorType": "graaljs",
+            "iteration": "${bureaucracy_rubber_stamp_loop.output.iteration}",
+            "dossierCode": "${intake_return_dossier.output.result.dossierCode}",
+            "expression": "(function(){ var i = Number($.iteration) || 1; var committees = ['Department of Redundant Forms', 'Subcommittee on Staring Blankly', 'Office of Final Hesitation']; var actions = ['Stamped upside-down in invisible ink and faxed to a toaster.', 'Stared at dossier for 0.004 seconds; nodded solemnly.', 'Sighed audibly and forwarded dossier to the Decision Wheel.']; var idx = Math.min(Math.max(i - 1, 0), 2); return { round: i, committee: committees[idx], stampId: String($.dossierCode) + '-R' + i, note: actions[idx] }; })();"
+          }
+        }
+      ]
+    },
+    {
+      "name": "tally_bureaucracy_score",
+      "taskReferenceName": "tally_bureaucracy_score",
+      "type": "INLINE",
+      "inputParameters": {
+        "evaluatorType": "graaljs",
+        "lunarDelta": "${check_lunar_alignment.output.result.scoreDelta}",
+        "airDelta": "${check_box_air_integrity.output.result.scoreDelta}",
+        "ceoDelta": "${check_ceo_emotional_impact.output.result.scoreDelta}",
+        "reasonDelta": "${check_vibe_and_reason.output.result.scoreDelta}",
+        "stampsCompleted": "${bureaucracy_rubber_stamp_loop.output.iteration}",
+        "expression": "(function(){ var raw = 50 + (Number($.lunarDelta) || 0) + (Number($.airDelta) || 0) + (Number($.ceoDelta) || 0) + (Number($.reasonDelta) || 0); var score = Math.max(0, Math.min(100, raw)); var tier = score >= 70 ? 'APPROVED_FULL_REFUND' : (score >= 45 ? 'APPROVED_STORE_CREDIT' : 'DENIED_WITH_CONDOLENCES'); return { bureaucracyScore: score, thresholdFullRefund: 70, thresholdStoreCredit: 45, stampsCompleted: Number($.stampsCompleted) || 3, decisionTier: tier }; })();"
+      }
+    },
+    {
+      "name": "route_return_decision",
+      "taskReferenceName": "route_return_decision",
+      "type": "SWITCH",
+      "evaluatorType": "value-param",
+      "expression": "decisionTier",
+      "inputParameters": {
+        "decisionTier": "${tally_bureaucracy_score.output.result.decisionTier}"
+      },
+      "decisionCases": {
+        "APPROVED_FULL_REFUND": [
+          {
+            "name": "issue_full_refund",
+            "taskReferenceName": "issue_full_refund",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "orderTotal": "${intake_return_dossier.output.result.orderTotal}",
+              "queryExpression": "{ decision: \"APPROVED\", decisionCode: \"APPROVED_FULL_REFUND\", headline: \"Return Miraculously Approved (Full Refund!)\", refundAmount: (((.orderTotal // 0) * 100 | round) / 100), restockingPenalty: 0, refundMethod: \"Original Imaginary Payment Method\", summary: \"Against all odds and our entire business model, you defeated our bureaucratic labyrinth. Full imaginary refund issued!\" }"
+            }
+          }
+        ],
+        "APPROVED_STORE_CREDIT": [
+          {
+            "name": "issue_store_credit",
+            "taskReferenceName": "issue_store_credit",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "orderTotal": "${intake_return_dossier.output.result.orderTotal}",
+              "queryExpression": "{ decision: \"APPROVED_STORE_CREDIT\", decisionCode: \"APPROVED_STORE_CREDIT\", headline: \"Approved for Chaos Bucks™ Store Credit\", refundAmount: ((((.orderTotal // 0) * 0.85) * 100 | round) / 100), restockingPenalty: ((((.orderTotal // 0) * 0.15) * 100 | round) / 100), refundMethod: \"Chaos Bucks™ Store Credit (15% Emotional Restocking Fee deducted)\", summary: \"You passed enough pointless checks to qualify for Chaos Store Credit! Spend it unwisely.\" }"
+            }
+          }
+        ],
+        "DENIED_WITH_CONDOLENCES": [
+          {
+            "name": "issue_denial_notice",
+            "taskReferenceName": "issue_denial_notice",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "orderTotal": "${intake_return_dossier.output.result.orderTotal}",
+              "queryExpression": "{ decision: \"DENIED\", decisionCode: \"DENIED_WITH_CONDOLENCES\", headline: \"Return Politely & Bureaucratically Denied\", refundAmount: 0, restockingPenalty: (((.orderTotal // 0) * 100 | round) / 100), refundMethod: \"Complimentary Certificate of Regret\", summary: \"Our committees reviewed your dossier in triplicate and concluded that keeping this terrible purchase builds character.\" }"
+            }
+          }
+        ]
+      },
+      "defaultCase": []
+    },
+    {
+      "name": "compile_return_decision",
+      "taskReferenceName": "compile_return_decision",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "dossier": "${intake_return_dossier.output.result}",
+        "lunar": "${check_lunar_alignment.output.result}",
+        "air": "${check_box_air_integrity.output.result}",
+        "ceo": "${check_ceo_emotional_impact.output.result}",
+        "reason": "${check_vibe_and_reason.output.result}",
+        "tally": "${tally_bureaucracy_score.output.result}",
+        "fullRefund": "${issue_full_refund.output.result}",
+        "storeCredit": "${issue_store_credit.output.result}",
+        "denial": "${issue_denial_notice.output.result}",
+        "queryExpression": "{ returnId: .dossier.returnId, orderId: .dossier.orderId, dossierCode: .dossier.dossierCode, customerName: .dossier.customerName, itemName: .dossier.itemName, orderTotal: .dossier.orderTotal, bureaucracyScore: .tally.bureaucracyScore, stampsCompleted: .tally.stampsCompleted, outcome: (.fullRefund // .storeCredit // .denial), decision: ((.fullRefund // .storeCredit // .denial).decision), decisionCode: ((.fullRefund // .storeCredit // .denial).decisionCode), checks: [ .lunar, .air, .ceo, .reason ], committeeRounds: [ { round: 1, committee: \"Department of Redundant Forms\", status: \"STAMPED\", note: \"Stamped upside-down in invisible ink and faxed to a toaster.\" }, { round: 2, committee: \"Subcommittee on Staring Blankly\", status: \"STAMPED\", note: \"Stared at dossier for 0.004 seconds; nodded solemnly.\" }, { round: 3, committee: \"Office of Final Hesitation\", status: \"STAMPED\", note: \"Sighed audibly and forwarded dossier to the Decision Wheel.\" } ] }"
+      }
+    }
+  ],
+  "outputParameters": {
+    "status": "DECIDED",
+    "returnId": "${intake_return_dossier.output.result.returnId}",
+    "orderId": "${intake_return_dossier.output.result.orderId}",
+    "decision": "${compile_return_decision.output.result}"
+  }
+}

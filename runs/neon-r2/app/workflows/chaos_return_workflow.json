@@ -1,0 +1,322 @@
+{
+  "name": "chaos_return_workflow",
+  "description": "Drags a Chaos Commerce return request through four parallel pointless inspections, a 3-pass bureaucratic red-tape loop, and a verdict switch that guarantees every return reaches a terminal decision.",
+  "version": 1,
+  "schemaVersion": 2,
+  "restartable": true,
+  "ownerEmail": "chaos-ops@chaoscommerce.invalid",
+  "timeoutSeconds": 120,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "variables": {
+    "finalDecision": "",
+    "decisionLabel": "",
+    "refundAmount": 0,
+    "storeCreditAmount": 0,
+    "restockingFee": 0,
+    "couponCode": "",
+    "decreeHeadline": "",
+    "decreeLetter": "",
+    "nextSteps": ""
+  },
+  "inputParameters": [
+    "orderId",
+    "orderWorkflowId",
+    "orderTotal",
+    "customerName",
+    "itemTitle",
+    "reason",
+    "zodiacSign",
+    "apologyText",
+    "moonlightConfirmed",
+    "boxAirPreserved",
+    "spiderChecksPassed"
+  ],
+  "tasks": [
+    {
+      "name": "log_return_grievance",
+      "taskReferenceName": "log_return_grievance_ref",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "orderWorkflowId": "${workflow.input.orderWorkflowId}",
+        "orderTotal": "${workflow.input.orderTotal}",
+        "customerName": "${workflow.input.customerName}",
+        "itemTitle": "${workflow.input.itemTitle}",
+        "reason": "${workflow.input.reason}",
+        "zodiacSign": "${workflow.input.zodiacSign}",
+        "apologyText": "${workflow.input.apologyText}",
+        "moonlightConfirmed": "${workflow.input.moonlightConfirmed}",
+        "boxAirPreserved": "${workflow.input.boxAirPreserved}",
+        "spiderChecksPassed": "${workflow.input.spiderChecksPassed}"
+      }
+    },
+    {
+      "name": "parallel_pointless_checks",
+      "taskReferenceName": "parallel_pointless_checks_ref",
+      "type": "FORK_JOIN",
+      "forkTasks": [
+        [
+          {
+            "name": "consult_warehouse_ficus",
+            "taskReferenceName": "consult_warehouse_ficus_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "returnId": "${log_return_grievance_ref.output.returnId}",
+              "reason": "${workflow.input.reason}",
+              "itemTitle": "${workflow.input.itemTitle}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "audit_lunar_alignment",
+            "taskReferenceName": "audit_lunar_alignment_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "returnId": "${log_return_grievance_ref.output.returnId}",
+              "zodiacSign": "${workflow.input.zodiacSign}",
+              "moonlightConfirmed": "${workflow.input.moonlightConfirmed}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "measure_box_karma",
+            "taskReferenceName": "measure_box_karma_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "returnId": "${log_return_grievance_ref.output.returnId}",
+              "apologyText": "${workflow.input.apologyText}",
+              "boxAirPreserved": "${workflow.input.boxAirPreserved}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "verify_vibe_certificate",
+            "taskReferenceName": "verify_vibe_certificate_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "returnId": "${log_return_grievance_ref.output.returnId}",
+              "spiderChecksPassed": "${workflow.input.spiderChecksPassed}",
+              "orderTotal": "${log_return_grievance_ref.output.orderTotal}"
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "join_pointless_checks",
+      "taskReferenceName": "join_pointless_checks_ref",
+      "type": "JOIN",
+      "joinOn": [
+        "consult_warehouse_ficus_ref",
+        "audit_lunar_alignment_ref",
+        "measure_box_karma_ref",
+        "verify_vibe_certificate_ref"
+      ]
+    },
+    {
+      "name": "bureaucracy_red_tape_loop",
+      "taskReferenceName": "bureaucracy_red_tape_loop",
+      "type": "DO_WHILE",
+      "evaluatorType": "graaljs",
+      "loopCondition": "(function(){ return $.bureaucracy_red_tape_loop['iteration'] < 3; })();",
+      "inputParameters": {
+        "bureaucracy_red_tape_loop": "${bureaucracy_red_tape_loop.output}"
+      },
+      "loopOver": [
+        {
+          "name": "stamp_form_in_triplicate",
+          "taskReferenceName": "stamp_form_in_triplicate_ref",
+          "type": "SIMPLE",
+          "inputParameters": {
+            "returnId": "${log_return_grievance_ref.output.returnId}",
+            "iteration": "${bureaucracy_red_tape_loop.output.iteration}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "tally_pointless_score",
+      "taskReferenceName": "tally_pointless_score_ref",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "ficus": "${consult_warehouse_ficus_ref.output}",
+        "lunar": "${audit_lunar_alignment_ref.output}",
+        "karma": "${measure_box_karma_ref.output}",
+        "vibe": "${verify_vibe_certificate_ref.output}",
+        "queryExpression": "([.ficus, .lunar, .karma, .vibe]) as $checks | ([$checks[].score] | add) as $total | {checks: $checks, totalScore: $total, passedCount: ([$checks[] | select(.passed == true)] | length), verdictCode: (if $total >= 260 then \"APPROVED_WITH_RESTOCKING_FEE\" elif $total >= 180 then \"APPROVED_STORE_CREDIT\" else \"DENIED_WITH_COUPON\" end)}"
+      }
+    },
+    {
+      "name": "route_return_decision",
+      "taskReferenceName": "route_return_decision_ref",
+      "type": "SWITCH",
+      "evaluatorType": "value-param",
+      "expression": "verdictCode",
+      "inputParameters": {
+        "verdictCode": "${tally_pointless_score_ref.output.result.verdictCode}"
+      },
+      "decisionCases": {
+        "APPROVED_WITH_RESTOCKING_FEE": [
+          {
+            "name": "issue_restocking_fee_refund",
+            "taskReferenceName": "issue_restocking_fee_refund_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "returnId": "${log_return_grievance_ref.output.returnId}",
+              "orderTotal": "${log_return_grievance_ref.output.orderTotal}",
+              "customerName": "${workflow.input.customerName}",
+              "totalScore": "${tally_pointless_score_ref.output.result.totalScore}"
+            }
+          },
+          {
+            "name": "set_restocking_decision_vars",
+            "taskReferenceName": "set_restocking_decision_vars_ref",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "finalDecision": "${issue_restocking_fee_refund_ref.output.decision}",
+              "decisionLabel": "${issue_restocking_fee_refund_ref.output.decisionLabel}",
+              "refundAmount": "${issue_restocking_fee_refund_ref.output.refundAmount}",
+              "storeCreditAmount": "${issue_restocking_fee_refund_ref.output.storeCreditAmount}",
+              "restockingFee": "${issue_restocking_fee_refund_ref.output.restockingFee}",
+              "couponCode": "${issue_restocking_fee_refund_ref.output.couponCode}",
+              "decreeHeadline": "${issue_restocking_fee_refund_ref.output.decreeHeadline}",
+              "decreeLetter": "${issue_restocking_fee_refund_ref.output.decreeLetter}",
+              "nextSteps": "${issue_restocking_fee_refund_ref.output.nextSteps}"
+            }
+          }
+        ],
+        "APPROVED_STORE_CREDIT": [
+          {
+            "name": "issue_cursed_store_credit",
+            "taskReferenceName": "issue_cursed_store_credit_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "returnId": "${log_return_grievance_ref.output.returnId}",
+              "orderTotal": "${log_return_grievance_ref.output.orderTotal}",
+              "customerName": "${workflow.input.customerName}",
+              "totalScore": "${tally_pointless_score_ref.output.result.totalScore}"
+            }
+          },
+          {
+            "name": "set_store_credit_decision_vars",
+            "taskReferenceName": "set_store_credit_decision_vars_ref",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "finalDecision": "${issue_cursed_store_credit_ref.output.decision}",
+              "decisionLabel": "${issue_cursed_store_credit_ref.output.decisionLabel}",
+              "refundAmount": "${issue_cursed_store_credit_ref.output.refundAmount}",
+              "storeCreditAmount": "${issue_cursed_store_credit_ref.output.storeCreditAmount}",
+              "restockingFee": "${issue_cursed_store_credit_ref.output.restockingFee}",
+              "couponCode": "${issue_cursed_store_credit_ref.output.couponCode}",
+              "decreeHeadline": "${issue_cursed_store_credit_ref.output.decreeHeadline}",
+              "decreeLetter": "${issue_cursed_store_credit_ref.output.decreeLetter}",
+              "nextSteps": "${issue_cursed_store_credit_ref.output.nextSteps}"
+            }
+          }
+        ],
+        "DENIED_WITH_COUPON": [
+          {
+            "name": "issue_denial_with_coupon",
+            "taskReferenceName": "issue_denial_with_coupon_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "returnId": "${log_return_grievance_ref.output.returnId}",
+              "orderTotal": "${log_return_grievance_ref.output.orderTotal}",
+              "customerName": "${workflow.input.customerName}",
+              "totalScore": "${tally_pointless_score_ref.output.result.totalScore}"
+            }
+          },
+          {
+            "name": "set_denial_decision_vars",
+            "taskReferenceName": "set_denial_decision_vars_ref",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "finalDecision": "${issue_denial_with_coupon_ref.output.decision}",
+              "decisionLabel": "${issue_denial_with_coupon_ref.output.decisionLabel}",
+              "refundAmount": "${issue_denial_with_coupon_ref.output.refundAmount}",
+              "storeCreditAmount": "${issue_denial_with_coupon_ref.output.storeCreditAmount}",
+              "restockingFee": "${issue_denial_with_coupon_ref.output.restockingFee}",
+              "couponCode": "${issue_denial_with_coupon_ref.output.couponCode}",
+              "decreeHeadline": "${issue_denial_with_coupon_ref.output.decreeHeadline}",
+              "decreeLetter": "${issue_denial_with_coupon_ref.output.decreeLetter}",
+              "nextSteps": "${issue_denial_with_coupon_ref.output.nextSteps}"
+            }
+          }
+        ]
+      },
+      "defaultCase": [
+        {
+          "name": "issue_cursed_store_credit",
+          "taskReferenceName": "issue_cursed_store_credit_fallback_ref",
+          "type": "SIMPLE",
+          "inputParameters": {
+            "returnId": "${log_return_grievance_ref.output.returnId}",
+            "orderTotal": "${log_return_grievance_ref.output.orderTotal}",
+            "customerName": "${workflow.input.customerName}",
+            "totalScore": "${tally_pointless_score_ref.output.result.totalScore}"
+          }
+        },
+        {
+          "name": "set_fallback_decision_vars",
+          "taskReferenceName": "set_fallback_decision_vars_ref",
+          "type": "SET_VARIABLE",
+          "inputParameters": {
+            "finalDecision": "${issue_cursed_store_credit_fallback_ref.output.decision}",
+            "decisionLabel": "${issue_cursed_store_credit_fallback_ref.output.decisionLabel}",
+            "refundAmount": "${issue_cursed_store_credit_fallback_ref.output.refundAmount}",
+            "storeCreditAmount": "${issue_cursed_store_credit_fallback_ref.output.storeCreditAmount}",
+            "restockingFee": "${issue_cursed_store_credit_fallback_ref.output.restockingFee}",
+            "couponCode": "${issue_cursed_store_credit_fallback_ref.output.couponCode}",
+            "decreeHeadline": "${issue_cursed_store_credit_fallback_ref.output.decreeHeadline}",
+            "decreeLetter": "${issue_cursed_store_credit_fallback_ref.output.decreeLetter}",
+            "nextSteps": "${issue_cursed_store_credit_fallback_ref.output.nextSteps}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "seal_return_decree",
+      "taskReferenceName": "seal_return_decree_ref",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "returnId": "${log_return_grievance_ref.output.returnId}",
+        "orderId": "${log_return_grievance_ref.output.orderId}",
+        "orderWorkflowId": "${workflow.input.orderWorkflowId}",
+        "customerName": "${workflow.input.customerName}",
+        "itemTitle": "${workflow.input.itemTitle}",
+        "reason": "${workflow.input.reason}",
+        "redTapeRounds": "${bureaucracy_red_tape_loop.output.iteration}",
+        "checksSummary": "${tally_pointless_score_ref.output.result}",
+        "finalDecision": "${workflow.variables.finalDecision}",
+        "decisionLabel": "${workflow.variables.decisionLabel}",
+        "refundAmount": "${workflow.variables.refundAmount}",
+        "storeCreditAmount": "${workflow.variables.storeCreditAmount}",
+        "restockingFee": "${workflow.variables.restockingFee}",
+        "couponCode": "${workflow.variables.couponCode}",
+        "decreeHeadline": "${workflow.variables.decreeHeadline}",
+        "decreeLetter": "${workflow.variables.decreeLetter}",
+        "nextSteps": "${workflow.variables.nextSteps}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "returnId": "${seal_return_decree_ref.output.returnId}",
+    "orderId": "${seal_return_decree_ref.output.orderId}",
+    "decision": "${seal_return_decree_ref.output.decision}",
+    "decisionLabel": "${seal_return_decree_ref.output.decisionLabel}",
+    "refundAmount": "${seal_return_decree_ref.output.refundAmount}",
+    "storeCreditAmount": "${seal_return_decree_ref.output.storeCreditAmount}",
+    "restockingFee": "${seal_return_decree_ref.output.restockingFee}",
+    "couponCode": "${seal_return_decree_ref.output.couponCode}",
+    "decreeHeadline": "${seal_return_decree_ref.output.decreeHeadline}",
+    "decreeLetter": "${seal_return_decree_ref.output.decreeLetter}",
+    "nextSteps": "${seal_return_decree_ref.output.nextSteps}",
+    "checks": "${seal_return_decree_ref.output.checks}",
+    "totalPointlessScore": "${seal_return_decree_ref.output.totalPointlessScore}",
+    "redTapeRounds": "${seal_return_decree_ref.output.redTapeRounds}",
+    "decidedAt": "${seal_return_decree_ref.output.decidedAt}"
+  }
+}

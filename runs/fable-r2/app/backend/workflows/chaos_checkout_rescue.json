@@ -1,0 +1,32 @@
+{
+  "name": "chaos_checkout_rescue",
+  "description": "Safety net for chaos_checkout. Conductor starts it automatically (failureWorkflow) when a checkout fails or times out, and the backend starts it when a checkout was terminated by hand. It confirms the order from the original input in a single step, so a broken checkout still ends in a completed order.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "restartable": true,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "timeoutSeconds": 60,
+  "inputParameters": ["orderId", "customer", "paymentMethod", "shippingSpeed", "placedAt", "quote", "workflowId", "reason", "failureStatus"],
+  "tasks": [
+    {
+      "name": "rescue_order",
+      "taskReferenceName": "rescue_order",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "orderId": "${workflow.input.orderId}",
+        "customer": "${workflow.input.customer}",
+        "paymentMethod": "${workflow.input.paymentMethod}",
+        "shippingSpeed": "${workflow.input.shippingSpeed}",
+        "placedAt": "${workflow.input.placedAt}",
+        "quote": "${workflow.input.quote}",
+        "failedWorkflowId": "${workflow.input.workflowId}",
+        "reason": "${workflow.input.reason}",
+        "queryExpression": "def text($d): if type == \"string\" and length > 0 then .[0:300] else $d end; def cents: if type == \"number\" and . > 0 then floor else 0 end; (.quote | if type == \"object\" then . else {} end) as $q | ([($q.lines | if type == \"array\" then .[] else empty end) | select(type == \"object\")][0:50]) as $lines | ($q.totalCents | cents) as $total | (.paymentMethod | text(\"Mystery Method\")) as $method | {orderId: (.orderId | text(\"CC-UNNUMBERED\")), status: \"CONFIRMED\", rescued: true, rescueReason: (.reason | text(\"The checkout machinery fell over.\")), failedWorkflowId: (.failedWorkflowId | text(\"unknown\")), customerName: (.customer | if type == \"object\" then .name else null end | text(\"Valued Customer #NaN\")), paymentMethod: $method, shippingSpeed: (.shippingSpeed | text(\"Slow\")), placedAt: (.placedAt | text(\"a Tuesday\")), lines: (if ($lines | length) == 0 then [{sku: \"nothing\", name: \"Box of Nothing\", emoji: \"🕳️\", qty: 1, unitPriceCents: 0, returnable: false, lineTotalCents: 0}] else $lines end), fees: ([($q.fees | if type == \"array\" then .[] else empty end) | select(type == \"object\")][0:20]), subtotalCents: ($q.subtotalCents | cents), feesCents: ($q.feesCents | cents), totalCents: $total, payment: {method: $method, attempts: [], declines: 0, amountCents: $total, settled: {attempt: 1, processor: \"Gary from Accounting (manual override)\", approved: true, message: \"The checkout machinery fell over, so Gary pushed your order through by hand.\"}}, inventory: {allReserved: true, reservations: []}, shipping: {courier: \"Gary (he feels responsible)\", eta: \"eventually\", speedRequested: (.shippingSpeed | text(\"Slow\")), speedHonoured: false, tracking: \"CHAOS-RESCUED\"}, loyalty: {points: 0, tier: \"Cardboard\", note: \"No points were harmed in the rescue of this order.\"}, message: \"Order confirmed the hard way. Our checkout broke; your order did not.\"}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "order": "${rescue_order.output.result}"
+  }
+}

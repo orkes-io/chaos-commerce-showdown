@@ -1,0 +1,78 @@
+{
+  "name": "chaos_return",
+  "description": "Chaos Commerce returns. Drags the return through six pointless departmental checks (each waits in a queue, none can affect the outcome, the loop is capped), then hands the case to chaos_return_verdict for the actual decision. Uses system tasks only, so no worker has to be running, and falls back to chaos_return_rescue on any failure: every return reaches a decision.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "restartable": true,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "timeoutSeconds": 300,
+  "failureWorkflow": "chaos_return_rescue",
+  "inputParameters": ["returnId", "orderId", "sku", "qty", "reasonCode", "answers", "order"],
+  "tasks": [
+    {
+      "name": "pointless_checks",
+      "taskReferenceName": "pointless_checks",
+      "type": "DO_WHILE",
+      "evaluatorType": "graaljs",
+      "loopCondition": "(function(){ return $.pointless_checks['iteration'] < 6; })();",
+      "inputParameters": {
+        "pointless_checks": "${pointless_checks.output}"
+      },
+      "loopOver": [
+        {
+          "name": "wait_in_queue",
+          "taskReferenceName": "wait_in_queue",
+          "type": "WAIT",
+          "inputParameters": {
+            "duration": "1s"
+          }
+        },
+        {
+          "name": "run_check",
+          "taskReferenceName": "run_check",
+          "type": "INLINE",
+          "inputParameters": {
+            "evaluatorType": "graaljs",
+            "step": "${pointless_checks.output.iteration}",
+            "returnId": "${workflow.input.returnId}",
+            "answers": "${workflow.input.answers}",
+            "expression": "(function(){ var step = Number($.step) || 1; var id = String($.returnId || ''); var seed = 0; for (var k = 0; k < id.length; k++) { seed = (seed * 31 + id.charCodeAt(k)) % 100003; } var regret = ($.answers && $.answers.regret != null) ? String($.answers.regret).slice(0, 4) : 'unstated'; var checks = [['Department of Redundancy Department', 'Confirmed that this return is a return. Then confirmed it again.'], ['Bureau of Receipt Vibes', 'Inspected the aura of your receipt. It is beige.'], ['Lunar Compliance Office', 'Checked the phase of the moon. There is a moon.'], ['Office of the Intern (Gary)', 'Gary looked at your file. Gary shrugged.'], ['Regret Notarisation Desk', 'Regret level ' + regret + ' out of 10 notarised, then filed under irrelevant.'], ['Final Pointless Review Board', 'Reviewed all previous checks and certified them pointless.']]; var verdicts = ['PASSED', 'FAILED', 'INCONCLUSIVE', 'FORM LOST', 'PASSED BY ACCIDENT']; var c = checks[(step - 1) % checks.length]; return { step: step, of: checks.length, department: c[0], finding: c[1], verdict: verdicts[(seed + step * 7) % verdicts.length], affectsDecision: false }; })();"
+          }
+        }
+      ]
+    },
+    {
+      "name": "file_checks",
+      "taskReferenceName": "file_checks",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "loop": "${pointless_checks.output}",
+        "queryExpression": "[(.loop | if type == \"object\" then to_entries[] else empty end) | select(.key | test(\"^[0-9]+$\")) | .value.run_check.result | select(type == \"object\")] | sort_by(.step)"
+      }
+    },
+    {
+      "name": "decide",
+      "taskReferenceName": "decide",
+      "type": "SUB_WORKFLOW",
+      "subWorkflowParam": {
+        "name": "chaos_return_verdict",
+        "version": 1
+      },
+      "inputParameters": {
+        "returnId": "${workflow.input.returnId}",
+        "orderId": "${workflow.input.orderId}",
+        "sku": "${workflow.input.sku}",
+        "qty": "${workflow.input.qty}",
+        "reasonCode": "${workflow.input.reasonCode}",
+        "order": "${workflow.input.order}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "returnId": "${workflow.input.returnId}",
+    "rescued": false,
+    "checks": "${file_checks.output.result}",
+    "verdict": "${decide.output.verdict}"
+  }
+}

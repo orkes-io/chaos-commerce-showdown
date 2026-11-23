@@ -1,0 +1,17 @@
+{
+  "name": "chaos-commerce",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A parody online store whose checkout and returns run as Conductor workflows.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node scripts/start.js",
+    "register": "node scripts/register-workflows.js",
+    "build:workflows": "node backend/workflows/src/build.js",
+    "test": "node --test backend/test/",
+    "test:e2e": "node scripts/e2e.js"
+  }
+}

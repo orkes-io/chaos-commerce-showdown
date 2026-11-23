@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Chaos Commerce Backend API deployed to AWS Lambda + HTTP API Gateway
+
+Parameters:
+  ConductorServerUrl:
+    Type: String
+    Description: Conductor API base URL (e.g. https://your-conductor.example.com/api)
+  ConductorUiUrl:
+    Type: String
+    Default: ''
+    Description: Optional Conductor UI base URL (derived from ConductorServerUrl if blank)
+  CorsOrigin:
+    Type: String
+    Default: '*'
+    Description: Allowed CORS origin(s) for GitHub Pages frontend (e.g. https://<user>.github.io)
+  ConductorAuthKey:
+    Type: String
+    Default: ''
+    NoEcho: true
+    Description: Optional Orkes Conductor auth key (leave empty for unauthenticated OSS)
+  ConductorAuthSecret:
+    Type: String
+    Default: ''
+    NoEcho: true
+    Description: Optional Orkes Conductor auth secret (leave empty for unauthenticated OSS)
+
+Globals:
+  Function:
+    Runtime: nodejs22.x
+    Timeout: 29
+    MemorySize: 512
+    Architectures:
+      - x86_64
+
+Resources:
+  ChaosCommerceApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: src/lambda.handler
+      Description: Chaos Commerce Express API wrapped for AWS Lambda
+      Environment:
+        Variables:
+          CONDUCTOR_SERVER_URL: !Ref ConductorServerUrl
+          CONDUCTOR_UI_URL: !Ref ConductorUiUrl
+          CORS_ORIGIN: !Ref CorsOrigin
+          CONDUCTOR_AUTH_KEY: !Ref ConductorAuthKey
+          CONDUCTOR_AUTH_SECRET: !Ref ConductorAuthSecret
+      Events:
+        ApiProxy:
+          Type: HttpApi
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+        ApiRoot:
+          Type: HttpApi
+          Properties:
+            Path: /
+            Method: ANY
+
+Outputs:
+  ApiEndpoint:
+    Description: Base URL for the Chaos Commerce Lambda HTTP API (set as VITE_API_BASE_URL for GitHub Pages)
+    Value: !Sub 'https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com'

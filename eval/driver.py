@@ -96,7 +96,8 @@ def run_steps(page, base, steps, shots, label):
                 page.goto(base + st["goto"], wait_until="domcontentloaded")
                 page.wait_for_timeout(st.get("settle", 1200))
             elif "click" in st:
-                page.locator(st["click"]).first.click(timeout=st.get("timeout", 8000), force=st.get("force", False))
+                page.locator(st["click"]).first.click(timeout=st.get("timeout", 3000 if st.get("optional") else 8000),
+                                                      force=st.get("force", False))
                 page.wait_for_timeout(st.get("settle", 800))
             elif "fill" in st:
                 page.locator(st["fill"][0]).first.fill(str(st["fill"][1]), timeout=8000)
@@ -110,11 +111,15 @@ def run_steps(page, base, steps, shots, label):
                 page.wait_for_timeout(int(st["wait"]))
             elif "expect_text" in st:
                 page.get_by_text(re.compile(st["expect_text"], re.I)).first.wait_for(timeout=st.get("timeout", 30000))
+            elif "expect_selector" in st:
+                page.locator(st["expect_selector"]).first.wait_for(timeout=st.get("timeout", 30000))
             elif "screenshot" in st:
                 page.screenshot(path=str(shots / f"{label}-{st['screenshot']}.png"), full_page=st.get("full", False))
             log.append({"step": i, "ok": True, **st})
         except Exception as e:  # noqa: BLE001
             log.append({"step": i, "ok": False, "error": str(e)[:300], **st})
+            if st.get("optional"):  # e.g. a cookie banner that may or may not be showing
+                continue
             page.screenshot(path=str(shots / f"{label}-fail-step{i}.png"))
             return False, log
     return True, log
@@ -123,6 +128,7 @@ def run_steps(page, base, steps, shots, label):
 def dodge_test(page, base, spec, shots):
     page.goto(base + spec["url"], wait_until="domcontentloaded")
     page.wait_for_timeout(1500)
+    run_steps(page, base, spec.get("open", []), shots, "dodge-open")
     el = page.locator(spec["selector"]).first
     el.scroll_into_view_if_needed(timeout=8000)
     box0 = el.bounding_box()
@@ -201,6 +207,7 @@ def check(run_id, sandbox):
             if m.get("reviews"):
                 page.goto(base + m["reviews"]["url"], wait_until="domcontentloaded")
                 page.wait_for_timeout(1500)
+                run_steps(page, base, m["reviews"].get("open", []), shots, "reviews-open")
                 page.screenshot(path=str(shots / "reviews.png"), full_page=True)
                 res["F4_reviews"] = page.locator(m["reviews"]["item"]).all_inner_texts()[:20]
 

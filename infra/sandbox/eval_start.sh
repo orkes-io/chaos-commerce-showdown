@@ -11,8 +11,11 @@ EVAL="$HOME/eval"
 mkdir -p "$EVAL"
 
 # 1. Stop what the agent left behind (keep this SSH session alive).
-pkill -u ubuntu -f "node|npm|npx|python3 -m http|vite|serverless|sam " 2>/dev/null
-pkill -f watch_agent.sh 2>/dev/null; pkill -f "opencode" 2>/dev/null
+# Match exact process names (-x), never full command lines: this script's own
+# arguments contain the start command and must not match.
+pkill -f watch_agent.sh 2>/dev/null
+for name in node npm npx python3 opencode opencode.exe java; do pkill -u ubuntu -x "$name" 2>/dev/null; done
+sleep 2
 docker ps -aq | xargs -r docker rm -f >/dev/null 2>&1
 
 # 2. Fresh Conductor, same image as the run.

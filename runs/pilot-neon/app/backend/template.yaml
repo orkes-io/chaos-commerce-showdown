@@ -1,0 +1,74 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Chaos Commerce Backend API (AWS Lambda + HTTP API Gateway v2)
+
+Parameters:
+  ConductorServerUrl:
+    Type: String
+    Description: Conductor API base URL (e.g., https://conductor.example.com/api)
+  CorsOrigin:
+    Type: String
+    Default: "*"
+    Description: Allowed CORS origin (set to your GitHub Pages origin in production)
+  ConductorAuthKey:
+    Type: String
+    Default: ""
+    NoEcho: true
+    Description: Optional Conductor/Orkes auth key ID (leave empty for OSS)
+  ConductorAuthSecret:
+    Type: String
+    Default: ""
+    NoEcho: true
+    Description: Optional Conductor/Orkes auth secret (leave empty for OSS)
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 256
+    Runtime: nodejs22.x
+
+Resources:
+  ChaosCommerceHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - !Ref CorsOrigin
+        AllowHeaders:
+          - Content-Type
+          - Authorization
+        AllowMethods:
+          - GET
+          - POST
+          - OPTIONS
+
+  ChaosCommerceApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: src/lambda.handler
+      Description: Chaos Commerce HTTP API orchestrating checkout and returns on Conductor
+      Environment:
+        Variables:
+          CONDUCTOR_SERVER_URL: !Ref ConductorServerUrl
+          CORS_ORIGIN: !Ref CorsOrigin
+          CONDUCTOR_AUTH_KEY: !Ref ConductorAuthKey
+          CONDUCTOR_AUTH_SECRET: !Ref ConductorAuthSecret
+      Events:
+        ApiProxy:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ChaosCommerceHttpApi
+            Path: /api/{proxy+}
+            Method: ANY
+        ApiHealth:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ChaosCommerceHttpApi
+            Path: /api/health
+            Method: GET
+
+Outputs:
+  ApiUrl:
+    Description: Base URL for the Chaos Commerce AWS Lambda API (set as VITE_API_BASE_URL for GitHub Pages)
+    Value: !Sub "https://${ChaosCommerceHttpApi}.execute-api.${AWS::Region}.amazonaws.com"

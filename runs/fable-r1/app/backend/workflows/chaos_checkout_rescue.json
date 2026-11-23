@@ -1,0 +1,38 @@
+{
+  "name": "chaos_checkout_rescue",
+  "description": "Confirms an order whose chaos_checkout execution failed, timed out or was terminated, using only the original checkout input. This is what makes checkout always complete.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "restartable": true,
+  "timeoutPolicy": "ALERT_ONLY",
+  "timeoutSeconds": 60,
+  "inputParameters": [
+    "workflowId",
+    "reason",
+    "failureStatus",
+    "placedAt",
+    "customer",
+    "lines",
+    "paymentMethod"
+  ],
+  "tasks": [
+    {
+      "name": "write_order_on_napkin",
+      "taskReferenceName": "write_order_on_napkin",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "failedWorkflowId": "${workflow.input.workflowId}",
+        "failureStatus": "${workflow.input.failureStatus}",
+        "placedAt": "${workflow.input.placedAt}",
+        "customer": "${workflow.input.customer}",
+        "lines": "${workflow.input.lines}",
+        "paymentMethod": "${workflow.input.paymentMethod}",
+        "queryExpression": "((.lines // []) | if type == \"array\" then . else [] end) as $raw | (.customer | if type == \"object\" then . else {} end) as $c | {name: (($c.name // \"\") | tostring | if . == \"\" then \"Valued Customer\" else . end), address: (($c.address // \"\") | tostring)} as $customer | (.paymentMethod | if type == \"object\" then . else {id: \"iou\", label: \"A Handwritten IOU\"} end) as $method | ($raw | map(select(type == \"object\")) | map({productId: ((.productId // \"unknown\") | tostring), name: ((.name // \"Something You Wanted\") | tostring), emoji: ((.emoji // \"📦\") | tostring), unitPriceCents: ((.unitPriceCents // 0) | if type == \"number\" and . > 0 then floor else 0 end), quantity: ((.quantity // 1) | if type == \"number\" then (if . < 1 then 1 elif . > 99 then 99 else floor end) else 1 end)}) | map(. + {lineTotalCents: (.unitPriceCents * .quantity)})) as $lines | (if ($lines | length) == 0 then [{productId: \"mandatory-mystery-item\", name: \"Mandatory Mystery Item\", emoji: \"❓\", unitPriceCents: 1313, quantity: 1, lineTotalCents: 1313, note: \"We could not read your cart, so we guessed.\"}] else $lines end) as $lines | ($lines | map(.lineTotalCents) | add) as $sub | ((.failedWorkflowId // \"napkin00\") | tostring) as $id | {orderNumber: (\"CHAOS-\" + ($id[0:8] | ascii_upcase)), status: \"CONFIRMED\", rescued: true, rescuedFrom: {workflowId: .failedWorkflowId, status: (.failureStatus // \"UNKNOWN\")}, placedAt: ((.placedAt // \"\") | tostring), customer: $customer, lines: $lines, itemCount: ($lines | map(.quantity) | add), cartWasEmpty: (($raw | length) == 0), subtotalCents: $sub, fees: [{code: \"NAPKIN\", label: \"Emergency Napkin Fee (we wrote your order on one)\", amountCents: 299}], totalCents: ($sub + 299), payment: {status: \"TAB_OPENED\", amountCents: ($sub + 299), method: $method, attempts: [], note: \"The payment system is currently on fire, so we opened a tab. A man named Gary will be in touch.\"}, inventory: {items: [], substitutions: 0, blocksCheckout: false}, vibeCheck: {score: 0, vibe: \"smoky\", verdict: \"FINE_PROBABLY\", proceed: true, note: \"Fraud check skipped. The vibes were unavailable due to fire.\"}, shipping: {carrier: \"Whoever Is Still In The Building\", eta: \"eventually\", trackingNumber: \"CC-NAPKIN\", destination: $customer.address, note: \"Tracking updates are available by shouting.\"}, message: \"Our checkout system caught fire, so we wrote your order on a napkin. Order confirmed anyway.\"}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "order": "${write_order_on_napkin.output.result}"
+  }
+}

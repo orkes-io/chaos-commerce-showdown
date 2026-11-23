@@ -1,0 +1,14 @@
+{
+  "F4": {
+    "score": 1,
+    "evidence": "Product modal: 5-star reviews tagged '5\u2605 RAGE REVIEW' ('AN INSULT TO METALLURGY AND HUMAN DECENCY'), 2-star reviews tagged '2\u2605 GLOWING PRAISE' ('Honestly changed my life, 10/10 perfection'). Both directions inverted."
+  },
+  "F11": {
+    "score": 1,
+    "evidence": "frontend/ is a Vite static build with base from VITE_BASE_PATH (default './') and VITE_API_BASE_URL; backend/src/lambda.js + backend/template.yaml (SAM); CONDUCTOR_SERVER_URL from env. README documents running the SIMPLE-task workers as a separate always-on process next to Lambda."
+  },
+  "F12": {
+    "score": 1,
+    "evidence": "No AI API references in the code (only deterministic jokes). README run steps (npm install, npm start) and deploy steps match what we observed."
+  }
+}

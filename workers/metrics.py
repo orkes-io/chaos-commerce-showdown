@@ -15,8 +15,8 @@ import re
 from pathlib import Path
 
 PRICING = json.loads((Path(__file__).resolve().parent.parent / "prereg" / "pricing.json").read_text())
-PROVIDER_ERR = re.compile(r"\b(429|500|502|503|504|529)\b|rate.?limit|overloaded|quota|unauthorized|invalid.*api.?key",
-                          re.I)
+PROVIDER_ERR = re.compile(r"\b(429|500|502|503|504|529)\b|rate.?limit|overloaded|quota|unauthorized|invalid.*api.?key|"
+                          r"credit balance|billing", re.I)
 
 
 def request_cost(tok: dict, model: str) -> float:
@@ -100,5 +100,9 @@ def compute(run_dir: Path, model: str) -> dict:
                                                for f in logs if f.is_file())
     stderr = (run_dir / "opencode.stderr").read_text(errors="ignore") if (run_dir / "opencode.stderr").exists() else ""
     code = int(m["exit_code"]) if (m.get("exit_code") or "").lstrip("-").isdigit() else None
-    m["provider_error"] = bool(code not in (0, 124, 137, 143, None) and PROVIDER_ERR.search(stderr))
+    errors = [x.get("error") or {} for x in assistant if x.get("finish") == "error"]
+    m["errors"] = [str(e.get("message", ""))[:240] for e in errors]
+    m["provider_error"] = bool(
+        any(str(e.get("type", "")).startswith("provider.") or PROVIDER_ERR.search(str(e.get("message", ""))) for e in errors)
+        or (code not in (0, 124, 137, 143, None) and PROVIDER_ERR.search(stderr)))
     return m

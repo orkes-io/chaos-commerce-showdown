@@ -1,0 +1,51 @@
+{
+  "name": "chaos_return_rescue",
+  "description": "Safety net for chaos_return. Conductor starts it automatically (failureWorkflow) when a return fails or times out, and the backend starts it when a return was terminated by hand. It skips the pointless checks and goes straight to chaos_return_verdict; if even that fails, the return is denied by default, so the case is never left undecided.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "restartable": true,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "timeoutSeconds": 120,
+  "inputParameters": ["returnId", "orderId", "sku", "qty", "reasonCode", "order", "workflowId", "reason", "failureStatus"],
+  "tasks": [
+    {
+      "name": "decide",
+      "taskReferenceName": "decide",
+      "type": "SUB_WORKFLOW",
+      "optional": true,
+      "subWorkflowParam": {
+        "name": "chaos_return_verdict",
+        "version": 1
+      },
+      "inputParameters": {
+        "returnId": "${workflow.input.returnId}",
+        "orderId": "${workflow.input.orderId}",
+        "sku": "${workflow.input.sku}",
+        "qty": "${workflow.input.qty}",
+        "reasonCode": "${workflow.input.reasonCode}",
+        "order": "${workflow.input.order}"
+      }
+    },
+    {
+      "name": "default_verdict",
+      "taskReferenceName": "default_verdict",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "verdict": "${decide.output.verdict}",
+        "returnId": "${workflow.input.returnId}",
+        "orderId": "${workflow.input.orderId}",
+        "sku": "${workflow.input.sku}",
+        "queryExpression": "def text($d): if type == \"string\" and length > 0 then .[0:120] else $d end; if (.verdict | type) == \"object\" and (.verdict.decision | type) == \"string\" then .verdict else {decision: \"DENIED\", approved: false, code: \"PAPERWORK_FIRE\", amountCents: 0, reference: \"DN-FIRE\", headline: \"Return denied by default\", detail: \"The returns process and its backup both caught fire, so nothing about this return could be verified and no money can move.\", returnId: (.returnId | text(\"RT-UNNUMBERED\")), orderId: (.orderId | text(\"\")), sku: (.sku | text(\"\")), itemName: \"an item we cannot identify\", qty: 0, reason: \"other\"} end"
+      }
+    }
+  ],
+  "outputParameters": {
+    "returnId": "${workflow.input.returnId}",
+    "rescued": true,
+    "rescueReason": "${workflow.input.reason}",
+    "failedWorkflowId": "${workflow.input.workflowId}",
+    "checks": [],
+    "verdict": "${default_verdict.output.result}"
+  }
+}

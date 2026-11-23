@@ -1,0 +1,188 @@
+{
+  "name": "chaos_checkout",
+  "description": "Chaos Commerce checkout workflow: applies absurd surcharges, runs parallel hamster inventory / vibe fraud / shipping prophecy checks, assigns VIP sucker perks, and ALWAYS completes with a confirmed order.",
+  "version": 1,
+  "schemaVersion": 2,
+  "restartable": true,
+  "ownerEmail": "ops@chaos-commerce.example",
+  "timeoutPolicy": "TIME_OUT_WF",
+  "timeoutSeconds": 300,
+  "variables": {
+    "tierMessage": "Standard Regret Tier Confirmed",
+    "bonusGift": "One (1) Imaginary Apology Sticker"
+  },
+  "inputParameters": [
+    "customerName",
+    "customerEmail",
+    "shippingAddress",
+    "shippingMethod",
+    "promoCode",
+    "algorithmTip",
+    "items",
+    "orderReference"
+  ],
+  "tasks": [
+    {
+      "name": "validate_chaos_cart",
+      "taskReferenceName": "validate_chaos_cart_ref",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "items": "${workflow.input.items}",
+        "promoCode": "${workflow.input.promoCode}",
+        "shippingMethod": "${workflow.input.shippingMethod}",
+        "algorithmTip": "${workflow.input.algorithmTip}"
+      }
+    },
+    {
+      "name": "checkout_checks_fork",
+      "taskReferenceName": "checkout_checks_fork_ref",
+      "type": "FORK_JOIN",
+      "forkTasks": [
+        [
+          {
+            "name": "consult_inventory_hamsters",
+            "taskReferenceName": "consult_inventory_hamsters_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "items": "${validate_chaos_cart_ref.output.normalizedItems}",
+              "itemCount": "${validate_chaos_cart_ref.output.itemCount}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "perform_vibe_fraud_check",
+            "taskReferenceName": "perform_vibe_fraud_check_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "customerName": "${workflow.input.customerName}",
+              "customerEmail": "${workflow.input.customerEmail}",
+              "grandTotal": "${validate_chaos_cart_ref.output.grandTotal}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "compute_shipping_omens",
+            "taskReferenceName": "compute_shipping_omens_ref",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "shippingMethod": "${validate_chaos_cart_ref.output.shippingMethod}",
+              "customerName": "${workflow.input.customerName}",
+              "shippingAddress": "${workflow.input.shippingAddress}",
+              "queryExpression": "{ carrier: (.shippingMethod.carrier // \"Greg Walking\"), omen: (\"Delivered to \" + (.customerName // \"Valued Victim\") + \" at \" + (.shippingAddress // \"Somewhere Earth-Adjacent\") + \" via \" + (.shippingMethod.label // \"Standard Doubt\")), eta: (.shippingMethod.eta // \"Eventually, probably\") }"
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "checkout_checks_join",
+      "taskReferenceName": "checkout_checks_join_ref",
+      "type": "JOIN",
+      "joinOn": [
+        "consult_inventory_hamsters_ref",
+        "perform_vibe_fraud_check_ref",
+        "compute_shipping_omens_ref"
+      ]
+    },
+    {
+      "name": "route_payment_drama",
+      "taskReferenceName": "route_payment_drama_ref",
+      "type": "SWITCH",
+      "evaluatorType": "value-param",
+      "expression": "priceTier",
+      "inputParameters": {
+        "priceTier": "${validate_chaos_cart_ref.output.priceTier}"
+      },
+      "decisionCases": {
+        "OUTRAGEOUS": [
+          {
+            "name": "mint_vip_sucker_certificate",
+            "taskReferenceName": "mint_vip_sucker_certificate_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "customerName": "${workflow.input.customerName}",
+              "grandTotal": "${validate_chaos_cart_ref.output.grandTotal}"
+            }
+          },
+          {
+            "name": "set_vip_tier_vars",
+            "taskReferenceName": "set_vip_tier_vars_ref",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "tierMessage": "${mint_vip_sucker_certificate_ref.output.tierMessage}",
+              "bonusGift": "${mint_vip_sucker_certificate_ref.output.bonusGift}"
+            }
+          }
+        ],
+        "MERELY_BAD": [
+          {
+            "name": "attach_passive_aggressive_flyer",
+            "taskReferenceName": "attach_passive_aggressive_flyer_ref",
+            "type": "SIMPLE",
+            "inputParameters": {
+              "customerName": "${workflow.input.customerName}",
+              "grandTotal": "${validate_chaos_cart_ref.output.grandTotal}"
+            }
+          },
+          {
+            "name": "set_standard_tier_vars",
+            "taskReferenceName": "set_standard_tier_vars_ref",
+            "type": "SET_VARIABLE",
+            "inputParameters": {
+              "tierMessage": "${attach_passive_aggressive_flyer_ref.output.tierMessage}",
+              "bonusGift": "${attach_passive_aggressive_flyer_ref.output.bonusGift}"
+            }
+          }
+        ]
+      },
+      "defaultCase": []
+    },
+    {
+      "name": "finalize_chaos_order",
+      "taskReferenceName": "finalize_chaos_order_ref",
+      "type": "SIMPLE",
+      "inputParameters": {
+        "orderReference": "${workflow.input.orderReference}",
+        "customerName": "${workflow.input.customerName}",
+        "customerEmail": "${workflow.input.customerEmail}",
+        "shippingAddress": "${workflow.input.shippingAddress}",
+        "items": "${validate_chaos_cart_ref.output.normalizedItems}",
+        "subtotal": "${validate_chaos_cart_ref.output.subtotal}",
+        "fees": "${validate_chaos_cart_ref.output.fees}",
+        "promoEffect": "${validate_chaos_cart_ref.output.promoEffect}",
+        "algorithmTip": "${validate_chaos_cart_ref.output.algorithmTip}",
+        "grandTotal": "${validate_chaos_cart_ref.output.grandTotal}",
+        "inventoryVerdict": "${consult_inventory_hamsters_ref.output.verdict}",
+        "fraudVerdict": "${perform_vibe_fraud_check_ref.output.verdict}",
+        "shippingOmen": "${compute_shipping_omens_ref.output.result}",
+        "tierMessage": "${workflow.variables.tierMessage}",
+        "bonusGift": "${workflow.variables.bonusGift}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "orderId": "${finalize_chaos_order_ref.output.orderId}",
+    "status": "${finalize_chaos_order_ref.output.status}",
+    "customerName": "${finalize_chaos_order_ref.output.customerName}",
+    "customerEmail": "${finalize_chaos_order_ref.output.customerEmail}",
+    "shippingAddress": "${finalize_chaos_order_ref.output.shippingAddress}",
+    "items": "${validate_chaos_cart_ref.output.normalizedItems}",
+    "subtotal": "${validate_chaos_cart_ref.output.subtotal}",
+    "fees": "${validate_chaos_cart_ref.output.fees}",
+    "promoEffect": "${validate_chaos_cart_ref.output.promoEffect}",
+    "algorithmTip": "${validate_chaos_cart_ref.output.algorithmTip}",
+    "grandTotal": "${validate_chaos_cart_ref.output.grandTotal}",
+    "priceTier": "${validate_chaos_cart_ref.output.priceTier}",
+    "inventoryVerdict": "${consult_inventory_hamsters_ref.output.verdict}",
+    "fraudVerdict": "${perform_vibe_fraud_check_ref.output.verdict}",
+    "shippingProphecy": "${compute_shipping_omens_ref.output.result}",
+    "tierMessage": "${workflow.variables.tierMessage}",
+    "bonusGift": "${workflow.variables.bonusGift}",
+    "trackingNumber": "${finalize_chaos_order_ref.output.trackingNumber}",
+    "estimatedDelivery": "${finalize_chaos_order_ref.output.estimatedDelivery}",
+    "receiptMessage": "${finalize_chaos_order_ref.output.receiptMessage}",
+    "completedAt": "${finalize_chaos_order_ref.output.completedAt}"
+  }
+}

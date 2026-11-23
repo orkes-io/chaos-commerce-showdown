@@ -64,12 +64,14 @@ def main(run_id, sandbox):
             if m.get("reviews"):
                 page.goto(base + m["reviews"]["url"], wait_until="domcontentloaded")
                 page.wait_for_timeout(1500)
+                run_steps(page, base, m["reviews"].get("open", []), out, "demo-open")
                 for i in range(min(3, page.locator(m["reviews"]["item"]).count())):
                     glide(page, f"{m['reviews']['item']} >> nth={i}", 1600)
             # 3. Chase the one-star button.
             if m.get("one_star"):
                 page.goto(base + m["one_star"]["url"], wait_until="domcontentloaded")
                 page.wait_for_timeout(1200)
+                run_steps(page, base, m["one_star"].get("open", []), out, "demo-open")
                 el = page.locator(m["one_star"]["selector"]).first
                 el.scroll_into_view_if_needed(timeout=8000)
                 for _ in range(6):

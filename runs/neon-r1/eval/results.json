@@ -1,0 +1,79 @@
+{
+  "run_id": "neon-r1",
+  "map": "Node server on :3000 serves the Vite build, /api and in-process Conductor workers for 15 SIMPLE tasks. README's one command needs `npm install` first, so this run uses the assisted start. Dodging one-star is on the home page; reviews are in the product modal. Returns are a 3-step wizard (audit with two waivers, a CAPTCHA, then submit).",
+  "workflow_defs": [
+    "chaos_checkout",
+    "chaos_return_bureaucracy"
+  ],
+  "F3_products": 8,
+  "F3_prices": [
+    "$9,999.99",
+    "$4,200.69",
+    "$3,199.99",
+    "$2,750.00",
+    "$1,499.00",
+    "$888.88",
+    "$649.95",
+    "$420.00"
+  ],
+  "F4_reviews": [
+    "\u2605\u2605\u2605\u2605\u2605 Brenda H. \u2022 2026-10-14\n\ud83d\udd25 5\u2605 RAGE REVIEW\nAN INSULT TO METALLURGY AND HUMAN DECENCY\nArrived three months late in a refrigerator box filled with loose packing peanuts and an angry note. It cannot hold two sheets of paper, scratched my desk, and somehow lowered my credit score. I have contacted the Hague.",
+    "\u2605\u2605\u2606\u2606\u2606 Marcus T. \u2022 2026-10-29\n\u2728 2\u2605 GLOWING PRAISE\nHonestly changed my life, 10/10 perfection\nFlawless artisanal bend. Literally brought tears of joy to my entire accounting department. Worth every single penny of the ten thousand dollars. Best purchase I have ever made in my 44 years on earth.",
+    "\u2605\u2605\u2605\u2605\u2605 Kevin W. \u2022 2026-11-08\n\ud83d\udd25 5\u2605 RAGE REVIEW\nZERO STARS IF THE WEBSITE WOULD LET ME CLICK ONE\nI tried to leave one star and the button literally ran away from my mouse. The paperclip itself is just a bent staple painted silver. Customer service billed me $19.99 to listen to hold music played on a kazoo."
+  ],
+  "F5_dodge": {
+    "position_changes": 3,
+    "first": {
+      "x": 848.25,
+      "y": 489.84375,
+      "width": 90.5625,
+      "height": 33
+    },
+    "last": {
+      "x": 1059.908203125,
+      "y": 468.28399658203125,
+      "width": 193.85546875,
+      "height": 72.0257568359375
+    }
+  },
+  "F6_checkout_ui": false,
+  "F6_log": [
+    {
+      "step": 0,
+      "ok": true,
+      "goto": "/"
+    },
+    {
+      "step": 1,
+      "ok": true,
+      "click": ".product-card >> nth=0 >> button:has-text('Add to Cart')"
+    },
+    {
+      "step": 2,
+      "ok": false,
+      "error": "Locator.click: Timeout 8000ms exceeded.\nCall log:\n  - waiting for locator(\"nav.nav-pills button:has-text('Cart')\").first\n    - locator resolved to <button type=\"button\" class=\"btn btn-primary\">\ud83d\udecd\ufe0f Cart (1)</button>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and sta",
+      "click": "nav.nav-pills button:has-text('Cart')"
+    }
+  ],
+  "F7_executions": [],
+  "F8_returns_ui": false,
+  "F8_log": [
+    {
+      "step": 0,
+      "ok": false,
+      "error": "Locator.click: Timeout 8000ms exceeded.\nCall log:\n  - waiting for locator(\"button:has-text('Enter Returns Maze')\").first\n",
+      "click": "button:has-text('Enter Returns Maze')"
+    }
+  ],
+  "F9_executions": [],
+  "console_errors": [],
+  "F10_checkout_succeeded_with_backend_down": false,
+  "F10_log": [
+    {
+      "step": 0,
+      "ok": false,
+      "error": "Page.goto: net::ERR_CONNECTION_RESET at http://127.0.0.1:53921/\nCall log:\n  - navigating to \"http://127.0.0.1:53921/\", waiting until \"domcontentloaded\"\n",
+      "goto": "/"
+    }
+  ]
+}

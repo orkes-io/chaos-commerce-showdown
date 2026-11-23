@@ -1,0 +1,19 @@
+{
+  "name": "chaos-commerce",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chaos Commerce — A parody online store backed by Conductor workflows, deployable to GitHub Pages and AWS Lambda.",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "build:frontend": "npm --workspace=frontend run build",
+    "build": "npm run build:frontend",
+    "register": "node backend/src/register.js",
+    "workers": "node backend/src/workers-cli.js",
+    "start": "node backend/src/server.js",
+    "dev:frontend": "npm --workspace=frontend run dev",
+    "smoke": "node backend/src/smoke-test.js"
+  }
+}

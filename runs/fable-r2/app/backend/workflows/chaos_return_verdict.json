@@ -1,0 +1,99 @@
+{
+  "name": "chaos_return_verdict",
+  "description": "The only part of a Chaos Commerce return that matters. Establishes the facts of the return, applies the returns policy and issues exactly one outcome: REFUND, STORE_CREDIT or DENIED. Shared by chaos_return (after the pointless checks) and chaos_return_rescue (instead of them), so the policy lives in one place.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "restartable": true,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "timeoutSeconds": 60,
+  "inputParameters": ["returnId", "orderId", "sku", "qty", "reasonCode", "order"],
+  "tasks": [
+    {
+      "name": "establish_facts",
+      "taskReferenceName": "establish_facts",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "returnId": "${workflow.input.returnId}",
+        "orderId": "${workflow.input.orderId}",
+        "sku": "${workflow.input.sku}",
+        "qty": "${workflow.input.qty}",
+        "reasonCode": "${workflow.input.reasonCode}",
+        "order": "${workflow.input.order}",
+        "queryExpression": "def text($d): if type == \"string\" and length > 0 then .[0:120] else $d end; (.order | if type == \"object\" then . else {} end) as $o | (.sku | text(\"\")) as $sku | ([($o.lines | if type == \"array\" then .[] else empty end) | select(type == \"object\") | select(.sku == $sku)] | .[0]) as $line | ($line.qty | if type == \"number\" and . >= 1 then floor else 0 end) as $bought | (.qty | if type == \"number\" and . >= 1 then floor else 1 end) as $wanted | (.reasonCode | text(\"other\")) as $reason | {returnId: (.returnId | text(\"RT-UNNUMBERED\")), orderId: (.orderId | text(\"\")), sku: $sku, itemName: ($line.name | text(\"an item we cannot identify\")), reason: (if ([\"defective\", \"not_as_described\", \"arrived_on_fire\", \"changed_mind\", \"too_expensive\", \"haunted\", \"other\"] | any(. == $reason)) then $reason else \"other\" end), orderFound: ($o.found == true), orderComplete: ($o.status == \"COMPLETED\"), itemInOrder: ($line != null), returnable: ($line != null and $line.returnable != false), qty: ([$wanted, $bought] | min), unitPriceCents: ($line.unitPriceCents | if type == \"number\" and . > 0 then floor else 0 end)}"
+      }
+    },
+    {
+      "name": "apply_policy",
+      "taskReferenceName": "apply_policy",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "facts": "${establish_facts.output.result}",
+        "queryExpression": ".facts as $f | ($f.qty * $f.unitPriceCents) as $value | if ($f.orderFound | not) then {decision: \"DENIED\", code: \"ORDER_NOT_FOUND\", amountCents: 0} elif ($f.orderComplete | not) then {decision: \"DENIED\", code: \"ORDER_NOT_COMPLETE\", amountCents: 0} elif ($f.itemInOrder | not) then {decision: \"DENIED\", code: \"ITEM_NOT_IN_ORDER\", amountCents: 0} elif ($f.returnable | not) then {decision: \"DENIED\", code: \"FINAL_SALE\", amountCents: 0} elif ([\"defective\", \"not_as_described\", \"arrived_on_fire\"] | any(. == $f.reason)) then {decision: \"REFUND\", code: \"FAULTY_ITEM\", amountCents: $value} else {decision: \"STORE_CREDIT\", code: \"CHANGE_OF_HEART\", amountCents: $value} end"
+      }
+    },
+    {
+      "name": "route_outcome",
+      "taskReferenceName": "route_outcome",
+      "type": "SWITCH",
+      "evaluatorType": "value-param",
+      "expression": "decision",
+      "inputParameters": {
+        "decision": "${apply_policy.output.result.decision}"
+      },
+      "decisionCases": {
+        "REFUND": [
+          {
+            "name": "issue_refund",
+            "taskReferenceName": "issue_refund",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "facts": "${establish_facts.output.result}",
+              "policy": "${apply_policy.output.result}",
+              "queryExpression": "{decision: \"REFUND\", approved: true, code: .policy.code, amountCents: .policy.amountCents, reference: (\"RF-\" + (.facts.returnId | ltrimstr(\"RT-\"))), headline: \"Refund approved\", detail: \"Item price refunded in full for your \\(.facts.itemName). Fees are not refunded, because fees are forever.\"}"
+            }
+          }
+        ],
+        "STORE_CREDIT": [
+          {
+            "name": "issue_store_credit",
+            "taskReferenceName": "issue_store_credit",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "facts": "${establish_facts.output.result}",
+              "policy": "${apply_policy.output.result}",
+              "queryExpression": "{decision: \"STORE_CREDIT\", approved: true, code: .policy.code, amountCents: .policy.amountCents, reference: (\"SC-\" + (.facts.returnId | ltrimstr(\"RT-\"))), headline: \"Approved for store credit\", detail: \"Store credit issued for your \\(.facts.itemName). It can only be spent at Chaos Commerce, which we appreciate is the problem.\"}"
+            }
+          }
+        ]
+      },
+      "defaultCase": [
+        {
+          "name": "file_denial",
+          "taskReferenceName": "file_denial",
+          "type": "JSON_JQ_TRANSFORM",
+          "inputParameters": {
+            "facts": "${establish_facts.output.result}",
+            "policy": "${apply_policy.output.result}",
+            "queryExpression": "{ORDER_NOT_FOUND: \"We have no record of that order. Given our record-keeping that proves little, but rules are rules.\", ORDER_NOT_COMPLETE: \"That order has not finished being sold to you yet. You cannot return what you do not quite have.\", ITEM_NOT_IN_ORDER: \"That item is not on that order. You cannot return things you merely looked at.\", FINAL_SALE: \"This item is final sale. Nothing can be returned. Especially Nothing.\"} as $why | (.policy.code | if type == \"string\" then . else \"UNFILED\" end) as $code | {decision: \"DENIED\", approved: false, code: $code, amountCents: 0, reference: (\"DN-\" + (.facts.returnId | ltrimstr(\"RT-\"))), headline: \"Return denied\", detail: ($why[$code] // \"Denied for reasons that were filed incorrectly.\")}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "stamp_verdict",
+      "taskReferenceName": "stamp_verdict",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "facts": "${establish_facts.output.result}",
+        "refund": "${issue_refund.output.result}",
+        "credit": "${issue_store_credit.output.result}",
+        "denial": "${file_denial.output.result}",
+        "queryExpression": "(.refund // .credit // .denial) + {returnId: .facts.returnId, orderId: .facts.orderId, sku: .facts.sku, itemName: .facts.itemName, qty: .facts.qty, reason: .facts.reason}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "verdict": "${stamp_verdict.output.result}"
+  }
+}

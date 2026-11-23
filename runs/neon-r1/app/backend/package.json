@@ -1,0 +1,19 @@
+{
+  "name": "@chaos-commerce/backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Chaos Commerce AWS Lambda & local API backend + Conductor workflow workers",
+  "scripts": {
+    "start": "node src/server.js",
+    "register": "node src/register.js",
+    "workers": "node src/workers-cli.js"
+  },
+  "dependencies": {
+    "@io-orkes/conductor-javascript": "^3.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "serverless-http": "^4.0.0"
+  }
+}

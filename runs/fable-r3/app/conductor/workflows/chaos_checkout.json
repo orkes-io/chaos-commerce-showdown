@@ -1,0 +1,126 @@
+{
+  "name": "chaos_checkout",
+  "description": "Chaos Commerce checkout. Prices the cart, tries a chain of ridiculous payment processors, then reserves stock and books shipping in parallel. It always ends CONFIRMED: every worker step is optional and bounded, and is followed by a server-side settle step that substitutes a safe default if the worker failed, timed out or returned nonsense.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-ops@example.com",
+  "restartable": true,
+  "timeoutPolicy": "ALERT_ONLY",
+  "timeoutSeconds": 600,
+  "inputParameters": ["customer", "items", "coupon", "paymentMethod", "deliveryZone"],
+  "tasks": [
+    {
+      "name": "chaos_price_cart",
+      "taskReferenceName": "price_cart",
+      "type": "SIMPLE",
+      "optional": true,
+      "inputParameters": {
+        "orderId": "${workflow.workflowId}",
+        "items": "${workflow.input.items}",
+        "coupon": "${workflow.input.coupon}"
+      }
+    },
+    {
+      "name": "settle_pricing",
+      "taskReferenceName": "settle_pricing",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "priced": "${price_cart.output}",
+        "queryExpression": "(.priced | if type == \"object\" then . else {} end) as $p | if ($p.ok == true and ($p.totalCents | type) == \"number\" and $p.totalCents >= 0 and ($p.lines | type) == \"array\" and ($p.lines | length) > 0) then {ok: true, fallback: false, currency: \"USD\", pricedBy: (($p.pricedBy | if type == \"string\" then . else null end) // \"The Pricing Department\"), lines: $p.lines, fees: ($p.fees | if type == \"array\" then . else [] end), subtotalCents: (($p.subtotalCents | if type == \"number\" then . else null end) // $p.totalCents), totalCents: $p.totalCents, couponNote: ($p.couponNote | if type == \"string\" then . else null end)} else {ok: true, fallback: true, currency: \"USD\", pricedBy: \"Emergency Flat Rate Desk (the Pricing Department did not answer)\", lines: [{sku: \"MYSTERY-ORDER\", name: \"Whatever You Ordered (we lost the list)\", emoji: \"📦\", qty: 1, unitPriceCents: 4999, lineTotalCents: 4999, returnPolicy: \"refund\"}], fees: [], subtotalCents: 4999, totalCents: 4999, couponNote: null} end"
+      }
+    },
+    {
+      "name": "payment_loop",
+      "taskReferenceName": "payment_loop",
+      "type": "DO_WHILE",
+      "evaluatorType": "graaljs",
+      "inputParameters": {
+        "payment_loop": "${payment_loop.output}",
+        "charge_payment": "${charge_payment.output}",
+        "maxAttempts": 4
+      },
+      "loopCondition": "(function(){ var loop = $.payment_loop; var charge = $.charge_payment; var iteration = (loop && loop['iteration']) ? loop['iteration'] : 99; return iteration < $.maxAttempts && charge != null && charge.ok === true && charge.approved === false; })();",
+      "loopOver": [
+        {
+          "name": "chaos_charge_payment",
+          "taskReferenceName": "charge_payment",
+          "type": "SIMPLE",
+          "optional": true,
+          "inputParameters": {
+            "orderId": "${workflow.workflowId}",
+            "attempt": "${payment_loop.output.iteration}",
+            "amountCents": "${settle_pricing.output.result.totalCents}",
+            "paymentMethod": "${workflow.input.paymentMethod}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "settle_payment",
+      "taskReferenceName": "settle_payment",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "orderId": "${workflow.workflowId}",
+        "charge": "${charge_payment.output}",
+        "loop": "${payment_loop.output}",
+        "queryExpression": "(.charge | if type == \"object\" then . else {} end) as $c | ([(.loop | if type == \"object\" then . else {} end) | to_entries[] | select(.key | test(\"^[0-9]+$\")) | {n: (.key | tonumber), c: (.value | if type == \"object\" then .charge_payment else null end)} | select((.c | type) == \"object\" and .c.ok == true)] | sort_by(.n) | map({attempt: .n, processor: .c.processor, approved: (.c.approved == true), message: .c.message})) as $attempts | if ($c.ok == true and $c.approved == true) then {approved: true, fallback: false, processor: $c.processor, message: $c.message, authCode: $c.authCode, attempts: $attempts} else {approved: true, fallback: true, processor: \"Napkin IOU Ledger\", message: \"Every payment processor gave up, so we wrote your total on a napkin and stuck it to the fridge. You're good.\", authCode: (\"IOU-\" + (.orderId | tostring | .[0:8])), attempts: $attempts} end"
+      }
+    },
+    {
+      "name": "fulfilment_fork",
+      "taskReferenceName": "fulfilment_fork",
+      "type": "FORK_JOIN",
+      "forkTasks": [
+        [
+          {
+            "name": "chaos_reserve_inventory",
+            "taskReferenceName": "reserve_inventory",
+            "type": "SIMPLE",
+            "optional": true,
+            "inputParameters": {
+              "orderId": "${workflow.workflowId}",
+              "lines": "${settle_pricing.output.result.lines}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "chaos_book_shipping",
+            "taskReferenceName": "book_shipping",
+            "type": "SIMPLE",
+            "optional": true,
+            "inputParameters": {
+              "orderId": "${workflow.workflowId}",
+              "deliveryZone": "${workflow.input.deliveryZone}"
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "fulfilment_join",
+      "taskReferenceName": "fulfilment_join",
+      "type": "JOIN",
+      "joinOn": ["reserve_inventory", "book_shipping"]
+    },
+    {
+      "name": "assemble_receipt",
+      "taskReferenceName": "assemble_receipt",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "orderId": "${workflow.workflowId}",
+        "customer": "${workflow.input.customer}",
+        "pricing": "${settle_pricing.output.result}",
+        "payment": "${settle_payment.output.result}",
+        "inventory": "${reserve_inventory.output}",
+        "shipping": "${book_shipping.output}",
+        "queryExpression": "(.pricing | if type == \"object\" then . else {} end) as $p | (.payment | if type == \"object\" then . else {} end) as $pay | (.inventory | if type == \"object\" then . else {} end) as $inv | (.shipping | if type == \"object\" then . else {} end) as $ship | (.customer | if type == \"object\" then . else {} end) as $cust | {orderId: (.orderId | tostring), status: \"CONFIRMED\", customerName: (($cust.name | if type == \"string\" and length > 0 then . else null end) // \"Valued Customer #404\"), currency: \"USD\", pricedBy: $p.pricedBy, lines: ($p.lines | if type == \"array\" then . else [] end), fees: ($p.fees | if type == \"array\" then . else [] end), subtotalCents: (($p.subtotalCents | if type == \"number\" then . else null end) // 0), totalCents: (($p.totalCents | if type == \"number\" then . else null end) // 0), couponNote: $p.couponNote, payment: {status: \"PAID\", processor: ($pay.processor // \"Napkin IOU Ledger\"), message: ($pay.message // \"Paid, probably.\"), authCode: ($pay.authCode // \"IOU-UNKNOWN\"), attempts: ($pay.attempts | if type == \"array\" then . else [] end), fallback: ($pay.fallback == true)}, inventory: (if $inv.ok == true then {warehouse: $inv.warehouse, picks: ($inv.picks | if type == \"array\" then . else [] end), fallback: false} else {warehouse: \"Unknown (nobody in the warehouse picked up the phone)\", picks: [], fallback: true} end), shipping: (if $ship.ok == true then {carrier: $ship.carrier, trackingNumber: $ship.trackingNumber, eta: $ship.eta, note: $ship.note, fallback: false} else {carrier: \"Gerald (on foot)\", trackingNumber: (\"ASK-GERALD-\" + (.orderId | tostring | .[0:8])), eta: \"Eventually\", note: \"The shipping desk was unattended, so Gerald took the parcel personally.\", fallback: true} end), degraded: [(if $p.fallback == true then \"pricing\" else empty end), (if $pay.fallback == true then \"payment\" else empty end), (if $inv.ok == true then empty else \"inventory\" end), (if $ship.ok == true then empty else \"shipping\" end)]}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "orderId": "${workflow.workflowId}",
+    "status": "CONFIRMED",
+    "receipt": "${assemble_receipt.output.result}"
+  }
+}

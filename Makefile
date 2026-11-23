@@ -57,10 +57,11 @@ define RUNS_INPUT
 import json, sys
 names = json.load(open(".state/hosts.json"))["sandboxes"]
 pilot = sys.argv[1] == "pilot"
+only = set(sys.argv[4].split()) if len(sys.argv) > 4 and sys.argv[4].strip() else None
 models = {"neon": "google/gemini-4-neon#high", "fable": "anthropic/claude-fable-5-2#high"}
 runs = []
 for n in sorted(names):
-    if n.startswith("pilot-") != pilot:
+    if n.startswith("pilot-") != pilot or (only and n not in only):
         continue
     key = n.split("-")[1] if pilot else n.split("-")[0]
     runs.append({"run_id": n, "sandbox": n, "model": models[key]})
@@ -72,7 +73,7 @@ pilot:
 	python3 -c "$$RUNS_INPUT" pilot 10 3 | $(SSH) chaos-core 'curl -s -X POST -H "Content-Type: application/json" -d @- http://localhost:8080/api/workflow/chaos_runs; echo'
 
 run:
-	python3 -c "$$RUNS_INPUT" run $(CAP) $(IDLE) | $(SSH) chaos-core 'curl -s -X POST -H "Content-Type: application/json" -d @- http://localhost:8080/api/workflow/chaos_runs; echo'
+	python3 -c "$$RUNS_INPUT" run $(CAP) $(IDLE) "$(ONLY)" | $(SSH) chaos-core 'curl -s -X POST -H "Content-Type: application/json" -d @- http://localhost:8080/api/workflow/chaos_runs; echo'
 
 status:
 	$(SSH) chaos-core 'curl -s "http://localhost:8080/api/workflow/search?size=20&sort=startTime:DESC" | python3 -c "import json,sys; [print(r[\"workflowType\"], r[\"status\"], r[\"workflowId\"], r.get(\"startTime\",\"\")) for r in json.load(sys.stdin).get(\"results\",[])]"'

@@ -1,0 +1,205 @@
+{
+  "name": "chaos_checkout",
+  "description": "Chaos Commerce checkout. Normalizes the cart, runs three pointless checks in parallel, tries to take payment up to three times and opens a tab if that fails, then confirms the order. No step can block the order, and chaos_checkout_rescue confirms it if this workflow fails or times out.",
+  "version": 1,
+  "schemaVersion": 2,
+  "ownerEmail": "chaos-commerce@example.com",
+  "restartable": true,
+  "timeoutPolicy": "TIME_OUT_WF",
+  "timeoutSeconds": 120,
+  "failureWorkflow": "chaos_checkout_rescue",
+  "inputParameters": [
+    "checkoutId",
+    "seed",
+    "placedAt",
+    "customer",
+    "lines",
+    "coupon",
+    "paymentMethod",
+    "disasterDrill"
+  ],
+  "tasks": [
+    {
+      "name": "drill_gate",
+      "taskReferenceName": "drill_gate",
+      "type": "SWITCH",
+      "evaluatorType": "value-param",
+      "expression": "disasterDrill",
+      "inputParameters": {
+        "disasterDrill": "${workflow.input.disasterDrill}"
+      },
+      "decisionCases": {
+        "true": [
+          {
+            "name": "drill_collapse",
+            "taskReferenceName": "drill_collapse",
+            "type": "TERMINATE",
+            "inputParameters": {
+              "terminationStatus": "FAILED",
+              "terminationReason": "Disaster drill: the checkout system was set on fire on purpose."
+            }
+          }
+        ]
+      },
+      "defaultCase": []
+    },
+    {
+      "name": "normalize_cart",
+      "taskReferenceName": "normalize_cart",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "lines": "${workflow.input.lines}",
+        "queryExpression": "(.lines // []) as $raw | (if ($raw | length) == 0 then [{productId: \"mandatory-mystery-item\", name: \"Mandatory Mystery Item\", emoji: \"❓\", unitPriceCents: 1313, quantity: 1, note: \"Your cart was empty, which we took personally. We added something.\"}] else $raw end) | map(. + {quantity: ((.quantity // 1) | if . < 1 then 1 elif . > 99 then 99 else . end), unitPriceCents: (.unitPriceCents // 0)}) | map(. + {lineTotalCents: (.unitPriceCents * .quantity)}) | {lines: ., itemCount: (map(.quantity) | add), subtotalCents: (map(.lineTotalCents) | add), cartWasEmpty: (($raw | length) == 0)}"
+      }
+    },
+    {
+      "name": "pointless_checks",
+      "taskReferenceName": "pointless_checks",
+      "type": "FORK_JOIN",
+      "forkTasks": [
+        [
+          {
+            "name": "price_order",
+            "taskReferenceName": "price_order",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "subtotalCents": "${normalize_cart.output.result.subtotalCents}",
+              "itemCount": "${normalize_cart.output.result.itemCount}",
+              "coupon": "${workflow.input.coupon}",
+              "queryExpression": ".subtotalCents as $sub | .itemCount as $n | (.coupon // \"\") as $coupon | ([{code: \"CONVENIENCE\", label: \"Convenience Fee\", amountCents: 499}, {code: \"INCONVENIENCE\", label: \"Inconvenience Fee (calculating the Convenience Fee was a hassle)\", amountCents: 501}, {code: \"GRAVITY\", label: \"Gravity Surcharge (\\($n) item(s) held down at $0.42 each)\", amountCents: (42 * $n)}, {code: \"TAX\", label: \"Sales Tax (we guessed 13.37%)\", amountCents: (($sub * 1337 / 10000) | floor)}] + (if $coupon != \"\" then [{code: \"COUPON\", label: \"Coupon Handling Charge for \\\"\\($coupon)\\\" (coupons cost money to process)\", amountCents: (($sub * 15 / 100) | floor)}] else [] end)) as $base | ($base + [{code: \"FEE_FEE\", label: \"Fee Processing Fee (a 10% fee on the fees)\", amountCents: ((($base | map(.amountCents) | add) * 10 / 100) | floor)}, {code: \"LOYALTY\", label: \"Loyalty Discount (you're welcome)\", amountCents: -1}]) as $fees | ($sub + ($fees | map(.amountCents) | add)) as $pre | ((($pre / 100) | floor) * 100 + 99) as $total | {subtotalCents: $sub, fees: ($fees + [{code: \"ROUNDING\", label: \"Rounding (up, to a number we find attractive)\", amountCents: ($total - $pre)}]), totalCents: $total}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "consult_inventory",
+            "taskReferenceName": "consult_inventory",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "lines": "${normalize_cart.output.result.lines}",
+              "seed": "${workflow.input.seed}",
+              "queryExpression": "(.seed // 0) as $seed | [.lines | to_entries[] | (($seed + .key * 7) % 5) as $roll | {productId: .value.productId, name: .value.name, status: (if $roll == 0 then \"SUBSTITUTED\" elif $roll == 1 then \"HIDING\" else \"ALLEGEDLY_IN_STOCK\" end), note: (if $roll == 0 then \"Out of stock. Substituted with a brick of similar weight.\" elif $roll == 1 then \"In stock, but hiding. Gary is looking for it.\" else \"In stock, according to a spreadsheet last opened in 2014.\" end)}] | {items: ., substitutions: (map(select(.status == \"SUBSTITUTED\")) | length), blocksCheckout: false}"
+            }
+          }
+        ],
+        [
+          {
+            "name": "vibe_check",
+            "taskReferenceName": "vibe_check",
+            "type": "INLINE",
+            "inputParameters": {
+              "seed": "${workflow.input.seed}",
+              "evaluatorType": "graaljs",
+              "expression": "(function () { var seed = Number($.seed) || 0; var vibes = ['immaculate', 'rancid', 'suspiciously normal', 'like a Tuesday', 'legally distinct from fraud', 'haunted']; var score = seed % 101; var vibe = vibes[seed % vibes.length]; return { score: score, vibe: vibe, verdict: score > 66 ? 'SUSPICIOUS_BUT_SOLVENT' : 'FINE_PROBABLY', proceed: true, note: 'Fraud check by vibes: ' + vibe + ' (' + score + '/100). We need the sale, so we are proceeding either way.' }; })();"
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "join_checks",
+      "taskReferenceName": "join_checks",
+      "type": "JOIN",
+      "joinOn": [
+        "price_order",
+        "consult_inventory",
+        "vibe_check"
+      ]
+    },
+    {
+      "name": "payment_saga",
+      "taskReferenceName": "payment_saga",
+      "type": "DO_WHILE",
+      "evaluatorType": "graaljs",
+      "inputParameters": {
+        "payment_saga": "${payment_saga.output}"
+      },
+      "loopCondition": "(function () { var last = $.attempt_payment ? $.attempt_payment.result : null; var approved = last ? last.approved === true : false; return !approved && $.payment_saga['iteration'] < 3; })();",
+      "loopOver": [
+        {
+          "name": "attempt_payment",
+          "taskReferenceName": "attempt_payment",
+          "type": "INLINE",
+          "inputParameters": {
+            "seed": "${workflow.input.seed}",
+            "attempt": "${payment_saga.output.iteration}",
+            "methodId": "${workflow.input.paymentMethod.id}",
+            "methodLabel": "${workflow.input.paymentMethod.label}",
+            "evaluatorType": "graaljs",
+            "expression": "(function () { var attempt = Number($.attempt) || 1; var roll = ((Number($.seed) || 0) + attempt * 37) % 10; var excuses = { magic_beans: 'The beans were counted. Two were lentils.', found_card: 'The card we found in the parking lot has been reported found.', exposure: 'Exposure is not legal tender. Yet.', firstborn: 'Your firstborn failed the credit check.', iou: 'The IOU was written in disappearing ink.' }; var approved = $.methodId !== 'exposure' && roll < 3 + attempt * 2; return { attempt: attempt, approved: approved, status: approved ? 'CHARGED' : 'DECLINED', message: approved ? 'Attempt ' + attempt + ': ' + $.methodLabel + ' accepted. Nobody is more surprised than us.' : 'Attempt ' + attempt + ': declined. ' + (excuses[$.methodId] || 'Our payment hamster is on a break.') }; })();"
+          }
+        }
+      ]
+    },
+    {
+      "name": "settle_payment",
+      "taskReferenceName": "settle_payment",
+      "type": "SWITCH",
+      "evaluatorType": "value-param",
+      "expression": "paymentStatus",
+      "inputParameters": {
+        "paymentStatus": "${attempt_payment.output.result.status}"
+      },
+      "decisionCases": {
+        "CHARGED": [
+          {
+            "name": "issue_receipt",
+            "taskReferenceName": "issue_receipt",
+            "type": "JSON_JQ_TRANSFORM",
+            "inputParameters": {
+              "totalCents": "${price_order.output.result.totalCents}",
+              "methodLabel": "${workflow.input.paymentMethod.label}",
+              "queryExpression": "{status: \"CHARGED\", amountCents: .totalCents, note: \"Charged to: \\(.methodLabel // \"something\"). A receipt has been mailed to an address we made up.\"}"
+            }
+          }
+        ]
+      },
+      "defaultCase": [
+        {
+          "name": "open_tab",
+          "taskReferenceName": "open_tab",
+          "type": "JSON_JQ_TRANSFORM",
+          "inputParameters": {
+            "totalCents": "${price_order.output.result.totalCents}",
+            "methodLabel": "${workflow.input.paymentMethod.label}",
+            "queryExpression": "{status: \"TAB_OPENED\", amountCents: .totalCents, note: \"Every payment attempt failed, so we opened a tab. A man named Gary will be in touch. Your order is confirmed anyway; we have a quota.\"}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "arrange_shipping",
+      "taskReferenceName": "arrange_shipping",
+      "type": "INLINE",
+      "inputParameters": {
+        "seed": "${workflow.input.seed}",
+        "address": "${workflow.input.customer.address}",
+        "evaluatorType": "graaljs",
+        "expression": "(function () { var seed = Number($.seed) || 0; var carriers = [ { carrier: 'A Guy Named Dale', eta: 'whenever Dale feels like it' }, { carrier: 'Trebuchet Express', eta: 'instantly, somewhere within 300 metres of your address' }, { carrier: 'Migratory Geese (seasonal)', eta: 'by spring, weather and geese permitting' }, { carrier: 'The Postal Service of a Country That No Longer Exists', eta: '3 to 900 business days' }, { carrier: 'Our Intern, On Foot', eta: 'he left in 2019 and we remain hopeful' } ]; var pick = carriers[seed % carriers.length]; var address = $.address ? String($.address) : ''; return { carrier: pick.carrier, eta: pick.eta, trackingNumber: 'CC' + (seed % 1000000) + 'LOL', destination: address.length ? address : 'No address given, so we will ship it to ours and wave.', note: 'Tracking updates are available by shouting.' }; })();"
+      }
+    },
+    {
+      "name": "confirm_order",
+      "taskReferenceName": "confirm_order",
+      "type": "JSON_JQ_TRANSFORM",
+      "inputParameters": {
+        "workflowId": "${workflow.workflowId}",
+        "placedAt": "${workflow.input.placedAt}",
+        "customer": "${workflow.input.customer}",
+        "paymentMethod": "${workflow.input.paymentMethod}",
+        "cart": "${normalize_cart.output.result}",
+        "pricing": "${price_order.output.result}",
+        "inventory": "${consult_inventory.output.result}",
+        "vibes": "${vibe_check.output.result}",
+        "saga": "${payment_saga.output}",
+        "receipt": "${issue_receipt.output.result}",
+        "tab": "${open_tab.output.result}",
+        "shipping": "${arrange_shipping.output.result}",
+        "queryExpression": "{orderNumber: (\"CHAOS-\" + (.workflowId[0:8] | ascii_upcase)), status: \"CONFIRMED\", rescued: false, placedAt: .placedAt, customer: .customer, lines: .cart.lines, itemCount: .cart.itemCount, cartWasEmpty: .cart.cartWasEmpty, subtotalCents: .pricing.subtotalCents, fees: .pricing.fees, totalCents: .pricing.totalCents, payment: ((.receipt // .tab) + { method: .paymentMethod, attempts: ([.saga | to_entries[] | select(.key | test(\"^[0-9]+$\")) | {n: (.key | tonumber), result: .value.attempt_payment.result}] | sort_by(.n) | map(.result))}), inventory: .inventory, vibeCheck: .vibes, shipping: .shipping, message: \"Order confirmed. Against all odds, and several of our own policies.\"}"
+      }
+    }
+  ],
+  "outputParameters": {
+    "order": "${confirm_order.output.result}"
+  }
+}

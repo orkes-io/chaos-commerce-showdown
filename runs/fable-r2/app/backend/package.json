@@ -1,0 +1,11 @@
+{
+  "name": "chaos-commerce-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chaos Commerce API: a thin, stateless layer over Conductor workflows. Runs on AWS Lambda.",
+  "type": "module",
+  "main": "src/lambda.mjs",
+  "engines": {
+    "node": ">=20"
+  }
+}
