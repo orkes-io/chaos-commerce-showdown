@@ -12,6 +12,19 @@ Everything needed to rebuild the experiment is in this repo:
 ## Results at a glance
 See [`report/tables.md`](report/tables.md). ⟦filled in after scoring⟧
 
+## The six stores
+
+Each model built three of these from the same four-sentence brief. They're labeled A to F, in random order, until the blind human rating is done. The model names get added after that.
+
+| | Storefront | A return reaching its decision |
+|---|---|---|
+| **Store A** | ![Store A catalog](docs/gallery/store-a-catalog.jpg) | ![Store A return decision](docs/gallery/store-a-return.jpg) |
+| **Store B** | ![Store B catalog](docs/gallery/store-b-catalog.jpg) | ![Store B return decision](docs/gallery/store-b-return.jpg) |
+| **Store C** | ![Store C catalog](docs/gallery/store-c-catalog.jpg) | ![Store C return decision](docs/gallery/store-c-return.jpg) |
+| **Store D** | ![Store D catalog](docs/gallery/store-d-catalog.jpg) | ![Store D return decision](docs/gallery/store-d-return.jpg) |
+| **Store E** | ![Store E catalog](docs/gallery/store-e-catalog.jpg) | ![Store E return decision](docs/gallery/store-e-return.jpg) |
+| **Store F** | ![Store F catalog](docs/gallery/store-f-catalog.jpg) | ![Store F return decision](docs/gallery/store-f-return.jpg) |
+
 ## How it fits together
 
 | Piece | Where it runs | Built from |
