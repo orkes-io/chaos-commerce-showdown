@@ -1,0 +1,66 @@
+{
+  "label": "Store B",
+  "model": "gpt-6.2-sol",
+  "passes": [
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The API, workers, and workflow definitions are cleanly separated, with externalized configuration and meaningful integration tests, but the unauthenticated history API exposes checkout inputs and returns trust client-supplied order totals."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "Consistent styling, clear cart controls, and explicit checkout and return feedback keep the tested flows usable, though dense overlays and a floating help button that covers catalog text detract from readability."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "Loose tap water mailed in an envelope, a flash sale that counts up, and an audit of the original air inside the return box make the store's bad-business satire specific, funny, and consistent."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both verified executions use real workers and substantive orchestration with parallel checks, branching, retries, and timeouts, but exhausted retries and workflow timeouts have no recovery path to a receipt or return decision."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The API, workers, and workflow definitions are cleanly separated, configuration and deployment are documented, and integration tests cover key branches, but public history endpoints expose shopper data and returns trust client-supplied order totals."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "Consistent styling, clear shopping controls, live progress, and explicit outcomes kept both tested flows usable, though the technical timeline pushes the receipt down and the floating help widget obscures catalog text."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "The escalating expired sale, surcharge promo codes, ficus adjudicator, anti-spider captcha, and triplicate stamping carry the same sharp retail satire from browsing through the final return decree."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both observed executions completed through substantive worker tasks, parallel checks, branching, and a bounded stamping loop, with retries and timeouts configured, but neither workflow has a recovery path that delivers an outcome after an unrecoverable task failure or timeout."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The API, workers, and workflow definitions are clearly separated, configuration is externalized, and integration tests cover the main branches, but unauthenticated order history exposes customer details and return totals are trusted from the client."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "Consistent styling, clear shopping controls, and successful checkout and return flows make the store easy to use, though the help widget obscures catalog copy and the dense checkout timeline pushes key receipt details below the fold."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "The count-up flash sale, surcharge promo codes, loose tap water, pigeon shipping, and warehouse ficus turn the same joke about a spectacularly incompetent retailer into distinct gags throughout the shopping experience."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both verified executions use dedicated workers, parallel checks, branching, and task retries and timeouts, but neither workflow has a recovery path that delivers a receipt or return decision after an execution failure."
+      }
+    }
+  ],
+  "median": {
+    "engineering_quality": 4,
+    "product_ux": 4,
+    "creativity_delight": 5,
+    "conductor_usage": 4
+  }
+}

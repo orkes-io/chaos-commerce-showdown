@@ -1,0 +1,66 @@
+{
+  "label": "Store C",
+  "model": "gpt-6.2-sol",
+  "passes": [
+    {
+      "engineering_quality": {
+        "score": 3,
+        "reason": "The code is well organized, deployment settings are externalized, and integration tests cover meaningful outcomes, but failed or pending workflows can receive HTTP 201 and unauthenticated endpoints expose shopper details."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "The storefront is visually consistent, and the tested checkout and return flows give clear feedback, but the cookie banner covers product details and the Reviews button opens a modal that puts the review form before the reviews."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "Subscription shoelaces, a flash sale that keeps extending itself, promo codes that raise the total, and a committee that faxes paperwork to a toaster make the same terrible retailer feel recognizable across the whole store."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both verified executions produce real store outcomes through distinct Conductor system tasks, including parallel checks, branching, and a bounded return loop, but the definitions lack explicit task retries and failure recovery."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 3,
+        "reason": "Clear frontend and backend separation, externalized configuration, and meaningful integration tests are offset by unauthenticated access to customer receipts and checkout code that can report success for failed or unfinished workflows."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "The storefront is visually consistent and the tested checkout and return flows give clear feedback, but floating overlays obscure content and the review modal lacks keyboard focus management."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "The subscription shoelace, promo codes that raise prices, original-box-air audits, and committees that fax forms to a toaster carry the satire from the catalog through checkout and returns."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both observed executions completed with native Conductor tasks doing substantive work through parallel checks, branching, and a bounded return loop, but the workflows lack explicit retries and recovery paths beyond the workflow-level timeout."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 3,
+        "reason": "The frontend, backend, and workflows are clearly separated, with externalized configuration and meaningful integration tests, but checkout can report success for a failed or unfinished workflow, and the unauthenticated order ledger exposes customer contact details."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "Consistent styling, an itemized checkout preview, and clear receipts and return decisions make the tested flows easy to follow, though fixed overlays obscure content and the reviews modal lacks keyboard focus management."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "Subscription shoelaces, a Bluetooth rock with DRM, promo codes that raise the price, and an audit of the original box air extend the same sharp retail satire from browsing through returns."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both tested flows completed real business logic in Conductor through separate checks, parallel branches, and decision routing, but they rely entirely on built-in tasks and lack explicit task retries and workflow failure recovery."
+      }
+    }
+  ],
+  "median": {
+    "engineering_quality": 3,
+    "product_ux": 4,
+    "creativity_delight": 5,
+    "conductor_usage": 4
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "label": "Store F",
+  "model": "gpt-6.2-sol",
+  "passes": [
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The frontend, API, workers, and workflow definitions are cleanly separated, with externalized configuration and a smoke test covering both checkout branches and all three return outcomes, but Lambda state is ephemeral and order endpoints expose customer details without authentication."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "Consistent styling, clear checkout confirmation, and a guided returns wizard keep the store usable despite the jokes, though floating widgets obscure controls and the dodging button overlaps other ratings."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "Reverse promo codes, a count-up urgency timer, vintage DMV air, and a legal hamster tribunal turn familiar shopping conventions into jokes that carry through the catalog, checkout, and returns."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both verified flows use real workers for distinct steps, with parallel checks, branching, a bounded returns loop, and configured retries and timeouts, but exhausted retries or timeouts surface as API errors rather than recoverable workflow outcomes."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The frontend, API, workers, and workflow definitions are clearly separated, with externalized configuration and meaningful smoke tests, but order data is exposed through unauthenticated endpoints and Lambda storage is not durable."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "Consistent styling, direct cart access, a visible returns stepper, and clear outcomes make both tested flows easy to follow, though floating widgets obscure controls and the dodging button overlaps other rating choices."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "Reverse promo codes, DMV-vintage air, an urgency timer that counts up, and a legal hamster tribunal turn familiar retail conventions into jokes that carry through the catalog, checkout, and returns."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both verified flows use real worker-backed steps, parallel checks, and branching, with a bounded stamp loop for returns and explicit retries and timeouts, but exhausted retries and unexpected branch values have no recovery path."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The frontend, API, workers, and workflow definitions are cleanly separated, with external configuration and meaningful smoke tests, but fresh setup requires a separate install and Lambda order history is not durable."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "The consistent storefront, direct cart flow, and clear checkout and return confirmations keep the parody usable, though floating widgets obscure content and the dodging button overlaps other rating controls."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "Reverse promo codes, DMV-vintage air, a count-up urgency timer, and a hamster tribunal make the satire feel consistent from browsing through the final return decision."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both verified flows use distinct worker tasks, parallel checks, branching, and configured retries and timeouts, but exhausted failures surface as API errors rather than recovering to a checkout confirmation or return decision."
+      }
+    }
+  ],
+  "median": {
+    "engineering_quality": 4,
+    "product_ux": 4,
+    "creativity_delight": 5,
+    "conductor_usage": 4
+  }
+}

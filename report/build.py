@@ -27,6 +27,8 @@ def absurd(price: str) -> bool:
         return bool(re.search(r"[A-Za-z]{3,}", t))  # made-up currency or words instead of numbers
     raw = nums[0].replace(",", "")
     v = float(raw)
+    if re.search(r"(^|\s)[-−]\s*[$€£¥]?\s*\d", t):  # "-$5.00": the minus sits before the currency sign
+        v = -abs(v)
     decimals = len(raw.split(".")[1]) if "." in raw else 0
     odd_currency = not re.search(r"[$€£¥]|USD|EUR", t) and bool(re.search(r"[A-Za-z]{3,}|[^\w\s.,$-]", t))
     return v < 0 or v >= 1_000_000 or decimals >= 3 or odd_currency or (0 < v < 0.01)
@@ -73,12 +75,19 @@ def med_range(vals):
 def main():
     OUT.mkdir(exist_ok=True)
     (OUT / "data").mkdir(exist_ok=True)
-    blind = json.loads((CHAOS / "blind_map.json").read_text()) if (CHAOS / "blind_map.json").exists() else {}
-    human = json.loads((CHAOS / "human_scores.json").read_text()) if (CHAOS / "human_scores.json").exists() else {}
+    def first(*paths):
+        for f in paths:
+            if f.exists():
+                return json.loads(f.read_text())
+        return {}
+    blind = first(OUT / "data" / "blind_map.json", CHAOS / "blind_map.json")
+    human = first(OUT / "data" / "human_scores.json", CHAOS / "human_scores.json")
     label_of = {v: k for k, v in blind.items()}
     rows = []
     for run in sorted(p for p in RUNS.iterdir() if p.is_dir() and not p.name.startswith("pilot")):
         met = json.loads((run / "metrics.json").read_text()) if (run / "metrics.json").exists() else {}
+        if met.get("void"):
+            continue  # voided by a provider failure; reported separately
         jd = json.loads((run / "eval" / "judge.json").read_text()) if (run / "eval" / "judge.json").exists() else {}
         try:
             fn = functional(run)

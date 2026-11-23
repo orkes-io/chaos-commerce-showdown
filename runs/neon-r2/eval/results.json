@@ -23,7 +23,7 @@
     "ECSTATIC PRAISE\n2026-10-29\nPerfection in cotton form, buying six more for family\n\nFlawless craftsmanship, exquisite mild dampness, and arrived early. My whole household now fights over who gets to wear the solitary left sock on Sundays. Couldn't ask for a single thing more!\n\n\u2014 Evelyn K.\n288 people felt worse reading this"
   ],
   "F5_dodge": {
-    "position_changes": 4,
+    "position_changes": 3,
     "first": {
       "x": 827.4420776367188,
       "y": 688.8937377929688,
@@ -31,10 +31,10 @@
       "height": 39.5875244140625
     },
     "last": {
-      "x": 824.6815185546875,
-      "y": 695.126708984375,
-      "width": 127.808837890625,
-      "height": 37.40283203125
+      "x": 1009.417724609375,
+      "y": 741.6184692382812,
+      "width": 130.33642578125,
+      "height": 52.4193115234375
     }
   },
   "F6_checkout_ui": true,
@@ -96,7 +96,7 @@
     {
       "workflow": "chaos_checkout_workflow",
       "status": "COMPLETED",
-      "id": "ccb75989-f12a-4e98-a1ae-5fa4c553210c",
+      "id": "82b10a3c-94b8-43c6-8fe4-ed2a787c2b87",
       "tasks": [
         {
           "ref": "validate_cart_insanity_ref",
@@ -201,7 +201,7 @@
     {
       "workflow": "chaos_return_workflow",
       "status": "COMPLETED",
-      "id": "4be5fc72-04ae-4517-b86e-e4c898cd4098",
+      "id": "6e62fd3f-0203-4ed1-a5a0-fe2fd49ddfd3",
       "tasks": [
         {
           "ref": "log_return_grievance_ref",
@@ -308,7 +308,7 @@
     {
       "step": 0,
       "ok": false,
-      "error": "Page.goto: net::ERR_CONNECTION_RESET at http://127.0.0.1:51563/\nCall log:\n  - navigating to \"http://127.0.0.1:51563/\", waiting until \"domcontentloaded\"\n",
+      "error": "Page.goto: net::ERR_CONNECTION_RESET at http://127.0.0.1:47225/\nCall log:\n  - navigating to \"http://127.0.0.1:47225/\", waiting until \"domcontentloaded\"\n",
       "goto": "/"
     }
   ]

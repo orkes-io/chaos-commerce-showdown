@@ -1,0 +1,7 @@
+{
+  "store_up": true,
+  "start_seconds": "6",
+  "workflows_registered": "4",
+  "start_cmd": "npm start",
+  "assisted": false
+}

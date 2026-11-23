@@ -1,0 +1,66 @@
+{
+  "label": "Store E",
+  "model": "gpt-6.2-sol",
+  "passes": [
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The frontend, API, and workflow definitions are cleanly separated, with external configuration and meaningful tests, but simultaneous retries can create duplicate orders and checkout did not complete in the backend-down test."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "The loud design stays consistent and readable, and the tested flows end with clear, itemized outcomes, though the fixed cookie banner visibly covers catalog and review content."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "A sale timer that resets forever, coupons that raise prices, goose screening, and store credit redeemable on February 30 make the store\u2019s absurdity feel original and consistent."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both workflows completed in Conductor and produced the storefront outcomes through bounded payment attempts, a timed form wait, and decision branches, but the checks reuse one looped task definition, workflow timeouts only alert, and no workers or HTTP tasks are used."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The frontend, API, and workflows are clearly separated, with externalized configuration, documented deployment, and meaningful tests, but concurrent retries can create duplicate executions and checkout did not complete with the backend down."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "Consistent navigation, prominent controls, and unmistakable confirmation and decision screens keep the core flows usable despite the jokes, though the fixed cookie banner obscures content."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "The store sustains its satire well beyond the brief with illustrated products, a fee for processing fees, napkin IOUs, a goose screening, and store credit redeemable only on February 30."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both verified executions do substantive work in Conductor through bounded loops, branching, parallel fulfillment, and a timed form wait, but all work uses system tasks rather than workers or HTTP tasks, and workflow timeouts only raise alerts."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The frontend, API, and workflow definitions are clearly separated, with externalized configuration and meaningful tests, but concurrent retries can create duplicate executions and checkout did not complete with the backend down."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "The loud visual style stays consistent, navigation is clear, and both tested flows show unmistakable outcomes, though the fixed cookie banner obscures products and reviews."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "Price-raising coupons, a fee for processing fees, goose screening, and store credit redeemable on February 30th turn the catalog, checkout, and returns into a consistent parody."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both verified executions do substantive work in Conductor through bounded loops, branching, parallel fulfillment, and a timed form wait, but they rely entirely on system tasks rather than workers or HTTP tasks, and workflow timeouts only raise alerts."
+      }
+    }
+  ],
+  "median": {
+    "engineering_quality": 4,
+    "product_ux": 4,
+    "creativity_delight": 5,
+    "conductor_usage": 4
+  }
+}

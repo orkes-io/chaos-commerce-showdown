@@ -1,0 +1,66 @@
+{
+  "label": "Store A",
+  "model": "gpt-6.2-sol",
+  "passes": [
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The frontend, Lambda API, and workflow definitions are cleanly separated, with externalized configuration and documented unit and integration tests, but concurrent submissions can create duplicate executions and a failed rescue still requires manual intervention."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "Shopping, checkout, and returns are easy to follow despite the intentionally garish design, with a clear receipt and live return progress, though the fixed cookie banner visibly covers some controls and review text."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "The parody goes well beyond the brief: the pre-enjoyed candle, negative loyalty points, and receipt-origami audit are distinct jokes that make the whole store feel like the same gloriously inept business."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Execution logs confirm that Conductor does the substantive work through system tasks, including pricing, payment attempts, six separate check executions, and a bounded oath wait, but there are no explicit task-level retry policies and rescue timeouts only raise alerts."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The frontend, Lambda API, and workflow definitions are cleanly separated, with externalized configuration and documented unit and integration tests, but simultaneous retries can create duplicate executions and a failed rescue still requires an operator."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "Consistent navigation, clear receipts, and a live return tracker keep both verified flows usable despite the deliberate visual chaos, though the fixed cookie banner obscures some controls until dismissed."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "Pre-stubbed toe insurance, coupons that raise the price, negative loyalty points, and a receipt-origami audit make the store's absurdity feel consistent from the catalog to the decision letter."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Conductor performs the pricing, payment loop, six individually recorded checks, and decision branching, with bounded waits and rescue workflows, but the implementation relies solely on system tasks and lacks explicit task-level retry policies."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The frontend, Lambda API, and workflow definitions are cleanly separated, with external configuration and documented unit and integration tests, but concurrent retries can create duplicate executions and a failed rescue still requires manual intervention."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "The retro styling is consistent, and the verified checkout and return flows give clear feedback through the receipt, live tracker, and decision letter, though the fixed cookie banner obscures content and controls until dismissed."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "Pre-Stubbed Toe Insurance, negative loyalty points, fees on fees, and a return letter boasting that zero checks were consulted make the store\u2019s absurdity feel consistent from browsing through returns."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Verified Conductor executions perform pricing, simulated payment attempts, six check iterations, and decision routing with bounded waits and fallback workflows, but the implementation uses only system tasks and lacks task-level retry policies."
+      }
+    }
+  ],
+  "median": {
+    "engineering_quality": 4,
+    "product_ux": 4,
+    "creativity_delight": 5,
+    "conductor_usage": 4
+  }
+}

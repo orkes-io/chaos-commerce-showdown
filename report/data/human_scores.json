@@ -1,0 +1,27 @@
+{
+  "A": {
+    "ux": 2,
+    "creativity": 2
+  },
+  "B": {
+    "ux": 3,
+    "creativity": 4
+  },
+  "C": {
+    "ux": 4,
+    "creativity": 3
+  },
+  "D": {
+    "ux": 2,
+    "creativity": 3
+  },
+  "E": {
+    "ux": 3,
+    "creativity": 3
+  },
+  "F": {
+    "ux": 2,
+    "creativity": 1
+  },
+  "notes": ""
+}

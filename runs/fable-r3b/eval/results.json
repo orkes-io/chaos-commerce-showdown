@@ -7,14 +7,14 @@
   ],
   "F3_products": 8,
   "F3_prices": [
-    "was $3.50 $4,999.99",
-    "was $0.02 $0.03",
-    "was $88.99 $89.00",
-    "was $1.00 $249.99",
-    "was $1,199.00 $1,200.00",
-    "was $4.99 $64.99",
-    "was $310.50 $310.50",
-    "was $0.05 $1,299,999.00"
+    "$4,999.99",
+    "$0.03",
+    "$89.00",
+    "$249.99",
+    "$1,200.00",
+    "$64.99",
+    "$310.50",
+    "$1,299,999.00"
   ],
   "F4_reviews": [
     "\u2605\u2605\u2605\u2605\u2605 ABSOLUTELY LIVID\n\nFIVE THOUSAND DOLLARS. It was dead on arrival. It was dead BEFORE arrival. I have contacted my bank, my lawyer and my mother. Five stars because the one-star button ran away from me.\n\n\u2014 Brenda K. (verified purchaser, unfortunately)",
@@ -30,8 +30,8 @@
       "height": 34.875
     },
     "last": {
-      "x": 698.359375,
-      "y": 472.734375,
+      "x": 663.21875,
+      "y": 450.78125,
       "width": 75,
       "height": 34.875
     }
@@ -88,7 +88,7 @@
     {
       "workflow": "chaos_checkout",
       "status": "COMPLETED",
-      "id": "233266dc-c6a9-4d86-82a6-b0dde6ce578a",
+      "id": "786db7cd-1b87-48dc-92a9-92d35c8103d7",
       "tasks": [
         {
           "ref": "open_order",
@@ -110,18 +110,6 @@
         },
         {
           "ref": "attempt_payment__1",
-          "type": "INLINE",
-          "status": "COMPLETED",
-          "worker": false
-        },
-        {
-          "ref": "attempt_payment__2",
-          "type": "INLINE",
-          "status": "COMPLETED",
-          "worker": false
-        },
-        {
-          "ref": "attempt_payment__3",
           "type": "INLINE",
           "status": "COMPLETED",
           "worker": false
@@ -196,7 +184,7 @@
     {
       "workflow": "chaos_return",
       "status": "COMPLETED",
-      "id": "e9d00e85-f3c9-407a-b34a-5080031642b0",
+      "id": "1598b595-28b4-4ab0-9da3-aa192edb4b41",
       "tasks": [
         {
           "ref": "intake_return",

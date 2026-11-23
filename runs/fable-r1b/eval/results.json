@@ -34,8 +34,8 @@
       "height": 36.78125
     },
     "last": {
-      "x": 1033.78125,
-      "y": 439.546875,
+      "x": 1102.921875,
+      "y": 463.125,
       "width": 82,
       "height": 36.78125
     }
@@ -84,7 +84,7 @@
     {
       "workflow": "chaos_checkout",
       "status": "COMPLETED",
-      "id": "d9ec4c09-c9e6-44a5-a433-c6cfc8073597",
+      "id": "1e8cd782-a38e-4067-82b7-feed13588600",
       "tasks": [
         {
           "ref": "normalize_order",
@@ -106,6 +106,12 @@
         },
         {
           "ref": "attempt_payment__1",
+          "type": "INLINE",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "attempt_payment__2",
           "type": "INLINE",
           "status": "COMPLETED",
           "worker": false
@@ -251,7 +257,7 @@
     {
       "workflow": "chaos_returns",
       "status": "COMPLETED",
-      "id": "c08a0f1c-c99f-4cf3-8841-f8b73a36fe63",
+      "id": "fbdcedca-25f8-4e4b-a3fe-ebdcc85b69a1",
       "tasks": [
         {
           "ref": "normalize_return",

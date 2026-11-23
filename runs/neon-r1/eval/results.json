@@ -30,10 +30,10 @@
       "height": 33
     },
     "last": {
-      "x": 1044.1756591796875,
-      "y": 470.57568359375,
-      "width": 193.320556640625,
-      "height": 49.5361328125
+      "x": 1037.908203125,
+      "y": 466.33087158203125,
+      "width": 193.85546875,
+      "height": 72.0257568359375
     }
   },
   "F6_checkout_ui": true,
@@ -74,7 +74,7 @@
     {
       "workflow": "chaos_checkout",
       "status": "COMPLETED",
-      "id": "afa47f99-120e-45e0-914a-cd1a083aae5c",
+      "id": "dd432c62-b86c-4c09-a1fa-452d1fffa940",
       "tasks": [
         {
           "ref": "inflate_cart_fees",
@@ -201,7 +201,7 @@
     {
       "workflow": "chaos_return_bureaucracy",
       "status": "COMPLETED",
-      "id": "6d3b6d6b-770b-4476-8986-acd65d615291",
+      "id": "62caaa10-9611-4870-b243-d48611c8b86b",
       "tasks": [
         {
           "ref": "intake_return_form",
@@ -258,6 +258,12 @@
           "worker": true
         },
         {
+          "ref": "collect_pointless_stamp__3",
+          "type": "chaos_collect_pointless_stamp",
+          "status": "COMPLETED",
+          "worker": true
+        },
+        {
           "ref": "compile_bureaucracy_dossier",
           "type": "JSON_JQ_TRANSFORM",
           "status": "COMPLETED",
@@ -296,7 +302,7 @@
     {
       "step": 0,
       "ok": false,
-      "error": "Page.goto: net::ERR_SOCKET_NOT_CONNECTED at http://127.0.0.1:45741/\nCall log:\n  - navigating to \"http://127.0.0.1:45741/\", waiting until \"domcontentloaded\"\n",
+      "error": "Page.goto: net::ERR_CONNECTION_RESET at http://127.0.0.1:43155/\nCall log:\n  - navigating to \"http://127.0.0.1:43155/\", waiting until \"domcontentloaded\"\n",
       "goto": "/"
     }
   ]

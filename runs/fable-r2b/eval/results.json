@@ -37,10 +37,10 @@
       "height": 42.6875
     },
     "last": {
-      "x": 1177.7913818359375,
-      "y": 444.3187255859375,
+      "x": 1178.7271728515625,
+      "y": 487.3570251464844,
       "width": 41.1875,
-      "height": 42.6875
+      "height": 42.687469482421875
     }
   },
   "F6_checkout_ui": true,
@@ -95,7 +95,7 @@
     {
       "workflow": "chaos_checkout",
       "status": "COMPLETED",
-      "id": "aaa54483-10d5-4050-860c-6cec5bffde29",
+      "id": "4c3916a3-a477-41c3-add3-1029d816631d",
       "tasks": [
         {
           "ref": "sanitise_cart",
@@ -123,6 +123,12 @@
         },
         {
           "ref": "attempt_payment__2",
+          "type": "JSON_JQ_TRANSFORM",
+          "status": "COMPLETED",
+          "worker": false
+        },
+        {
+          "ref": "attempt_payment__3",
           "type": "JSON_JQ_TRANSFORM",
           "status": "COMPLETED",
           "worker": false
@@ -190,7 +196,7 @@
     {
       "workflow": "chaos_returns",
       "status": "COMPLETED",
-      "id": "0d2e8ade-9ee7-478c-8980-c96e64cfe1ff",
+      "id": "ecb89476-cdb8-45bf-afd2-03013b172457",
       "tasks": [
         {
           "ref": "intake",

@@ -1,0 +1,66 @@
+{
+  "label": "Store D",
+  "model": "gpt-6.2-sol",
+  "passes": [
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The storefront, API, and workflow logic are cleanly separated, with externalized configuration and meaningful unit and integration tests, but cross-instance duplicate protection is best-effort and checkout did not complete in the backend-down test."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "Consistent navigation, an itemized receipt, and visible return progress make both tested flows easy to follow despite the deliberately noisy styling, though the final return decision sits below the lengthy checklist."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "The gravity surcharge, reverse loyalty discount, dwindling visitor count, and support agent who's been typing since 2019 make the store's incompetence a running joke well beyond the brief."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Verified Conductor runs perform pricing, payment settlement, packing, and return decisions through real system tasks, including seven separate check executions and a timed manager wait, but simulated declines are not engine retries and task failures have no workflow-level recovery path."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The frontend, API, and workflow logic are clearly separated, with externalized configuration and meaningful unit and end-to-end tests, but duplicate protection is only best-effort across Lambda instances."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "Consistent navigation, an itemized receipt, and visible return progress make the tested flows easy to follow despite the jokes, though the fixed chat widget overlaps content and checkout did not complete in the outage test."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "The backward visitor counter, perpetual zero-percent sale, gravity surcharge, and remote box smell test carry the same incompetence joke from the storefront through checkout and returns."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both verified executions do substantive work in Conductor through system tasks, including pricing, payment settlement, seven individually executed checks, and a return decision, but the definitions lack explicit task retry policies and workflow-level recovery paths."
+      }
+    },
+    {
+      "engineering_quality": {
+        "score": 4,
+        "reason": "The storefront, API, and workflow logic are clearly separated, with externalized configuration and meaningful unit and end-to-end tests, but duplicate protection is only best-effort across Lambda instances."
+      },
+      "product_ux": {
+        "score": 4,
+        "reason": "Consistent navigation, an itemized receipt, and a visible returns progress bar keep the tested flows usable despite the visual chaos, though the floating chat overlaps content and checkout did not complete in the outage test."
+      },
+      "creativity_delight": {
+        "score": 5,
+        "reason": "The backwards visitor counter, sale extended for lack of demand, gravity surcharge, and remote box smell test extend the parody well beyond the brief and sustain it from browsing through returns."
+      },
+      "conductor_usage": {
+        "score": 4,
+        "reason": "Both observed executions completed real business logic in Conductor, including bounded payment attempts, seven separately recorded return checks, and a timed manager review, but alert-only workflow timeouts flag stalls without recovering them, and task failures have no explicit retry policy."
+      }
+    }
+  ],
+  "median": {
+    "engineering_quality": 4,
+    "product_ux": 4,
+    "creativity_delight": 5,
+    "conductor_usage": 4
+  }
+}
