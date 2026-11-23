@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chaos Commerce: two stores, one brief</title>
+<style>
+  :root { --bg: #f7f7f9; --text: #222a35; --muted: #3b4a6f; --card: #ffffff; --line: #e0d5f2; --accent: #6c37bd; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #14161c; --text: #eceef3; --muted: #aab3c8; --card: #1d2029; --line: #3a3150; --accent: #b393ff; } }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 system-ui, sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 48px 16px; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  p { color: var(--muted); margin: 0 0 24px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  a.card { display: block; padding: 20px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; color: inherit; text-decoration: none; }
+  a.card:hover { border-color: var(--accent); }
+  .card strong { display: block; font-size: 18px; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Chaos Commerce</h1>
+  <p>Two coding models got the same four-sentence brief for a deliberately terrible online store and built it with nobody answering their questions. Checkout and returns run as Conductor workflows. These are temporary demos.</p>
+  <div class="grid">
+    <a class="card" href="./neon/"><strong>Built by Gemini 4 Neon</strong>Open the store</a>
+    <a class="card" href="./fable/"><strong>Built by Fable 5.2</strong>Open the store</a>
+  </div>
+</main>
+</body>
+</html>
