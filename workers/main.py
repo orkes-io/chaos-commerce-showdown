@@ -51,12 +51,12 @@ def prepare(sandbox: str, model: str, run_id: str):
     # deletes before the agent starts. (`opencode auth login --method key` needs a TTY in 2.4.1.)
     R.sh(sandbox, "umask 077; mkdir -p ~/.chaos && cat > ~/.chaos/key", stdin=R.read_key(provider))
     R.sh(sandbox, "cat > ~/prompt.txt", stdin=(R.REPO / "prereg" / "prompt.txt").read_text())
-    for script in ("run_agent.sh", "collect.sh"):
+    for script in ("run_agent.sh", "watch_agent.sh", "collect.sh"):
         R.put(sandbox, SANDBOX_SCRIPTS / script, f"~/{script}")
     R.sh(sandbox, "rm -rf ~/run ~/work && mkdir -p ~/run ~/work && dpkg-query -W > ~/run/dpkg.before")
     versions = R.sh(sandbox, "echo opencode=$(opencode --version 2>&1 | head -1); echo node=$(node --version); "
                              "echo conductor_image=$(docker inspect --format '{{.Config.Image}}' conductor); "
-                             "echo skill=$(ls ~/.agents/skills 2>/dev/null | tr '\\n' ' ')")
+                             "echo skill=$(ls ~/.agents/skills 2>/dev/null | paste -sd, -)")
     return {"run_id": run_id, "versions": dict(l.split("=", 1) for l in versions.split("\n") if "=" in l),
             "key_pushed": True}
 
@@ -74,7 +74,9 @@ def wait(sandbox: str):
                         "else echo RUNNING $(stat -c %s ~/run/events.jsonl 2>/dev/null || echo 0); fi").split()
     if out[0] != "DONE":
         return TaskInProgress(callback_after_seconds=60, output={"event_bytes": int(out[1]) if len(out) > 1 else 0})
-    return {"exit_code": int(out[1]), "ended_by": out[2]}
+    code = out[1] if len(out) > 1 else "n/a"
+    return {"exit_code": int(code) if code.lstrip("-").isdigit() else code,
+            "ended_by": out[2] if len(out) > 2 else "unknown"}
 
 
 @worker_task(task_definition_name="chaos_collect", thread_count=4)

@@ -25,19 +25,11 @@ timeout --signal=TERM --kill-after=60 "${CAP}m" \
 OC=$!
 echo "$OC" > "$RUN/opencode.pid"
 
-# Idle watchdog: no new events for IDLE minutes means the agent is done but a
-# background job (e.g. a dev server) is holding `opencode run` open.
-ENDED_BY=finished
-while kill -0 "$OC" 2>/dev/null; do
-  sleep 30
-  last=$(stat -c %Y "$RUN/events.jsonl" 2>/dev/null || echo 0)
-  if [ $(( $(date +%s) - last )) -ge $(( IDLE * 60 )) ]; then
-    ENDED_BY=idle
-    pkill -TERM -P "$OC" 2>/dev/null; kill -TERM "$OC" 2>/dev/null
-    sleep 30; kill -KILL "$OC" 2>/dev/null
-    break
-  fi
-done
+echo "$CAP" > "$RUN/cap_minutes"
+# Watchdog (see watch_agent.sh): stops the run only when the agent has ended its
+# turn and stayed idle, or after 30 silent minutes. `timeout` enforces the cap.
+"$HOME/watch_agent.sh" "$OC" "$IDLE"
+ENDED_BY=$(cat "$RUN/ended_by.watch" 2>/dev/null || echo finished)
 wait "$OC"; CODE=$?
 if [ "$ENDED_BY" = finished ] && { [ "$CODE" -eq 124 ] || [ "$CODE" -eq 137 ]; }; then ENDED_BY=cap; fi
 
