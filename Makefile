@@ -115,13 +115,18 @@ explore:
 openai-key:
 	$(SSH) chaos-core 'umask 077; cat > /srv/chaos/keys/openai.key' < $(KEY_OPENAI)
 
+# A scoring round labels its runs with letters, shuffled, and keeps the map on core.
+# First round: neon + fable as Stores A-F. Carbon round: make score SCORE_MODELS=carbon SCORE_LABELS=GHI BLIND_MAP=/srv/chaos/blind_map_carbon.json
+SCORE_MODELS ?= neon fable
+SCORE_LABELS ?= ABCDEF
+BLIND_MAP ?= /srv/chaos/blind_map.json
 score:
 	$(RSYNC) eval/ chaos-core:/srv/chaos/repo/eval/
-	$(SSH) chaos-core 'test -f /srv/chaos/blind_map.json || python3 -c "import json,random; r=[f\"{m}-r{i}\" for m in (\"neon\",\"fable\") for i in (1,2,3)]; random.shuffle(r); json.dump(dict(zip(\"ABCDEF\", r)), open(\"/srv/chaos/blind_map.json\",\"w\"))"'
-	$(SSH) chaos-core 'python3 -c "import json; b=json.load(open(\"/srv/chaos/blind_map.json\")); print(json.dumps({\"judge_model\": \"$(JUDGE_MODEL)\", \"runs\": [{\"run_id\": v, \"sandbox\": v, \"label\": \"Store \"+k, \"judge_model\": \"$(JUDGE_MODEL)\"} for k, v in sorted(b.items())]}))" | curl -s -X POST -H "Content-Type: application/json" -d @- http://localhost:8080/api/workflow/chaos_score; echo'
+	$(SSH) chaos-core 'test -f $(BLIND_MAP) || python3 -c "import json,random; r=[f\"{m}-r{i}\" for m in \"$(SCORE_MODELS)\".split() for i in (1,2,3)]; random.shuffle(r); json.dump(dict(zip(\"$(SCORE_LABELS)\", r)), open(\"$(BLIND_MAP)\",\"w\"))"'
+	$(SSH) chaos-core 'python3 -c "import json; b=json.load(open(\"$(BLIND_MAP)\")); print(json.dumps({\"judge_model\": \"$(JUDGE_MODEL)\", \"runs\": [{\"run_id\": v, \"sandbox\": v, \"label\": \"Store \"+k, \"judge_model\": \"$(JUDGE_MODEL)\"} for k, v in sorted(b.items())]}))" | curl -s -X POST -H "Content-Type: application/json" -d @- http://localhost:8080/api/workflow/chaos_score; echo'
 
 rate:
-	$(SSH) chaos-core 'pkill -f rating_server.py; cd /srv/chaos/repo && nohup /srv/chaos/venv/bin/python eval/rating_server.py /srv/chaos/blind_map.json > /srv/chaos/rating.log 2>&1 &'
+	$(SSH) chaos-core 'pkill -f "[r]ating_server.py"; cd /srv/chaos/repo && nohup /srv/chaos/venv/bin/python eval/rating_server.py $(BLIND_MAP) > /srv/chaos/rating.log 2>&1 &'
 	@echo "Blind rating page: http://localhost:8765  (Ctrl-C to close)"
 	$(SSH) -N -L 8765:localhost:8765 chaos-core
 

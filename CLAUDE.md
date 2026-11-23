@@ -1,6 +1,6 @@
 # Notes for Claude Code in this repo
 
-This repo runs the Chaos Commerce showdown: Gemini 4 Neon and Fable 5.2 each build the same joke store from one prompt, unattended in OpenCode, and the results are scored. Read `README.md` first.
+This repo runs the Chaos Commerce showdown: Gemini 4 Neon, Fable 5.2 and Gemini 4 Carbon each build the same joke store from one prompt, unattended in OpenCode, and the results are scored. Read `README.md` first.
 
 ## Secrets: the one rule that matters
 - Nothing sensitive is ever committed. That covers keys, tokens, AWS account IDs, ARNs, IP addresses, instance or resource IDs, function URLs, email addresses, home-directory paths, and people's names.

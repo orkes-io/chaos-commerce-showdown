@@ -61,7 +61,7 @@ chaos_score     FORK every run
 
 ## Reproduce it
 
-You need an AWS account (the default VPC is enough), Terraform, Python 3, and API keys for Google Gemini, Anthropic and OpenAI (judge). Rough cost: about $100-250 in model API spend for six runs, plus a few dollars of EC2.
+You need an AWS account (the default VPC is enough), Terraform, Python 3, and API keys for Google Gemini, Anthropic and OpenAI (judge). At list prices the nine reported runs cost $53.66 in model API spend, from $1.77 to $13.76 per run (see `report/tables.md`). The three voided Fable runs cost another $20.53 before they stopped, and the judge and EC2 add a few dollars.
 
 ```bash
 cp infra/terraform.tfvars.example infra/terraform.tfvars   # your IP, profile, sandbox list
@@ -73,11 +73,12 @@ make pilot                  # optional: toy prompt on pilot sandboxes
 make run                    # all runs at once (chaos_runs)
 make status                 # or: make tunnel → http://localhost:8080
 make score                  # checklist + judge, then the blind rating (make rate)
+make score SCORE_MODELS=carbon SCORE_LABELS=GHI BLIND_MAP=/srv/chaos/blind_map_carbon.json   # the separate Carbon round
 make pull                   # copy scrubbed results into runs/
 make down                   # destroy everything tagged project=chaos-commerce
 ```
 
-With Claude Code, the same steps are `/showdown-up`, `/showdown-run`, `/showdown-status` and `/showdown-down`.
+With Claude Code, the same steps are `/showdown-up`, `/showdown-run`, `/showdown-status`, `/showdown-score` and `/showdown-down`.
 
 ## Secrets
 - Keys, Terraform state, `.env`, tfvars and SSH keys never enter the repo; they're gitignored.
