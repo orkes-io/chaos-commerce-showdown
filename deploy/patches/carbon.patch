@@ -1,0 +1,26 @@
+--- a/backend/src/conductor.ts
++++ b/backend/src/conductor.ts
+@@ -76,7 +76,6 @@
+     if (!wfResp.ok) {
+       return {
+         reachable: false,
+-        serverUrl: config.conductorServerUrl,
+         uiUrl: config.conductorUiUrl,
+         registeredWorkflows: [],
+         registeredTasks: [],
+@@ -88,7 +87,6 @@
+     const tasks = taskResp.ok ? ((await taskResp.json()) as Array<{ name: string }>) : [];
+     return {
+       reachable: true,
+-      serverUrl: config.conductorServerUrl,
+       uiUrl: config.conductorUiUrl,
+       registeredWorkflows: workflows.map((w) => w.name),
+       registeredTasks: tasks.map((t) => t.name),
+@@ -98,7 +96,6 @@
+   } catch {
+     return {
+       reachable: false,
+-      serverUrl: config.conductorServerUrl,
+       uiUrl: config.conductorUiUrl,
+       registeredWorkflows: [],
+       registeredTasks: [],

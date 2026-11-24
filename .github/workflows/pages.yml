@@ -1,4 +1,4 @@
-# Builds both showcase storefronts and publishes them to GitHub Pages.
+# Builds the showcase storefronts and publishes them to GitHub Pages.
 # Started by `make deploy` (gh workflow run) with each store's Lambda function URL.
 # The URLs are inputs, never committed; per-store build settings live in deploy/stores.json.
 name: Publish storefronts
@@ -11,6 +11,9 @@ on:
         required: true
       fable_api:
         description: Function URL for the fable store backend
+        required: true
+      carbon_api:
+        description: Function URL for the carbon store backend
         required: true
 
 permissions:
@@ -34,6 +37,7 @@ jobs:
         env:
           NEON_API: ${{ inputs.neon_api }}
           FABLE_API: ${{ inputs.fable_api }}
+          CARBON_API: ${{ inputs.carbon_api }}
           REPO_NAME: ${{ github.event.repository.name }}
         run: |
           set -euo pipefail

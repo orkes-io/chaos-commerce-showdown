@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chaos Commerce: one brief, two live stores</title>
+<title>Chaos Commerce: one brief, three live stores</title>
 <style>
   :root { --bg: #f7f7f9; --text: #222a35; --muted: #3b4a6f; --card: #ffffff; --line: #e0d5f2; --accent: #6c37bd; }
   @media (prefers-color-scheme: dark) { :root { --bg: #14161c; --text: #eceef3; --muted: #aab3c8; --card: #1d2029; --line: #3a3150; --accent: #b393ff; } }
@@ -34,31 +34,32 @@
 <body>
 <main>
   <h1>Chaos Commerce</h1>
-  <p>Chaos Commerce is a parody online store. We gave Gemini 4 Neon, Fable 5.2 and Gemini 4 Carbon the same four-sentence brief, and each model built the store on its own in OpenCode with nobody answering its questions. The two stores below are the median-scoring builds from Neon and Fable 5.2, hosted as temporary demos.</p>
+  <p>Chaos Commerce is a parody online store. We gave Gemini 4 Neon, Fable 5.2 and Gemini 4 Carbon the same four-sentence brief, and each model built the store on its own in OpenCode with nobody answering its questions. The three stores below are the median-scoring builds from each model, hosted as temporary demos.</p>
 
   <div class="grid">
     <a class="card" href="./neon/"><strong>Built by Gemini 4 Neon</strong><span>Order something, take it through the Returns Maze, then open Orders &amp; Traces to see each step of the workflow that ran it.</span><em>Open the store</em></a>
     <a class="card" href="./fable/"><strong>Built by Fable 5.2</strong><span>Order something, then file a return on Form 27B/6. It runs seven pointless checks and waits for a manager who never answers before it decides.</span><em>Open the store</em></a>
+    <a class="card" href="./carbon/"><strong>Built by Gemini 4 Carbon</strong><span>Order something, then take it to the Pointless Returns Gauntlet. Orders &amp; Conductor Logs shows the workflow behind each order.</span><em>Open the store</em></a>
   </div>
 
   <h2>The jokes run on real workflows</h2>
   <p>Every checkout and every return in these stores runs as a workflow on Conductor, the open-source orchestration engine that Orkes Conductor is built on. Under the jokes, the stores handle the same problems as a real retail system.</p>
   <ul>
-    <li>A checkout has to finish even when a step fails. Neon's checkout checks inventory and fraud in parallel before it takes payment, and Conductor keeps the state of every step, so a failed call can be retried without losing the order.</li>
+    <li>A checkout has to finish even when a step fails. Neon's checkout checks inventory and fraud in parallel before it takes payment, and Carbon's retries a declined payment in a loop. Conductor keeps the state of every step, so a failed call can be retried without losing the order.</li>
     <li>A return fans out into checks that may pause for a person, and it must always reach a decision. Fable's returns workflow loops through its checks, waits a few seconds for an approval that never comes, and then decides anyway.</li>
     <li>Conductor keeps every execution with its inputs and outputs, so support can see which check denied a return and why.</li>
   </ul>
   <p>Replace the joke checks with fraud scoring, inventory holds, carrier pickups and refunds, and these are the retail workflows Orkes Conductor is built to orchestrate.</p>
 
-  <h2>How the two stores are built</h2>
-  <p>Both stores follow the brief's layout, with a static storefront on GitHub Pages and a backend on AWS Lambda that starts Conductor workflows. Each store has its own Conductor OSS server. The models made different choices inside that layout.</p>
+  <h2>How the three stores are built</h2>
+  <p>All three stores follow the brief's layout, with a static storefront on GitHub Pages and a backend on AWS Lambda that starts Conductor workflows. Each store has its own Conductor OSS server. The models made different choices inside that layout.</p>
   <div class="table-wrap">
     <table>
-      <tr><th></th><th>Gemini 4 Neon</th><th>Fable 5.2</th></tr>
-      <tr><th>Storefront</th><td>React app built with Vite</td><td>Plain HTML and JavaScript, with no build step</td></tr>
-      <tr><th>Backend</th><td>Express API, wrapped for Lambda</td><td>Node API with no dependencies</td></tr>
-      <tr><th>Workflow steps</th><td>Worker tasks for the store's own steps, plus fork, join, switch and jq system tasks</td><td>System tasks only: JavaScript, jq, loops and a timed wait</td></tr>
-      <tr><th>Workers</th><td>An always-on Node process next to its Conductor server, because Lambda can't host workers</td><td>None</td></tr>
+      <tr><th></th><th>Gemini 4 Neon</th><th>Fable 5.2</th><th>Gemini 4 Carbon</th></tr>
+      <tr><th>Storefront</th><td>React app built with Vite</td><td>Plain HTML and JavaScript, with no build step</td><td>React app in TypeScript, built with Vite</td></tr>
+      <tr><th>Backend</th><td>Express API, wrapped for Lambda</td><td>Node API with no dependencies</td><td>TypeScript API, bundled for Lambda with esbuild</td></tr>
+      <tr><th>Workflow steps</th><td>Worker tasks for the store's own steps, plus fork, join, switch and jq system tasks</td><td>System tasks only: JavaScript, jq, loops and a timed wait</td><td>Worker tasks for the store's own steps, plus fork, join, loop, switch, JavaScript and jq system tasks</td></tr>
+      <tr><th>Workers</th><td>An always-on Node process next to its Conductor server, because Lambda can't host workers</td><td>None</td><td>Run inside the Lambda. While a request waits on its workflow, the backend picks up and completes the worker tasks itself.</td></tr>
     </table>
   </div>
   <p style="margin-top:16px">The browser only talks to each store's backend. The Conductor UI isn't published for these demos, so the stores' Conductor UI links won't open here.</p>

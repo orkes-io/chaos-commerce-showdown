@@ -130,7 +130,7 @@ rate:
 	@echo "Blind rating page: http://localhost:8765  (Ctrl-C to close)"
 	$(SSH) -N -L 8765:localhost:8765 chaos-core
 
-# --- Hosting (the two showcase stores) ---------------------------------------
+# --- Hosting (the showcase stores) ---------------------------------------
 # Fill deploy/stores.json first. Hosting is recorded in terraform.tfvars so a later
 # `make up` keeps it.
 .PHONY: deploy

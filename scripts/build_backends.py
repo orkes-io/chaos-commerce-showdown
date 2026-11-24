@@ -31,6 +31,8 @@ for store, cfg in stores.items():
         print(f"{store}: applied {patch.name}")
     if cfg.get("backend_build"):
         subprocess.run(cfg["backend_build"], shell=True, cwd=dst, check=True)
-    archive = shutil.make_archive(str(build / store), "zip", dst)
+    # backend_artifact: the folder to ship, when the store bundles its backend (e.g. backend/dist-lambda).
+    root = dst / cfg["backend_artifact"] if cfg.get("backend_artifact") else dst
+    archive = shutil.make_archive(str(build / store), "zip", root)
     print(f"{store}: {Path(archive).name} ({Path(archive).stat().st_size // 1024} KB)")
 sys.exit(0)

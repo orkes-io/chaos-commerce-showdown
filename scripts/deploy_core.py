@@ -2,7 +2,7 @@
 """Set up core for the hosted stores (run by `make deploy` after terraform apply).
 
 For each store in deploy/stores.json:
-  - a Conductor OSS 3.34.0 container on 127.0.0.1:<port> (neon 8081, fable 8082)
+  - a Conductor OSS 3.34.0 container on 127.0.0.1:<port> (neon 8081, fable 8082, carbon 8083)
   - the workflow and task definitions the store registered at evaluation
     (runs/<run>/eval/registered_*.json), loaded before the proxy opens
   - optional always-on workers (`workers_cmd`), in a node:22 container next to it
@@ -20,7 +20,7 @@ repo = Path(__file__).resolve().parent.parent
 stores = json.loads((repo / "deploy" / "stores.json").read_text())
 proxy = json.loads(subprocess.run(["terraform", "-chdir=infra", "output", "-json", "proxy"], cwd=repo,
                                   capture_output=True, text=True, check=True).stdout)
-PORTS = {"neon": 8081, "fable": 8082}
+PORTS = {"neon": 8081, "fable": 8082, "carbon": 8083}
 
 
 def core(cmd: str, stdin: str | None = None) -> str:

@@ -3,11 +3,13 @@
     "run": "neon-r1",
     "backend_dir": "backend",
     "backend_build": "npm install --omit=dev --no-audit --no-fund",
+    "backend_artifact": "",
     "runtime": "nodejs22.x",
     "handler": "src/lambda.handler",
     "conductor_env": "CONDUCTOR_SERVER_URL",
     "env": {
-      "NODE_ENV": "production"
+      "NODE_ENV": "production",
+      "CONDUCTOR_UI_URL": "http://localhost:8080"
     },
     "frontend_dir": "runs/neon-r1/app/frontend",
     "frontend_build": "npm install --no-audit --no-fund && npm run build",
@@ -20,6 +22,7 @@
     "run": "fable-r3b",
     "backend_dir": "backend",
     "backend_build": "",
+    "backend_artifact": "",
     "runtime": "nodejs22.x",
     "handler": "src/lambda.handler",
     "conductor_env": "CONDUCTOR_SERVER_URL",
@@ -30,6 +33,27 @@
     "frontend_build": "printf \"window.CHAOS_CONFIG = {\\n  apiBaseUrl: '%s',\\n};\\n\" \"$FABLE_API_URL\" > config.js",
     "frontend_dist": ".",
     "frontend_api_env": "FABLE_API_URL",
+    "workers_cmd": "",
+    "workers_env": {}
+  },
+  "carbon": {
+    "run": "carbon-r1",
+    "backend_dir": ".",
+    "backend_build": "npm install --no-audit --no-fund && npm run build:lambda",
+    "backend_artifact": "backend/dist-lambda",
+    "runtime": "nodejs22.x",
+    "handler": "index.handler",
+    "conductor_env": "CONDUCTOR_SERVER_URL",
+    "env": {
+      "NODE_ENV": "production",
+      "WORKER_MODE": "inline",
+      "AUTO_REGISTER_WORKFLOWS": "false",
+      "CONDUCTOR_UI_URL": "http://localhost:8080"
+    },
+    "frontend_dir": "runs/carbon-r1/app",
+    "frontend_build": "npm install --no-audit --no-fund && npm run build:frontend",
+    "frontend_dist": "frontend/dist",
+    "frontend_api_env": "VITE_API_BASE_URL",
     "workers_cmd": "",
     "workers_env": {}
   }

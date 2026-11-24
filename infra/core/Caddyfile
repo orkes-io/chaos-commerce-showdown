@@ -8,11 +8,20 @@
 	}
 	respond @meta_write 403
 
+	# The stores never call these, so the proxy refuses them outright.
+	@not_store_api {
+		path_regexp blocked ^/{$PROXY_PATH}/[a-z]+/api/(admin|queue|event|workflow/bulk)
+	}
+	respond @not_store_api 403
+
 	handle_path /{$PROXY_PATH}/neon/* {
 		reverse_proxy localhost:8081
 	}
 	handle_path /{$PROXY_PATH}/fable/* {
 		reverse_proxy localhost:8082
+	}
+	handle_path /{$PROXY_PATH}/carbon/* {
+		reverse_proxy localhost:8083
 	}
 	respond 404
 }

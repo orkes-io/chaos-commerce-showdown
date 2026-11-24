@@ -1,4 +1,4 @@
-# Hosting for the two showcase stores (off until hosting_enabled = true).
+# Hosting for the showcase stores (off until hosting_enabled = true).
 #
 #   storefront (GitHub Pages) -> Lambda function URL (store backend)
 #     -> HTTPS proxy on core (Caddy) -> that store's own Conductor OSS container
@@ -49,7 +49,7 @@ resource "aws_lambda_function_url" "store" {
   for_each           = local.stores
   function_name      = aws_lambda_function.store[each.key].function_name
   authorization_type = "NONE"
-  # No cors block: both stores send their own CORS headers, and an AWS-level rule
+  # No cors block: the stores send their own CORS headers, and an AWS-level rule
   # on top produces duplicate Access-Control-Allow-Origin headers that browsers reject.
 }
 

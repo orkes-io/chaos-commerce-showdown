@@ -1,0 +1,18 @@
+--- a/src/conductorClient.js
++++ b/src/conductorClient.js
+@@ -63,7 +63,6 @@
+     const names = Array.isArray(workflows) ? workflows.map((w) => w.name) : [];
+     return {
+       reachable: true,
+-      serverUrl: config.conductorServerUrl,
+       uiUrl: config.conductorUiUrl,
+       registeredWorkflowCount: names.length,
+       hasCheckoutWorkflow: names.includes("chaos_checkout"),
+@@ -72,7 +71,6 @@
+   } catch (err) {
+     return {
+       reachable: false,
+-      serverUrl: config.conductorServerUrl,
+       uiUrl: config.conductorUiUrl,
+       error: err.message,
+     };
