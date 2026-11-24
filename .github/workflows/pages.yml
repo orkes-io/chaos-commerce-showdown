@@ -50,6 +50,8 @@ jobs:
             api_var="$(echo "$store" | tr a-z A-Z)_API"
             val="${!api_var}"; export "$api_env=${val%/}"   # function URLs end with a slash
             export BASE_PATH="/${REPO_NAME}/${store}/"
+            patch="deploy/patches/${store}-frontend.patch"
+            if [ -f "$patch" ]; then git apply --directory="$dir" "$patch"; fi
             (cd "$dir" && eval "$build")
             cp -r "$dir/$dist" "_site/$store"
           done

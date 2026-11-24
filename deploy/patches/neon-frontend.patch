@@ -1,0 +1,38 @@
+--- a/src/App.jsx
++++ b/src/App.jsx
+@@ -327,16 +327,6 @@
+             <code>chaos_return_bureaucracy</code>). Zero AI APIs called at runtime.
+           </div>
+           <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+-            {health?.conductor?.uiUrl && (
+-              <a
+-                className="btn btn-sm btn-cyan"
+-                href={health.conductor.uiUrl}
+-                target="_blank"
+-                rel="noreferrer"
+-              >
+-                ⚡ Conductor UI ↗
+-              </a>
+-            )}
+             <button
+               type="button"
+               className="btn btn-sm"
+--- a/src/components/WorkflowTrace.jsx
++++ b/src/components/WorkflowTrace.jsx
+@@ -17,16 +17,6 @@
+         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+           <span className="trace-status">{trace.status}</span>
+           <span>{trace.durationMs}ms</span>
+-          {trace.conductorUiUrl && (
+-            <a
+-              className="trace-link"
+-              href={trace.conductorUiUrl}
+-              target="_blank"
+-              rel="noreferrer"
+-            >
+-              Open in Conductor UI ↗
+-            </a>
+-          )}
+         </div>
+       </div>
+ 

@@ -69,6 +69,9 @@ for store, cfg in stores.items():
     if dst.exists():
         shutil.rmtree(dst)
     shutil.copytree(src, dst, ignore=shutil.ignore_patterns("node_modules", "dist"))
+    patch = REPO / "deploy" / "patches" / f"{store}-frontend.patch"
+    if patch.exists():
+        subprocess.run(["git", "apply", f"--directory={dst.relative_to(REPO)}", str(patch)], cwd=REPO, check=True)
     env = {**os.environ, cfg["frontend_api_env"]: urls[store].rstrip("/"), "BASE_PATH": "./"}
     subprocess.run(cfg["frontend_build"], shell=True, cwd=dst, env=env, check=True,
                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

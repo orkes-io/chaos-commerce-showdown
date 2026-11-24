@@ -1,0 +1,43 @@
+--- a/frontend/src/components/ConductorTraceDrawer.tsx
++++ b/frontend/src/components/ConductorTraceDrawer.tsx
+@@ -33,15 +33,7 @@
+               }}
+             >
+               workflowId: <strong style={{ color: "#fff" }}>{trace.workflowId}</strong> •
+-              duration: {trace.durationMs}ms •{" "}
+-              <a
+-                href={trace.conductorExecutionUrl}
+-                target="_blank"
+-                rel="noreferrer"
+-                style={{ color: "var(--neon-cyan)" }}
+-              >
+-                Open in Conductor UI ↗
+-              </a>
++              duration: {trace.durationMs}ms
+             </div>
+           </div>
+           <button type="button" className="close-x" onClick={onClose}>
+--- a/frontend/src/App.tsx
++++ b/frontend/src/App.tsx
+@@ -687,21 +687,6 @@
+                 <code>{health?.conductor?.serverUrl || "Unknown"}</code>
+               </p>
+               <p>
+-                <strong>Conductor UI:</strong>{" "}
+-                {health?.conductor?.uiUrl ? (
+-                  <a
+-                    href={health.conductor.uiUrl}
+-                    target="_blank"
+-                    rel="noreferrer"
+-                    style={{ color: "var(--neon-cyan)" }}
+-                  >
+-                    {health.conductor.uiUrl} ↗
+-                  </a>
+-                ) : (
+-                  "N/A"
+-                )}
+-              </p>
+-              <p>
+                 <strong>Worker Mode:</strong>{" "}
+                 <code>{health?.conductor?.workerMode || "daemon"}</code> •{" "}
+                 <strong>Runtime AI APIs Called:</strong> <code>false</code>
