@@ -46,7 +46,7 @@ Each model built three of these from the same four-sentence brief. Gemini 4 Carb
 |---|---|---|
 | **core**: the pipeline's Conductor OSS, Python workers, Playwright | 1 EC2 instance | [`infra/main.tf`](infra/main.tf), [`infra/cloud-init/core.yaml`](infra/cloud-init/core.yaml) |
 | **sandboxes**: OpenCode + a private Conductor OSS, one per run | 1 EC2 instance per run | [`infra/main.tf`](infra/main.tf), [`infra/cloud-init/sandbox.yaml`](infra/cloud-init/sandbox.yaml) |
-| Hosted store backends | AWS Lambda + function URLs | [`infra/hosting.tf`](infra/hosting.tf) |
+| Hosted store backends (the median store per model) | AWS Lambda + function URLs, each with its own Conductor OSS on core behind an HTTPS proxy | [`infra/hosting.tf`](infra/hosting.tf), [`deploy/stores.json`](deploy/stores.json) |
 | Hosted storefronts | GitHub Pages | [`.github/workflows/pages.yml`](.github/workflows/pages.yml) |
 
 Terraform builds the machines from your laptop. Conductor workflows on core run the experiment and need no AWS credentials, so your laptop can sleep while runs are going.
