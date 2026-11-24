@@ -17,18 +17,26 @@
   .lede { max-width: 620px; margin: 30px 0 0; font-size: 20px; }
   .lede + .lede { margin-top: 6px; font-size: 17px; }
   .stores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 44px; }
-  .store { transform: rotate(var(--tilt)); perspective: 1400px; }
-  .flip { position: relative; aspect-ratio: 4 / 5; border: 4px solid var(--ink); box-shadow: 10px 10px 0 var(--ink); background: #fff; transition: transform .6s; transform-style: preserve-3d; }
+  .store { transform: rotate(var(--tilt)); }
+
+  /* The frame stays put (border, shadow); only the card inside it turns over. */
+  .frame { position: relative; aspect-ratio: 4 / 5; border: 4px solid var(--ink); box-shadow: 10px 10px 0 var(--ink); background: #fff; perspective: 1400px; cursor: pointer; transition: box-shadow .15s; }
+  .frame:hover { box-shadow: 13px 13px 0 var(--ink); }
+  .frame:focus-visible { outline: 3px solid var(--pink); outline-offset: 6px; }
+  .flip { position: absolute; inset: 0; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform .6s; }
   .store.flipped .flip { transform: rotateY(180deg); }
-  .face { position: absolute; inset: 0; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  /* Faces swap halfway through the turn, so no browser has to get backface-visibility right. */
+  .face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; transition: visibility 0s linear .3s; }
+  .front { transform: rotateY(0deg); visibility: visible; }
+  .back { transform: rotateY(180deg); visibility: hidden; display: flex; flex-direction: column; padding: 14px; background: #f7f8fa; }
+  .store.flipped .front { visibility: hidden; }
+  .store.flipped .back { visibility: visible; }
   .front img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
-  .back { transform: rotateY(180deg); display: flex; flex-direction: column; padding: 14px; background: #f7f8fa; }
-  .back { pointer-events: none; }
-  .store.flipped .back { pointer-events: auto; }
-  .store.flipped .front { pointer-events: none; }
-  .back a { flex: 1; min-height: 0; display: block; cursor: zoom-in; }
-  .back img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .front::after { content: ""; position: absolute; right: 0; bottom: 0; width: 48px; height: 48px; background: linear-gradient(315deg, var(--paper) 0 calc(50% - 2px), var(--ink) calc(50% - 2px) calc(50% + 2px), var(--pink) calc(50% + 2px)); transition: width .2s, height .2s; }
+  .frame:hover .front::after { width: 66px; height: 66px; }
+  .back img { flex: 1; min-height: 0; width: 100%; object-fit: contain; }
   .back p { margin: 10px 0 0; font-size: 15px; line-height: 1.4; }
+
   .name { display: flex; align-items: center; gap: 10px; margin: 20px 0 0; font: 400 22px/1.1 "Archivo Black", sans-serif; }
   .name i { width: 18px; height: 18px; background: var(--accent); border: 3px solid var(--ink); }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
@@ -37,6 +45,7 @@
   .btn:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
   .btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
   .btn:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+
   .receipt { width: min(440px, calc(100% - 40px)); margin: 84px auto 0; padding: 26px 26px 28px; position: relative; background: var(--slip); font: 400 14px/1.6 "Space Mono", monospace; text-transform: uppercase; transform: rotate(1.2deg); filter: drop-shadow(0 14px 16px rgba(70, 50, 0, .18)); }
   .receipt::before, .receipt::after { content: ""; position: absolute; left: 0; right: 0; height: 10px; background-repeat: repeat-x; }
   .receipt::before { top: -10px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='10'%3E%3Cpolygon points='0,10 10,0 20,10' fill='%23fffdf8'/%3E%3C/svg%3E"); }
@@ -53,7 +62,7 @@
     .stores { grid-template-columns: 1fr; max-width: 460px; gap: 52px; }
     .store { transform: rotate(calc(var(--tilt) / 2)); }
   }
-  @media (prefers-reduced-motion: reduce) { .flip { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .flip, .face { transition: none; } }
 </style>
 </head>
 <body>
@@ -66,30 +75,36 @@
 <main>
   <div class="stores">
     <article class="store" style="--accent: var(--neon); --tilt: -2deg">
-      <div class="flip">
-        <div class="face front"><img src="assets/neon-store.jpg" width="720" height="900" alt="The Chaos Commerce store built by Gemini 4 Neon"></div>
-        <div class="face back"><a href="assets/neon-workflow.webp" target="_blank" rel="noopener"><img src="assets/neon-workflow.webp" loading="lazy" alt="Conductor diagram of the Neon store's returns workflow"></a><p>Every return runs three pointless checks side by side, then loops until it has collected enough rubber stamps.</p></div>
+      <div class="frame" role="button" tabindex="0" aria-pressed="false" aria-label="Flip the Gemini 4 Neon store to see its workflow">
+        <div class="flip">
+          <div class="face front"><img src="assets/neon-store.jpg" width="720" height="900" alt="The Chaos Commerce store built by Gemini 4 Neon"></div>
+          <div class="face back"><img src="assets/neon-workflow.webp" loading="lazy" alt="Conductor diagram of the Neon store's returns workflow"><p>Every return runs three pointless checks side by side, then loops until it has collected enough rubber stamps.</p></div>
+        </div>
       </div>
       <p class="name"><i></i>Gemini 4 Neon</p>
-      <div class="actions"><a class="btn go" href="./neon/">Visit the store</a><button class="btn" type="button" aria-pressed="false">See the workflow</button></div>
+      <div class="actions"><a class="btn go" href="./neon/">Visit the store</a><button class="btn" type="button" aria-pressed="false">See the workflow</button><a class="btn full" href="assets/neon-workflow.webp" target="_blank" rel="noopener" hidden>Full size</a></div>
     </article>
 
     <article class="store" style="--accent: var(--fable); --tilt: 1.2deg">
-      <div class="flip">
-        <div class="face front"><img src="assets/fable-store.jpg" width="720" height="900" alt="The Chaos Commerce store built by Fable 5.2"></div>
-        <div class="face back"><a href="assets/fable-workflow.webp" target="_blank" rel="noopener"><img src="assets/fable-workflow.webp" loading="lazy" alt="Conductor diagram of the Fable store's returns workflow"></a><p>Every return goes through seven pointless checks, then waits four seconds for a manager who never answers.</p></div>
+      <div class="frame" role="button" tabindex="0" aria-pressed="false" aria-label="Flip the Fable 5.2 store to see its workflow">
+        <div class="flip">
+          <div class="face front"><img src="assets/fable-store.jpg" width="720" height="900" alt="The Chaos Commerce store built by Fable 5.2"></div>
+          <div class="face back"><img src="assets/fable-workflow.webp" loading="lazy" alt="Conductor diagram of the Fable store's returns workflow"><p>Every return goes through seven pointless checks, then waits four seconds for a manager who never answers.</p></div>
+        </div>
       </div>
       <p class="name"><i></i>Fable 5.2</p>
-      <div class="actions"><a class="btn go" href="./fable/">Visit the store</a><button class="btn" type="button" aria-pressed="false">See the workflow</button></div>
+      <div class="actions"><a class="btn go" href="./fable/">Visit the store</a><button class="btn" type="button" aria-pressed="false">See the workflow</button><a class="btn full" href="assets/fable-workflow.webp" target="_blank" rel="noopener" hidden>Full size</a></div>
     </article>
 
     <article class="store" style="--accent: var(--carbon); --tilt: 2.4deg">
-      <div class="flip">
-        <div class="face front"><img src="assets/carbon-store.jpg" width="720" height="900" alt="The Chaos Commerce store built by Gemini 4 Carbon"></div>
-        <div class="face back"><a href="assets/carbon-workflow.webp" target="_blank" rel="noopener"><img src="assets/carbon-workflow.webp" loading="lazy" alt="Conductor diagram of the Carbon store's checkout workflow"></a><p>Checkout reserves stock, audits fees in parallel and retries the payment until it goes through.</p></div>
+      <div class="frame" role="button" tabindex="0" aria-pressed="false" aria-label="Flip the Gemini 4 Carbon store to see its workflow">
+        <div class="flip">
+          <div class="face front"><img src="assets/carbon-store.jpg" width="720" height="900" alt="The Chaos Commerce store built by Gemini 4 Carbon"></div>
+          <div class="face back"><img src="assets/carbon-workflow.webp" loading="lazy" alt="Conductor diagram of the Carbon store's checkout workflow"><p>Checkout reserves stock, audits fees in parallel and retries the payment until it goes through.</p></div>
+        </div>
       </div>
       <p class="name"><i></i>Gemini 4 Carbon</p>
-      <div class="actions"><a class="btn go" href="./carbon/">Visit the store</a><button class="btn" type="button" aria-pressed="false">See the workflow</button></div>
+      <div class="actions"><a class="btn go" href="./carbon/">Visit the store</a><button class="btn" type="button" aria-pressed="false">See the workflow</button><a class="btn full" href="assets/carbon-workflow.webp" target="_blank" rel="noopener" hidden>Full size</a></div>
     </article>
   </div>
 
@@ -111,12 +126,21 @@
 
 <script>
   for (const store of document.querySelectorAll(".store")) {
+    const frame = store.querySelector(".frame");
     const button = store.querySelector("button");
-    button.addEventListener("click", () => {
+    const full = store.querySelector(".full");
+    const toggle = () => {
       const flipped = store.classList.toggle("flipped");
+      frame.setAttribute("aria-pressed", String(flipped));
       button.setAttribute("aria-pressed", String(flipped));
       button.textContent = flipped ? "See the store" : "See the workflow";
+      full.hidden = !flipped;
+    };
+    frame.addEventListener("click", toggle);
+    frame.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") { event.preventDefault(); toggle(); }
     });
+    button.addEventListener("click", toggle);
   }
 </script>
 </body>
