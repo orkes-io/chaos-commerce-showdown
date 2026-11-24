@@ -53,7 +53,7 @@ jobs:
             (cd "$dir" && eval "$build")
             cp -r "$dir/$dist" "_site/$store"
           done
-          cp deploy/index.html _site/index.html
+          cp -r deploy/index.html deploy/assets _site/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

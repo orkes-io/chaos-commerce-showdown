@@ -3,68 +3,121 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chaos Commerce: one brief, three live stores</title>
+<title>Chaos Commerce</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root { --bg: #f7f7f9; --text: #222a35; --muted: #3b4a6f; --card: #ffffff; --line: #e0d5f2; --accent: #6c37bd; }
-  @media (prefers-color-scheme: dark) { :root { --bg: #14161c; --text: #eceef3; --muted: #aab3c8; --card: #1d2029; --line: #3a3150; --accent: #b393ff; } }
-  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.55 system-ui, sans-serif; }
-  main { max-width: 860px; margin: 0 auto; padding: 48px 16px 64px; }
-  h1 { font-size: 30px; margin: 0 0 12px; }
-  h2 { font-size: 20px; margin: 40px 0 12px; }
-  p, li { color: var(--muted); }
-  p { margin: 0 0 16px; }
-  ul { margin: 0 0 16px; padding-left: 20px; }
-  li { margin-bottom: 8px; }
-  a { color: var(--accent); }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 24px; }
-  a.card { display: block; padding: 20px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; color: inherit; text-decoration: none; }
-  a.card:hover { border-color: var(--accent); }
-  .card strong { display: block; font-size: 18px; margin-bottom: 6px; }
-  .card span { display: block; color: var(--muted); font-size: 15px; margin-bottom: 12px; }
-  .card em { font-style: normal; color: var(--accent); font-weight: 600; }
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 12px; font-size: 15px; }
-  th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
-  th { color: var(--text); }
-  td { color: var(--muted); }
-  tr:last-child td { border-bottom: 0; }
-  footer { margin-top: 40px; font-size: 14px; }
+  :root { --paper: #fff6d6; --dot: #e8d28a; --ink: #1d1d1d; --pink: #ff3d7f; --neon: #2a78d6; --fable: #eb6834; --carbon: #1baf7a; --slip: #fffdf8; }
+  * { box-sizing: border-box; }
+  body { margin: 0; color: var(--ink); background: var(--paper) radial-gradient(var(--dot) 1.6px, transparent 1.6px) 0 0 / 26px 26px; font: 17px/1.5 "Archivo", system-ui, sans-serif; }
+  header, .stores, footer { max-width: 1120px; margin: 0 auto; padding-left: 20px; padding-right: 20px; }
+  header { padding-top: 56px; }
+  h1 { display: inline-block; margin: 0; padding: 10px 22px 14px; font: 400 clamp(40px, 7vw, 76px)/1 "Archivo Black", sans-serif; color: #fff; background: var(--pink); border: 4px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); transform: rotate(-2deg); }
+  .lede { max-width: 620px; margin: 30px 0 0; font-size: 20px; }
+  .lede + .lede { margin-top: 6px; font-size: 17px; }
+  .stores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 44px; }
+  .store { transform: rotate(var(--tilt)); perspective: 1400px; }
+  .flip { position: relative; aspect-ratio: 4 / 5; border: 4px solid var(--ink); box-shadow: 10px 10px 0 var(--ink); background: #fff; transition: transform .6s; transform-style: preserve-3d; }
+  .store.flipped .flip { transform: rotateY(180deg); }
+  .face { position: absolute; inset: 0; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .front img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .back { transform: rotateY(180deg); display: flex; flex-direction: column; padding: 14px; background: #f7f8fa; }
+  .back { pointer-events: none; }
+  .store.flipped .back { pointer-events: auto; }
+  .store.flipped .front { pointer-events: none; }
+  .back a { flex: 1; min-height: 0; display: block; cursor: zoom-in; }
+  .back img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .back p { margin: 10px 0 0; font-size: 15px; line-height: 1.4; }
+  .name { display: flex; align-items: center; gap: 10px; margin: 20px 0 0; font: 400 22px/1.1 "Archivo Black", sans-serif; }
+  .name i { width: 18px; height: 18px; background: var(--accent); border: 3px solid var(--ink); }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
+  .btn { padding: 11px 14px; font: 600 15px/1 "Archivo", sans-serif; color: var(--ink); background: #fff; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); text-decoration: none; cursor: pointer; }
+  .btn.go { color: #fff; background: var(--ink); }
+  .btn:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
+  .btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+  .btn:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+  .receipt { width: min(440px, calc(100% - 40px)); margin: 84px auto 0; padding: 26px 26px 28px; position: relative; background: var(--slip); font: 400 14px/1.6 "Space Mono", monospace; text-transform: uppercase; transform: rotate(1.2deg); filter: drop-shadow(0 14px 16px rgba(70, 50, 0, .18)); }
+  .receipt::before, .receipt::after { content: ""; position: absolute; left: 0; right: 0; height: 10px; background-repeat: repeat-x; }
+  .receipt::before { top: -10px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='10'%3E%3Cpolygon points='0,10 10,0 20,10' fill='%23fffdf8'/%3E%3C/svg%3E"); }
+  .receipt::after { bottom: -10px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='10'%3E%3Cpolygon points='0,0 10,10 20,0' fill='%23fffdf8'/%3E%3C/svg%3E"); }
+  .receipt p { margin: 0; }
+  .receipt .top, .receipt .end { text-align: center; font-weight: 700; }
+  .receipt dl { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; margin: 14px 0; padding: 14px 0; border-top: 2px dashed #b9b2a0; border-bottom: 2px dashed #b9b2a0; }
+  .receipt dt, .receipt dd { margin: 0; }
+  .receipt dd { text-align: right; }
+  .receipt .end { margin-top: 14px; }
+  footer { padding-top: 56px; padding-bottom: 48px; text-align: center; font-size: 15px; }
+  footer a { color: var(--ink); font-weight: 600; }
+  @media (max-width: 900px) {
+    .stores { grid-template-columns: 1fr; max-width: 460px; gap: 52px; }
+    .store { transform: rotate(calc(var(--tilt) / 2)); }
+  }
+  @media (prefers-reduced-motion: reduce) { .flip { transition: none; } }
 </style>
 </head>
 <body>
-<main>
+<header>
   <h1>Chaos Commerce</h1>
-  <p>Chaos Commerce is a parody online store. We gave Gemini 4 Neon, Fable 5.2 and Gemini 4 Carbon the same four-sentence brief, and each model built the store on its own in OpenCode with nobody answering its questions. The three stores below are the median-scoring builds from each model, hosted as temporary demos.</p>
+  <p class="lede">We asked three AI models to build the worst online store they could, as long as checkout and returns still worked.</p>
+  <p class="lede">Every order and return runs on a real Conductor workflow. Flip a store to see it.</p>
+</header>
 
-  <div class="grid">
-    <a class="card" href="./neon/"><strong>Built by Gemini 4 Neon</strong><span>Order something, take it through the Returns Maze, then open Orders &amp; Traces to see each step of the workflow that ran it.</span><em>Open the store</em></a>
-    <a class="card" href="./fable/"><strong>Built by Fable 5.2</strong><span>Order something, then file a return on Form 27B/6. It runs seven pointless checks and waits for a manager who never answers before it decides.</span><em>Open the store</em></a>
-    <a class="card" href="./carbon/"><strong>Built by Gemini 4 Carbon</strong><span>Order something, then take it to the Pointless Returns Gauntlet. Orders &amp; Conductor Logs shows the workflow behind each order.</span><em>Open the store</em></a>
+<main>
+  <div class="stores">
+    <article class="store" style="--accent: var(--neon); --tilt: -2deg">
+      <div class="flip">
+        <div class="face front"><img src="assets/neon-store.jpg" width="720" height="900" alt="The Chaos Commerce store built by Gemini 4 Neon"></div>
+        <div class="face back"><a href="assets/neon-workflow.webp" target="_blank" rel="noopener"><img src="assets/neon-workflow.webp" loading="lazy" alt="Conductor diagram of the Neon store's returns workflow"></a><p>Every return runs three pointless checks side by side, then loops until it has collected enough rubber stamps.</p></div>
+      </div>
+      <p class="name"><i></i>Gemini 4 Neon</p>
+      <div class="actions"><a class="btn go" href="./neon/">Visit the store</a><button class="btn" type="button" aria-pressed="false">See the workflow</button></div>
+    </article>
+
+    <article class="store" style="--accent: var(--fable); --tilt: 1.2deg">
+      <div class="flip">
+        <div class="face front"><img src="assets/fable-store.jpg" width="720" height="900" alt="The Chaos Commerce store built by Fable 5.2"></div>
+        <div class="face back"><a href="assets/fable-workflow.webp" target="_blank" rel="noopener"><img src="assets/fable-workflow.webp" loading="lazy" alt="Conductor diagram of the Fable store's returns workflow"></a><p>Every return goes through seven pointless checks, then waits four seconds for a manager who never answers.</p></div>
+      </div>
+      <p class="name"><i></i>Fable 5.2</p>
+      <div class="actions"><a class="btn go" href="./fable/">Visit the store</a><button class="btn" type="button" aria-pressed="false">See the workflow</button></div>
+    </article>
+
+    <article class="store" style="--accent: var(--carbon); --tilt: 2.4deg">
+      <div class="flip">
+        <div class="face front"><img src="assets/carbon-store.jpg" width="720" height="900" alt="The Chaos Commerce store built by Gemini 4 Carbon"></div>
+        <div class="face back"><a href="assets/carbon-workflow.webp" target="_blank" rel="noopener"><img src="assets/carbon-workflow.webp" loading="lazy" alt="Conductor diagram of the Carbon store's checkout workflow"></a><p>Checkout reserves stock, audits fees in parallel and retries the payment until it goes through.</p></div>
+      </div>
+      <p class="name"><i></i>Gemini 4 Carbon</p>
+      <div class="actions"><a class="btn go" href="./carbon/">Visit the store</a><button class="btn" type="button" aria-pressed="false">See the workflow</button></div>
+    </article>
   </div>
 
-  <h2>The jokes run on real workflows</h2>
-  <p>Every checkout and every return in these stores runs as a workflow on Conductor, the open-source orchestration engine that Orkes Conductor is built on. Under the jokes, the stores handle the same problems as a real retail system.</p>
-  <ul>
-    <li>A checkout has to finish even when a step fails. Neon's checkout checks inventory and fraud in parallel before it takes payment, and Carbon's retries a declined payment in a loop. Conductor keeps the state of every step, so a failed call can be retried without losing the order.</li>
-    <li>A return fans out into checks that may pause for a person, and it must always reach a decision. Fable's returns workflow loops through its checks, waits a few seconds for an approval that never comes, and then decides anyway.</li>
-    <li>Conductor keeps every execution with its inputs and outputs, so support can see which check denied a return and why.</li>
-  </ul>
-  <p>Replace the joke checks with fraud scoring, inventory holds, carrier pickups and refunds, and these are the retail workflows Orkes Conductor is built to orchestrate.</p>
-
-  <h2>How the three stores are built</h2>
-  <p>All three stores follow the brief's layout, with a static storefront on GitHub Pages and a backend on AWS Lambda that starts Conductor workflows. Each store has its own Conductor OSS server. The models made different choices inside that layout.</p>
-  <div class="table-wrap">
-    <table>
-      <tr><th></th><th>Gemini 4 Neon</th><th>Fable 5.2</th><th>Gemini 4 Carbon</th></tr>
-      <tr><th>Storefront</th><td>React app built with Vite</td><td>Plain HTML and JavaScript, with no build step</td><td>React app in TypeScript, built with Vite</td></tr>
-      <tr><th>Backend</th><td>Express API, wrapped for Lambda</td><td>Node API with no dependencies</td><td>TypeScript API, bundled for Lambda with esbuild</td></tr>
-      <tr><th>Workflow steps</th><td>Worker tasks for the store's own steps, plus fork, join, switch and jq system tasks</td><td>System tasks only: JavaScript, jq, loops and a timed wait</td><td>Worker tasks for the store's own steps, plus fork, join, loop, switch, JavaScript and jq system tasks</td></tr>
-      <tr><th>Workers</th><td>An always-on Node process next to its Conductor server, because Lambda can't host workers</td><td>None</td><td>Run inside the Lambda. While a request waits on its workflow, the backend picks up and completes the worker tasks itself.</td></tr>
-    </table>
+  <div class="receipt">
+    <p class="top">Chaos Commerce<br>Workflow receipt</p>
+    <dl>
+      <dt>Legal hamster consult</dt><dd>Parallel checks</dd>
+      <dt>Rubber stamps x3</dt><dd>Approval loop</dd>
+      <dt>Manager who never answers</dt><dd>Timed wait</dd>
+      <dt>Payment attempts x2</dt><dd>Retries</dd>
+      <dt>Return verdict</dt><dd>Always decided</dd>
+    </dl>
+    <p>Swap the jokes for fraud checks, approvals and refunds, and this is a real retail workflow.</p>
+    <p class="end">Powered by Conductor<br>Thank you, come again</p>
   </div>
-  <p style="margin-top:16px">The browser only talks to each store's backend. The Conductor UI isn't published for these demos, so the stores' Conductor UI links won't open here.</p>
-
-  <footer><p>An Orkes experiment. The brief, the scoring and every store's code are in <a href="https://github.com/orkes-io/chaos-commerce-showdown">orkes-io/chaos-commerce-showdown</a>.</p></footer>
 </main>
+
+<footer>An Orkes experiment. The prompt, the code and the scores are <a href="https://github.com/orkes-io/chaos-commerce-showdown">on GitHub</a>.</footer>
+
+<script>
+  for (const store of document.querySelectorAll(".store")) {
+    const button = store.querySelector("button");
+    button.addEventListener("click", () => {
+      const flipped = store.classList.toggle("flipped");
+      button.setAttribute("aria-pressed", String(flipped));
+      button.textContent = flipped ? "See the store" : "See the workflow";
+    });
+  }
+</script>
 </body>
 </html>
