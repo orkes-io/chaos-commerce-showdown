@@ -33,8 +33,6 @@
   .frame { position: relative; aspect-ratio: 4 / 5; border: 4px solid var(--ink); box-shadow: 10px 10px 0 var(--ink); background: #fff; perspective: 1400px; cursor: pointer; transition: box-shadow .15s; }
   .frame:hover { box-shadow: 13px 13px 0 var(--ink); }
   .frame:focus-visible { outline: 3px solid var(--pink); outline-offset: 6px; }
-  .tag { position: absolute; z-index: 2; top: -16px; right: -14px; padding: 8px 12px; font: 400 14px/1 "Archivo Black", sans-serif; text-transform: uppercase; color: var(--ink); background: var(--yellow); border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); transform: rotate(7deg); transition: transform .15s; }
-  .frame:hover .tag { transform: rotate(-4deg) scale(1.06); }
   .flip { position: absolute; inset: 0; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform .6s; }
   .store.flipped .flip { transform: rotateY(180deg); }
   /* Faces swap halfway through the turn, so no browser has to get backface-visibility right. */
@@ -43,9 +41,12 @@
   .back { transform: rotateY(180deg); visibility: hidden; display: flex; flex-direction: column; padding: 14px; background: #f7f8fa; }
   .store.flipped .front { visibility: hidden; }
   .store.flipped .back { visibility: visible; }
+  .face::after { content: ""; position: absolute; right: 0; bottom: 0; width: 52px; height: 52px; background: linear-gradient(315deg, var(--paper) 0 calc(50% - 2px), var(--ink) calc(50% - 2px) calc(50% + 2px), var(--pink) calc(50% + 2px)); transition: width .2s, height .2s; }
+  .frame:hover .face::after { width: 72px; height: 72px; }
   .front img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
   .back img { flex: 1; min-height: 0; width: 100%; object-fit: contain; }
-  .back p { margin: 10px 0 0; font-size: 15px; line-height: 1.4; }
+  .back p { margin: 10px 0 0; padding-right: 64px; font-size: 15px; line-height: 1.4; }
+  .frame:hover .back::after { width: 60px; height: 60px; }
 
   .name { display: flex; align-items: center; gap: 10px; margin: 20px 0 0; font: 400 22px/1.1 "Archivo Black", sans-serif; }
   .name i { width: 18px; height: 18px; background: var(--accent); border: 3px solid var(--ink); }
@@ -97,7 +98,6 @@
   <div class="stores">
     <article class="store" style="--accent: var(--neon); --tilt: -2deg">
       <div class="frame" role="button" tabindex="0" aria-pressed="false" aria-label="Flip the Gemini 4 Neon store to see its workflow">
-        <span class="tag" aria-hidden="true">Click to flip</span>
         <div class="flip">
           <div class="face front"><img src="assets/neon-store.jpg" width="720" height="900" alt="The Chaos Commerce store built by Gemini 4 Neon"></div>
           <div class="face back"><img src="assets/neon-workflow.webp" loading="lazy" alt="Conductor diagram of the Neon store's returns workflow"><p>Every return runs three pointless checks side by side, then loops until it has collected enough rubber stamps.</p></div>
@@ -109,7 +109,6 @@
 
     <article class="store" style="--accent: var(--fable); --tilt: 1.2deg">
       <div class="frame" role="button" tabindex="0" aria-pressed="false" aria-label="Flip the Fable 5.2 store to see its workflow">
-        <span class="tag" aria-hidden="true">Click to flip</span>
         <div class="flip">
           <div class="face front"><img src="assets/fable-store.jpg" width="720" height="900" alt="The Chaos Commerce store built by Fable 5.2"></div>
           <div class="face back"><img src="assets/fable-workflow.webp" loading="lazy" alt="Conductor diagram of the Fable store's returns workflow"><p>Every return goes through seven pointless checks, then waits four seconds for a manager who never answers.</p></div>
@@ -121,7 +120,6 @@
 
     <article class="store" style="--accent: var(--carbon); --tilt: 2.4deg">
       <div class="frame" role="button" tabindex="0" aria-pressed="false" aria-label="Flip the Gemini 4 Carbon store to see its workflow">
-        <span class="tag" aria-hidden="true">Click to flip</span>
         <div class="flip">
           <div class="face front"><img src="assets/carbon-store.jpg" width="720" height="900" alt="The Chaos Commerce store built by Gemini 4 Carbon"></div>
           <div class="face back"><img src="assets/carbon-workflow.webp" loading="lazy" alt="Conductor diagram of the Carbon store's checkout workflow"><p>Checkout reserves stock, audits fees in parallel and retries the payment until it goes through.</p></div>
